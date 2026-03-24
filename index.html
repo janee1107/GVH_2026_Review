@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GVH 2026 評選平台 | MediaTek</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --orange:#E8471C; --orange-light:#FF6B3D; --blue:#0065A4; --blue-light:#1A7FBF;
+      --green:#34C759; --amber:#FF9F0A; --purple:#8B5CF6;
+      --bg:#F2F2F7; --surface:#FFFFFF; --surface2:#F8F8FA;
+      --border:rgba(0,0,0,0.08); --text:#1C1C1E; --text2:#636366; --text3:#AEAEB2;
+      --radius:20px;
+      --shadow-sm:0 2px 12px rgba(0,0,0,0.06);
+      --shadow:0 8px 32px rgba(0,0,0,0.08);
+      --shadow-lg:0 24px 64px rgba(0,0,0,0.12);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+    /* Glass */
+    .glass{background:rgba(255,255,255,0.9);backdrop-filter:saturate(200%) blur(24px);-webkit-backdrop-filter:saturate(200%) blur(24px);border-bottom:1px solid rgba(255,255,255,0.6)}
+
+    /* Cards */
+    .card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);transition:all 0.2s ease}
+    .card-lg{background:var(--surface);border-radius:28px;box-shadow:var(--shadow);border:1px solid var(--border)}
+
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:100px;font-weight:700;font-size:12px;border:none;cursor:pointer;transition:all 0.2s ease;text-decoration:none;font-family:inherit}
+    .btn:active{transform:scale(0.97)}
+    .btn-primary{background:var(--text);color:#fff;box-shadow:0 4px 14px rgba(0,0,0,0.12)}
+    .btn-primary:hover{background:#000;box-shadow:0 6px 20px rgba(0,0,0,0.18);transform:translateY(-1px)}
+    .btn-orange{background:var(--orange);color:#fff;box-shadow:0 4px 14px rgba(232,71,28,0.25)}
+    .btn-orange:hover{background:var(--orange-light);transform:translateY(-1px)}
+    .btn-ghost{background:rgba(0,0,0,0.05);color:var(--text)}
+    .btn-ghost:hover{background:rgba(0,0,0,0.09)}
+    .btn-success{background:#34C759;color:#fff}
+    .btn-success:hover{background:#2db34a;transform:translateY(-1px)}
+    .btn-danger{background:#FF3B30;color:#fff}
+    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:transparent;border:none;cursor:pointer;color:var(--text2);transition:all 0.2s}
+    .icon-btn:hover{background:rgba(0,0,0,0.06);color:var(--text)}
+
+    /* Inputs */
+    input,textarea,select{font-family:inherit;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none}
+    .input{width:100%;padding:14px 16px;background:var(--surface2);border:1.5px solid transparent;border-radius:14px;outline:none;transition:border-color 0.2s,background 0.2s;color:var(--text)}
+    .input:focus{border-color:var(--orange);background:#fff}
+    select.input{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");background-position:right .5rem center;background-repeat:no-repeat;background-size:1.5em 1.5em;padding-right:2.5rem}
+
+    /* Slider */
+    input[type=range]{-webkit-appearance:none;width:100%;height:6px;background:#E5E5EA;border-radius:99px;outline:none;cursor:pointer}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,0.2);border:2.5px solid var(--orange);transition:transform 0.15s,box-shadow 0.15s}
+    input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.1);box-shadow:0 4px 16px rgba(232,71,28,0.3)}
+    input[type=range]::-webkit-slider-thumb:active{transform:scale(1.2)}
+    input[type=range].blue::-webkit-slider-thumb{border-color:var(--blue)}
+    input[type=range].blue::-webkit-slider-thumb:hover{box-shadow:0 4px 16px rgba(0,101,164,0.3)}
+    input[type=range].purple::-webkit-slider-thumb{border-color:var(--purple)}
+    input[type=range].purple::-webkit-slider-thumb:hover{box-shadow:0 4px 16px rgba(139,92,246,0.3)}
+
+    /* Scrollbar */
+    ::-webkit-scrollbar{width:4px;height:4px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:#D1D1D6;border-radius:99px}
+
+    /* Toast */
+    #toast{position:fixed;top:24px;right:24px;z-index:9999;display:flex;align-items:center;gap:10px;padding:14px 20px;border-radius:16px;background:#1C1C1E;color:#fff;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);max-width:320px;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);opacity:0;transform:translateY(-8px) scale(0.96);pointer-events:none;border-left:3px solid var(--green)}
+    #toast.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+    #toast.toast-error{border-left-color:#FF3B30}
+    #toast.toast-warn{border-left-color:var(--amber)}
+    #toast.toast-info{border-left-color:var(--blue)}
+
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,0.45);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity 0.25s ease;cursor:pointer}
+    .modal-backdrop.active{opacity:1;pointer-events:auto}
+    .modal{background:var(--bg);border-radius:28px;padding:4px;max-width:680px;width:100%;max-height:90vh;box-shadow:var(--shadow-lg);transform:scale(0.95) translateY(12px);transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);cursor:auto;display:flex;flex-direction:column}
+    .modal-backdrop.active .modal{transform:scale(1) translateY(0)}
+    .modal-content-wrapper{background:var(--surface);padding:32px;border-radius:25px;overflow-y:auto}
+
+    /* Rubric accordion */
+    .rubric-acc{margin-top:10px;border:1px solid var(--border);border-radius:16px;background:#fff;overflow:hidden}
+    .rubric-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:var(--text2);transition:all 0.2s}
+    .rubric-trigger:hover{background:var(--surface2)}
+    .rubric-trigger.acc-open{color:var(--orange);background:#FFF8F5}
+    .rubric-trigger.acc-open.blue-acc{color:var(--blue);background:#F0F6FF}
+    .rubric-trigger.acc-open.purple-acc{color:var(--purple);background:#F5F0FF}
+    .rubric-body{overflow:hidden;max-height:0;transition:max-height 0.35s ease}
+    .rubric-body.open{max-height:400px}
+    .rubric-item{padding:10px 16px;border-top:1px solid #f2f2f7;font-size:11px;line-height:1.6;color:var(--text2)}
+    .rubric-item.active-item{background:#FFF8F5;color:var(--text);font-weight:500}
+    .rubric-item.active-item.blue-item{background:#F0F6FF}
+    .rubric-item.active-item.purple-item{background:#F5F0FF}
+
+    /* Progress bar */
+    .prog-bar{height:4px;background:#E5E5EA;border-radius:99px;overflow:hidden}
+    .prog-fill{height:100%;background:var(--orange);border-radius:99px;transition:width 0.5s ease}
+
+    /* Badge */
+    .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700}
+    .badge-orange{background:#FFF3EE;color:var(--orange);border:1px solid #FFCAB8}
+    .badge-green{background:#F0FFF4;color:#22C55E;border:1px solid #A7F3D0}
+    .badge-blue{background:#EEF4FF;color:var(--blue);border:1px solid #B8D4FF}
+    .badge-gray{background:#F2F2F7;color:var(--text3);border:1px solid #E5E5EA}
+    .badge-amber{background:#FFFBEB;color:var(--amber);border:1px solid #FDE68A}
+    .badge-purple{background:#F5F0FF;color:var(--purple);border:1px solid #DDD6FE}
+
+    /* Toggle */
+    .toggle-track{width:48px;height:28px;border-radius:99px;background:#E5E5EA;position:relative;transition:background 0.25s;cursor:pointer;flex-shrink:0}
+    .toggle-track.on{background:var(--amber)}
+    .toggle-thumb{position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.2);transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1)}
+    .toggle-track.on .toggle-thumb{transform:translateX(20px)}
+
+    /* Segment progress */
+    .seg{flex:1;height:100%;background:rgba(0,0,0,0.1);border-radius:99px;transition:background 0.3s}
+    .seg.done{background:var(--green)}
+    .seg.current{background:var(--orange)}
+
+    /* Nav segments */
+    #smart-nav-seg-prog{display:flex;gap:2px;height:6px;width:100%;max-width:240px}
+
+    /* Gradient text */
+    .text-gradient-orange{background:linear-gradient(45deg,var(--orange),var(--orange-light));background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+    /* AI panel */
+    .ai-panel{background:linear-gradient(135deg,#0F172A 0%,#1E293B 100%);border-radius:28px;color:#fff;position:relative;overflow:hidden}
+    .ai-glow1{position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:rgba(0,101,164,0.25);border-radius:50%;filter:blur(60px);pointer-events:none}
+    .ai-glow2{position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;background:rgba(232,71,28,0.12);border-radius:50%;filter:blur(50px);pointer-events:none}
+
+    /* Table */
+    .data-table{width:100%;border-collapse:collapse}
+    .data-table th{background:#1C1C1E;color:#fff;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:14px 20px;text-align:left}
+    .data-table td{padding:16px 20px;border-bottom:1px solid #F2F2F7;font-size:13px;vertical-align:middle}
+    .data-table tr:hover td{background:rgba(232,71,28,0.025)}
+    .data-table tr:last-child td{border-bottom:none}
+
+    /* Role card */
+    .role-card{border:2px solid var(--border);border-radius:20px;padding:20px 16px;text-align:center;cursor:pointer;transition:all 0.2s;background:#fff;flex:1}
+    .role-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+    .role-card.sel-orange{border-color:var(--orange);background:#FFF8F5;box-shadow:0 0 0 4px rgba(232,71,28,0.08)}
+    .role-card.sel-blue{border-color:var(--blue);background:#F0F6FF;box-shadow:0 0 0 4px rgba(0,101,164,0.08)}
+
+    /* History panel */
+    #history-panel{position:fixed;bottom:0;left:0;right:0;z-index:500;background:rgba(255,255,255,0.96);backdrop-filter:blur(20px);border-top:1px solid var(--border);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1)}
+    #history-panel.collapsed{transform:translateY(calc(100% - 56px))}
+    .hist-drag{width:36px;height:4px;background:#D1D1D6;border-radius:99px;margin:0 auto}
+
+    /* Dept switcher */
+    .dept-pill{padding:6px 14px;border-radius:99px;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;color:var(--text3);background:transparent;border:none;font-family:inherit}
+    .dept-pill.active{background:#fff;color:var(--orange);box-shadow:var(--shadow-sm)}
+
+    /* Animations */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .fade-up{animation:fadeUp 0.3s ease forwards}
+    @keyframes scoreFlash{0%{color:inherit}40%{color:var(--orange);transform:scale(1.08)}100%{color:inherit;transform:scale(1)}}
+    .score-anim{animation:scoreFlash 0.35s ease}
+    @keyframes slideDown{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes heroShine{0%,100%{background-position:0% center}50%{background-position:100% center}}
+    @keyframes heroDrift{from{transform:translate(-50%,-50%) scale(1)}to{transform:translate(-50%,-50%) scale(1.07) rotate(4deg)}}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes ringIn{from{stroke-dashoffset:100.5}to{stroke-dashoffset:var(--target-offset)}}
+
+    /* Password toggle */
+    .pw-wrap{position:relative}
+    .pw-wrap .pw-eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);padding:2px;display:flex;transition:color 0.2s}
+    .pw-wrap .pw-eye:hover{color:var(--text2)}
+
+    /* Owner link */
+    .owner-link{font-size:11.5px;color:var(--text3);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:color 0.2s;padding:6px 0}
+    .owner-link:hover{color:var(--text2)}
+
+    /* Score label */
+    .score-label-badge{display:inline-block;padding:4px 12px;border-radius:99px;font-size:11px;font-weight:700;margin-top:4px}
+
+    /* Sticky score panel */
+    #score-panel{position:sticky;top:80px;height:fit-content}
+
+    /* Dashboard card hover */
+    .dash-card{cursor:pointer;transition:all 0.2s}
+    .dash-card:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,0.10)}
+    .dash-card.done-card{border-left:3px solid var(--green)!important}
+
+    @media(max-width:768px){
+      .hide-mobile{display:none}
+      .data-table th,.data-table td{padding:10px 12px;font-size:11px}
+      #score-panel{position:relative;top:0}
+    }
+    @media print{#history-panel,nav,#smart-nav,#admin-btn-wrap,#guideline-modal,#modal-wrap{display:none!important}}
+  </style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div id="toast">
+  <span id="toast-icon" style="font-size:16px"></span>
+  <span id="toast-msg"></span>
+</div>
+
+<!-- ══ LOGIN OVERLAY ══ -->
+<div id="login-overlay" style="position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;overflow:auto;">
+  <!-- HERO SECTION — 完全保留主視覺 -->
+  <div id="hero-section" style="position:relative;flex:1;min-height:65vh;background:#F5F5F7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px 100px;overflow:hidden;">
+    <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:72rem;height:72rem;background:radial-gradient(ellipse at 50% 45%,rgba(255,220,100,0.22) 0%,rgba(255,180,50,0.10) 35%,rgba(240,90,34,0.06) 60%,transparent 80%);border-radius:50%;animation:heroDrift 10s ease-in-out infinite alternate;"></div>
+    </div>
+    <div class="fade-up" style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border:1px solid rgba(240,90,34,0.25);color:#F05A22;background:rgba(240,90,34,0.06);margin-bottom:28px;position:relative;z-index:1;">2026 Global Volunteer Hero Recognition</div>
+    <div class="fade-up" style="text-align:center;position:relative;z-index:1;max-width:1000px;">
+      <h1 style="font-size:clamp(52px,8.5vw,96px);font-weight:700;line-height:1.02;letter-spacing:-3px;margin-bottom:0;background:linear-gradient(110deg,#CC5200 0%,#FF6600 20%,#FF9944 40%,#FFCC88 50%,#FF9944 60%,#FF6600 80%,#CC5200 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:heroShine 4.5s ease-in-out infinite;">The Unseen Hero</h1>
+    </div>
+    <p class="fade-up" style="margin-top:20px;font-size:17px;color:#6B6B80;font-weight:400;text-align:center;max-width:440px;line-height:1.7;position:relative;z-index:1;animation-delay:.1s;">邀請您花時間瀏覽志工申請書<br>一起讓善意發光</p>
+  </div>
+
+  <!-- AUTH SECTION -->
+  <div style="background:#F2F2F7;padding:48px 24px 56px;display:flex;flex-direction:column;align-items:center;">
+    <p style="font-size:11px;font-weight:800;color:#8E8E93;letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;">請選擇您的身份以進入</p>
+    <div style="max-width:520px;width:100%;display:flex;flex-direction:column;gap:16px;">
+      <!-- Role Cards -->
+      <div style="display:flex;gap:12px;">
+        <div class="role-card" id="rc-internal" onclick="selectLoginRole('internal')">
+          <div style="width:40px;height:40px;background:#FFF3EE;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;">
+            <i data-lucide="building-2" style="width:20px;height:20px;color:var(--orange);"></i>
+          </div>
+          <div style="font-size:13px;font-weight:800;color:var(--text);">MTK 評審</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px;">Internal Judge</div>
+        </div>
+        <div class="role-card" id="rc-external" onclick="selectLoginRole('external')">
+          <div style="width:40px;height:40px;background:#EEF4FF;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;">
+            <i data-lucide="globe" style="width:20px;height:20px;color:var(--blue);"></i>
+          </div>
+          <div style="font-size:13px;font-weight:800;color:var(--text);">外部評審</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px;">External Judge</div>
+        </div>
+      </div>
+
+      <!-- Credential Box (hidden until role selected) -->
+      <div id="auth-box" style="display:none;background:#fff;border-radius:20px;padding:24px;border:1.5px solid rgba(0,0,0,0.07);box-shadow:0 4px 20px rgba(0,0,0,0.06);animation:slideDown 0.3s ease">
+        <select id="judge-select" class="input" style="height:52px;margin-bottom:12px;"></select>
+        <div class="pw-wrap">
+          <input id="pw-input" type="password" placeholder="請輸入您的專屬密碼" class="input" style="height:52px;padding-right:48px;" onkeydown="if(event.key==='Enter')verifyAuth()">
+          <button class="pw-eye" onclick="togglePwEye()" id="pw-eye-btn" type="button" title="顯示/隱藏密碼">
+            <i data-lucide="eye" id="pw-eye-icon" style="width:18px;height:18px;"></i>
+          </button>
+        </div>
+        <button onclick="verifyAuth()" id="verify-btn" class="btn btn-primary" style="width:100%;height:52px;border-radius:14px;font-size:14px;font-weight:800;margin-top:12px;">驗證進入</button>
+        <p id="auth-err" style="font-size:12px;color:#FF3B30;margin-top:10px;text-align:center;display:none;"></p>
+      </div>
+
+      <!-- Owner Link -->
+      <div style="text-align:center;">
+        <a href="#" class="owner-link" onclick="showOwnerLoginModal(event)">
+          <i data-lucide="shield" style="width:13px;height:13px;"></i>
+          獎項管理者登入
+        </a>
+      </div>
+    </div>
+    <p style="margin-top:24px;font-size:10px;color:#C7C7CC;text-align:center;">© 2026 MediaTek Inc. — 本平台僅供授權人員使用</p>
+  </div>
+</div>
+
+<!-- ══ JUDGE DASHBOARD ══ -->
+<div id="dashboard-view" style="display:none;">
+  <div style="max-width:960px;margin:40px auto;padding:0 24px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+      <h1 id="dashboard-welcome" style="font-size:28px;font-weight:800;letter-spacing:-.5px;"></h1>
+      <button onclick="confirmLogout(true)" class="btn btn-ghost" style="font-size:11px;">
+        <i data-lucide="log-out" style="width:13px;"></i> 登出
+      </button>
+    </div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:32px;">在送出最終名單前，您可以隨時暫停並儲存進度。</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:40px;">
+      <!-- Progress Card -->
+      <div class="card" style="padding:28px;display:flex;align-items:center;gap:24px;">
+        <div style="position:relative;width:80px;height:80px;flex-shrink:0;">
+          <svg width="80" height="80" viewBox="0 0 36 36" style="transform:rotate(-90deg);">
+            <circle cx="18" cy="18" r="15" fill="none" stroke="#E5E5EA" stroke-width="3"></circle>
+            <circle id="dashboard-prog-ring" cx="18" cy="18" r="15" fill="none" stroke="var(--green)" stroke-width="3" stroke-dasharray="94.2" stroke-dashoffset="94.2" stroke-linecap="round" style="transition:stroke-dashoffset 1s cubic-bezier(0.4,0,0.2,1)"></circle>
+          </svg>
+          <div id="dashboard-prog-pct" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:var(--green);">0%</div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--text2);">評分進度</div>
+          <div id="dashboard-prog-count" style="font-size:26px;font-weight:900;margin-top:4px;letter-spacing:-.5px;">0/40 件</div>
+          <div id="dashboard-prog-sub" style="font-size:11px;color:var(--text3);margin-top:2px;"></div>
+        </div>
+      </div>
+      <!-- Continue Card -->
+      <div class="card" style="padding:28px;display:flex;flex-direction:column;justify-content:center;">
+        <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:12px;">接續您的進度</div>
+        <button id="dashboard-continue-btn" class="btn btn-orange" style="width:100%;padding:16px;font-size:14px;border-radius:16px;gap:8px;">
+          <i data-lucide="play-circle" style="width:16px;"></i> 進入展間評分
+        </button>
+        <p id="dashboard-continue-sub" style="font-size:11px;color:var(--text3);text-align:center;margin-top:10px;"></p>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h2 style="font-size:20px;font-weight:800;">展間目錄</h2>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="dashboard-filter-label" style="font-size:11px;color:var(--text3);font-weight:600;"></span>
+        <button id="dashboard-filter-btn" onclick="toggleDashboardFilter()" class="btn btn-ghost" style="font-size:11px;padding:7px 14px;display:none;">
+          <i data-lucide="filter" style="width:12px;"></i> <span id="filter-btn-text">只看未評</span>
+        </button>
+      </div>
+    </div>
+    <div id="dashboard-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;padding-bottom:48px;"></div>
+  </div>
+</div>
+
+<!-- ══ SMART NAV ══ -->
+<nav id="smart-nav" class="glass" style="position:sticky;top:0;z-index:400;padding:10px 20px;display:none;">
+  <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:12px;">
+    <!-- Brand -->
+    <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+      <button onclick="showDashboard()" style="width:40px;height:40px;background:linear-gradient(135deg,#E8471C,#FF6B3D);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(232,71,28,0.25);transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" title="返回儀表板">
+        <i data-lucide="layout-grid" style="color:#fff;width:18px;height:18px;"></i>
+      </button>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--text3);line-height:1.2;">GVH 2026</div>
+        <div id="smart-nav-role" style="font-size:13px;font-weight:800;color:var(--text);line-height:1.2;"></div>
+      </div>
+    </div>
+    <!-- Center: Scrubber -->
+    <div style="flex-grow:1;display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:16px;">
+        <button id="smart-nav-prev" onclick="nav(-1)" class="icon-btn" title="上一位">
+          <i data-lucide="chevron-left" style="width:16px;"></i>
+          <span style="font-size:11px;font-weight:700;" id="smart-nav-prev-id"></span>
+        </button>
+        <h2 id="smart-nav-current-id" style="font-size:26px;font-weight:900;color:var(--text);letter-spacing:-1px;min-width:72px;text-align:center;">#000</h2>
+        <button id="smart-nav-next" onclick="nav(1)" class="icon-btn" title="下一位">
+          <span style="font-size:11px;font-weight:700;" id="smart-nav-next-id"></span>
+          <i data-lucide="chevron-right" style="width:16px;"></i>
+        </button>
+      </div>
+      <div id="smart-nav-seg-prog"></div>
+    </div>
+    <!-- Right Actions -->
+    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+      <button id="guideline-btn" onclick="showGuideline()" class="btn btn-ghost" style="padding:10px 16px;font-size:12px;gap:6px;" title="評選說明">
+        <i data-lucide="book-open" style="width:13px;"></i>
+        <span class="hide-mobile">評選說明</span>
+      </button>
+      <div style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--text2);padding:0 6px;">
+        <i data-lucide="clock" style="width:13px;height:13px;color:var(--orange);"></i>
+        <span>截止 <span id="days-left">--</span> 天</span>
+      </div>
+      <!-- Cloud Status -->
+      <div id="cloud-status" style="display:none;align-items:center;gap:4px;padding:4px 8px;border-radius:8px;font-size:10px;font-weight:700;color:#8E8E93;background:var(--surface2);">
+        <i data-lucide="cloud" style="width:12px;height:12px;" id="cloud-icon"></i> <span id="cloud-text">本地端</span>
+      </div>
+      <div style="width:1px;height:20px;background:var(--border);margin:0 4px;"></div>
+      <a href="mailto:jane-yc.huang@mediatek.com" class="icon-btn" title="聯絡我們"><i data-lucide="mail"></i></a>
+      <button onclick="confirmLogout()" class="icon-btn" title="登出"><i data-lucide="log-out"></i></button>
+      <div id="admin-btn-wrap" style="display:none;">
+        <button class="btn btn-primary" onclick="openAdmin()" style="margin-left:6px;"><i data-lucide="layout-dashboard" style="width:13px;"></i> 儀表板</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ MAIN CONTENT ══ -->
+<div id="main-content-wrapper" style="display:none;">
+  <main style="max-width:1280px;margin:0 auto;padding:24px 24px 140px;" id="main-layout">
+    <div style="display:grid;gap:20px;" id="content-grid">
+      <!-- LEFT col -->
+      <div id="left-col" style="display:flex;flex-direction:column;gap:20px;">
+        <div class="card-lg" id="app-card" style="padding:32px 36px;">
+          <div id="app-header"></div>
+          <div id="app-body" style="margin-top:28px;display:flex;flex-direction:column;gap:24px;"></div>
+        </div>
+        <!-- AI Panel -->
+        <div id="ai-panel" class="ai-panel" style="display:none;padding:32px 36px;">
+          <div class="ai-glow1"></div><div class="ai-glow2"></div>
+          <div style="position:relative;z-index:1;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+              <i data-lucide="sparkles" style="color:#FFCC02;width:20px;height:20px;"></i>
+              <h3 style="font-size:16px;font-weight:800;color:#FFCC02;">AI 初審報告</h3>
+              <span class="badge" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.15);margin-left:auto;">僅供內部參考</span>
+            </div>
+            <div id="ai-body" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT col -->
+      <div id="right-col" style="display:flex;flex-direction:column;gap:20px;">
+        <div class="card-lg" style="padding:28px;border-top:4px solid var(--orange);" id="score-panel">
+          <!-- Score header -->
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;">
+            <div>
+              <h3 style="font-size:18px;font-weight:900;letter-spacing:-.3px;">評分面板</h3>
+              <p style="font-size:10px;color:#8E8E93;margin-top:4px;">← → 切換 · Enter 提交</p>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px;font-weight:700;color:#8E8E93;text-transform:uppercase;letter-spacing:.08em;">加權總分</div>
+              <div id="total-score" style="font-size:52px;font-weight:900;color:var(--orange);line-height:1;margin-top:2px;letter-spacing:-2px;">5.00</div>
+              <div id="score-label" style="font-size:11px;color:#8E8E93;margin-top:4px;"></div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:24px;">
+            <!-- 行動力 -->
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div>
+                  <span style="font-size:14px;font-weight:800;">行動力</span>
+                  <span style="font-size:10px;color:#8E8E93;margin-left:6px;font-weight:600;">Action · 40%</span>
+                </div>
+                <span id="val-a" style="font-size:28px;font-weight:900;color:var(--orange);font-variant-numeric:tabular-nums;">5</span>
+              </div>
+              <input type="range" id="in-a" min="1" max="10" value="5" oninput="updateScore()">
+              <!-- Rubric Accordion -->
+              <div class="rubric-acc" id="acc-a">
+                <button class="rubric-trigger" onclick="toggleAcc('a')" id="acc-trigger-a">
+                  <span id="acc-label-a">查看評分級距說明</span>
+                  <i data-lucide="chevron-down" style="width:14px;height:14px;transition:transform 0.3s;" id="acc-chev-a"></i>
+                </button>
+                <div class="rubric-body" id="acc-body-a">
+                  <div class="rubric-item" id="ra1"><strong>1–2 分：</strong>行動尚在初步階段，或描述模糊不清。</div>
+                  <div class="rubric-item" id="ra2"><strong>3–5 分：</strong>善意可嘉，但可能為單次或偶發性參與。行動較為簡單，或未面臨顯著困難。</div>
+                  <div class="rubric-item" id="ra3"><strong>6–8 分：</strong>自主參與，執行度高且有效。行動具備一定的規律性，而非單次。</div>
+                  <div class="rubric-item" id="ra4"><strong>9–10 分：</strong>自主發起並展現卓越的毅力克服重大困難。行動定期且已形成習慣，展現高度承諾。</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 影響力 -->
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div>
+                  <span style="font-size:14px;font-weight:800;">影響力</span>
+                  <span style="font-size:10px;color:#8E8E93;margin-left:6px;font-weight:600;">Impact · 35%</span>
+                </div>
+                <span id="val-i" style="font-size:28px;font-weight:900;color:var(--blue);font-variant-numeric:tabular-nums;">5</span>
+              </div>
+              <input type="range" id="in-i" min="1" max="10" value="5" class="blue" oninput="updateScore()">
+              <div class="rubric-acc" id="acc-i">
+                <button class="rubric-trigger" onclick="toggleAcc('i')" id="acc-trigger-i">
+                  <span id="acc-label-i">查看評分級距說明</span>
+                  <i data-lucide="chevron-down" style="width:14px;height:14px;transition:transform 0.3s;" id="acc-chev-i"></i>
+                </button>
+                <div class="rubric-body" id="acc-body-i">
+                  <div class="rubric-item" id="ri1"><strong>1–2 分：</strong>影響力難以衡量或缺乏佐證。</div>
+                  <div class="rubric-item" id="ri2"><strong>3–5 分：</strong>影響力的佐證較為單薄，但仍能從描述中感受到其善意與帶來的溫暖。</div>
+                  <div class="rubric-item" id="ri3"><strong>6–8 分：</strong>提供了清晰的佐證（數據或故事），能讓人明確理解其帶來的正面改變。</div>
+                  <div class="rubric-item" id="ri4"><strong>9–10 分：</strong>提供了具體且可觀的數據，或極具深度與情感的質化故事，證明了顯著的、可驗證的正向改變。</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 共鳴力 -->
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div>
+                  <span style="font-size:14px;font-weight:800;">共鳴力</span>
+                  <span style="font-size:10px;color:#8E8E93;margin-left:6px;font-weight:600;">Resonance · 25%</span>
+                </div>
+                <span id="val-r" style="font-size:28px;font-weight:900;color:var(--purple);font-variant-numeric:tabular-nums;">5</span>
+              </div>
+              <input type="range" id="in-r" min="1" max="10" value="5" class="purple" oninput="updateScore()">
+              <div class="rubric-acc" id="acc-r">
+                <button class="rubric-trigger" onclick="toggleAcc('r')" id="acc-trigger-r">
+                  <span id="acc-label-r">查看評分級距說明</span>
+                  <i data-lucide="chevron-down" style="width:14px;height:14px;transition:transform 0.3s;" id="acc-chev-r"></i>
+                </button>
+                <div class="rubric-body" id="acc-body-r">
+                  <div class="rubric-item" id="rr1"><strong>1–2 分：</strong>故事較少提及對外的分享或影響。</div>
+                  <div class="rubric-item" id="rr2"><strong>3–5 分：</strong>偏向個人故事的分享，具備潛在的啟發性，但尚未產生明顯的漣漪效應。</div>
+                  <div class="rubric-item" id="rr3"><strong>6–8 分：</strong>成功引發他人的關注與討論（如社群迴響），雖未促成大規模行動，但已有效提升議題能見度。</div>
+                  <div class="rubric-item" id="rr4"><strong>9–10 分：</strong>成功帶動他人實際參與，形成了小團體或讓行動得以擴散，而不僅是分享。</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Score breakdown -->
+            <div style="background:var(--surface2);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;">
+              <p style="font-size:10px;font-weight:800;color:#8E8E93;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px;">分項貢獻</p>
+              <div style="display:flex;align-items:center;gap:10px;font-size:11px;">
+                <span style="width:48px;color:#8E8E93;font-weight:600;">行動力</span>
+                <div class="prog-bar" style="flex:1;"><div id="bar-a" class="prog-fill" style="width:0;background:var(--orange);"></div></div>
+                <span id="ca" style="width:36px;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;color:var(--orange);">2.00</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:11px;">
+                <span style="width:48px;color:#8E8E93;font-weight:600;">影響力</span>
+                <div class="prog-bar" style="flex:1;"><div id="bar-i" class="prog-fill" style="width:0;background:var(--blue);"></div></div>
+                <span id="ci" style="width:36px;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;color:var(--blue);">1.75</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:11px;">
+                <span style="width:48px;color:#8E8E93;font-weight:600;">共鳴力</span>
+                <div class="prog-bar" style="flex:1;"><div id="bar-r" class="prog-fill" style="width:0;background:var(--purple);"></div></div>
+                <span id="cr" style="width:36px;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;color:var(--purple);">1.25</span>
+              </div>
+            </div>
+
+            <!-- Bonus toggle -->
+            <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border-radius:16px;padding:16px 20px;cursor:pointer;transition:background 0.2s;" onclick="toggleBonus()" id="bonus-row" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='var(--surface2)'">
+              <div>
+                <div style="font-size:13px;font-weight:800;">⭐ 長期投入加分</div>
+                <div style="font-size:11px;color:#8E8E93;margin-top:2px;">持續服務超過 1 年 → <strong style="color:var(--amber);">+5 分</strong></div>
+              </div>
+              <div class="toggle-track" id="bonus-track"><div class="toggle-thumb"></div></div>
+            </div>
+
+            <!-- Feedback -->
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="position:relative;">
+                <textarea id="fb-h" rows="3" placeholder="✦ 亮點簡評（必填，至少 20 字）" class="input" style="resize:none;" oninput="checkLen('fb-h','lh',20)"></textarea>
+                <span id="lh" style="position:absolute;bottom:10px;right:12px;font-size:10px;color:#8E8E93;">0/20</span>
+              </div>
+              <div style="position:relative;">
+                <textarea id="fb-e" rows="2" placeholder="✦ 給志工一句鼓勵（必填，至少 10 字）" class="input" style="resize:none;" oninput="checkLen('fb-e','le',10)"></textarea>
+                <span id="le" style="position:absolute;bottom:10px;right:12px;font-size:10px;color:#8E8E93;">0/10</span>
+              </div>
+            </div>
+
+            <!-- Nav + Submit -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+              <button id="prev-btn" onclick="nav(-1)" class="btn btn-ghost" style="justify-content:center;padding:16px;border-radius:16px;font-size:12px;">← 上一位</button>
+              <button id="submit-btn" onclick="saveScore()" class="btn btn-primary" style="justify-content:center;padding:16px;border-radius:16px;font-size:13px;font-weight:900;">提交評分</button>
+              <button id="next-btn" onclick="nav(1)" class="btn btn-ghost" style="justify-content:center;padding:16px;border-radius:16px;font-size:12px;">下一位 →</button>
+            </div>
+          </div>
+        </div><!-- /score-panel -->
+      </div><!-- /right-col -->
+    </div><!-- /content-grid -->
+  </main>
+
+  <!-- HISTORY PANEL -->
+  <div id="history-panel" class="collapsed">
+    <div onclick="toggleHistory()" style="display:flex;align-items:center;justify-content:space-between;padding:0 24px;cursor:pointer;user-select:none;height:56px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="hist-drag"></div>
+        <i data-lucide="history" style="width:14px;height:14px;color:#8E8E93;"></i>
+        <span style="font-size:12px;font-weight:800;">我的評分紀錄</span>
+        <span class="badge badge-orange" id="hist-count">已評 0 份</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="hist-hint" style="font-size:10px;color:#8E8E93;">點擊展開</span>
+        <i data-lucide="chevron-up" style="width:14px;height:14px;color:#8E8E93;transition:transform 0.3s;" id="hist-chev"></i>
+      </div>
+    </div>
+    <div id="hist-body" style="max-height:0;overflow:hidden;transition:max-height 0.35s ease;padding:0 24px;">
+      <div id="hist-list" style="display:flex;gap:12px;overflow-x:auto;padding-bottom:16px;"></div>
+    </div>
+  </div>
+</div><!-- /main-content-wrapper -->
+
+<!-- ══ ADMIN DASHBOARD ══ -->
+<div id="admin-view" style="position:fixed;inset:0;z-index:5000;background:#F2F2F7;display:none;overflow-y:auto;">
+  <div class="glass" style="position:sticky;top:0;z-index:10;padding:16px 28px;display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(0,0,0,0.07);">
+    <div style="width:40px;height:40px;background:#1C1C1E;border-radius:14px;display:flex;align-items:center;justify-content:center;">
+      <i data-lucide="layout-dashboard" style="color:#fff;width:18px;height:18px;"></i>
+    </div>
+    <div style="flex:1;">
+      <h2 style="font-size:18px;font-weight:900;letter-spacing:-.3px;">決選總覽儀表板</h2>
+      <p style="font-size:10px;color:#8E8E93;">GVH 2026 · 即時加權排名</p>
+    </div>
+    <button onclick="exportCSV()" class="btn btn-success"><i data-lucide="download" style="width:12px;"></i> 匯出 CSV</button>
+    <button onclick="window.print()" class="btn btn-ghost"><i data-lucide="printer" style="width:12px;"></i> 列印</button>
+    <button onclick="if(confirm('⚠️ 確定要清除所有評分資料？此操作無法復原。'))clearAllData();" class="btn btn-ghost" style="color:#FF3B30;" title="重置所有評分">
+      <i data-lucide="trash-2" style="width:12px;"></i> 重置資料
+    </button>
+    <button onclick="closeAdmin()" class="btn btn-primary"><i data-lucide="x" style="width:12px;"></i> 關閉</button>
+  </div>
+  <div style="max-width:1280px;margin:0 auto;padding:28px;display:flex;flex-direction:column;gap:24px;">
+    <div id="admin-stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;"></div>
+    <div class="card-lg" style="padding:28px;overflow:hidden;">
+      <h3 style="font-size:14px;font-weight:800;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
+        <i data-lucide="users" style="width:16px;height:16px;color:var(--blue);"></i> 評審進度總覽
+      </h3>
+      <div id="judge-progress" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </div>
+    <div class="card-lg" style="overflow:hidden;">
+      <div style="padding:20px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+        <h3 style="font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;"><i data-lucide="trophy" style="width:16px;height:16px;color:var(--amber);"></i> 綜合加權排名</h3>
+        <p style="font-size:10px;color:#8E8E93;">依所有評審加權平均排序</p>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="data-table" style="min-width:800px;">
+          <thead><tr>
+            <th style="width:60px;">排名</th><th>申請者</th>
+            <th style="text-align:center;">行動力<br><span style="opacity:0.5;font-weight:400;">40%</span></th>
+            <th style="text-align:center;">影響力<br><span style="opacity:0.5;font-weight:400;">35%</span></th>
+            <th style="text-align:center;">共鳴力<br><span style="opacity:0.5;font-weight:400;">25%</span></th>
+            <th style="text-align:center;">加分</th>
+            <th style="text-align:center;color:#FFCC02;">加權總分</th>
+            <th style="text-align:center;">評審進度</th>
+          </tr></thead>
+          <tbody id="leader-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-lg" style="padding:28px;">
+      <h3 style="font-size:14px;font-weight:800;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
+        <i data-lucide="message-square" style="width:16px;height:16px;color:var(--purple);"></i> 評審意見彙整
+      </h3>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px;">
+        <div id="comment-tabs" style="display:flex;gap:8px;background:var(--bg);border-radius:99px;padding:4px;">
+          <button id="tab-overview" class="dept-pill active" onclick="showCommentView('overview')">總覽</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:11px;font-weight:700;color:var(--text3);">或選擇評審查看:</span>
+          <select id="judge-comment-filter" class="input" style="width:200px;height:38px;padding:6px 12px;border-radius:10px;" onchange="showCommentView('judge')">
+            <option value="">-- 所有評審 --</option>
+          </select>
+        </div>
+      </div>
+      <div id="admin-comments-overview"></div>
+      <div id="admin-comments-judge" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CONFIRMATION MODAL ══ -->
+<div id="modal-wrap" class="modal-backdrop" style="display:none;" onclick="closeModal(event)">
+  <div class="modal" style="max-width:420px;" onclick="event.stopPropagation()">
+    <div class="modal-content-wrapper" style="padding:32px;">
+      <div id="modal-icon-wrap" style="width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;"></div>
+      <h3 id="modal-title" style="font-size:20px;font-weight:900;text-align:center;"></h3>
+      <p id="modal-body" style="font-size:13px;color:#8E8E93;text-align:center;margin-top:8px;line-height:1.6;"></p>
+      <div style="display:flex;gap:10px;margin-top:28px;">
+        <button id="modal-cancel" onclick="closeModal({force:true})" class="btn btn-ghost" style="flex:1;justify-content:center;padding:14px;border-radius:14px;">取消</button>
+        <button id="modal-confirm" class="btn btn-primary" style="flex:1;justify-content:center;padding:14px;border-radius:14px;"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ OWNER LOGIN MODAL ══ -->
+<div id="owner-modal" class="modal-backdrop" style="display:none;" onclick="closeModal(event,'owner-modal')">
+  <div class="modal" style="max-width:380px;" onclick="event.stopPropagation()">
+    <div class="modal-content-wrapper" style="padding:32px;">
+      <div style="width:56px;height:56px;background:#1C1C1E;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+        <i data-lucide="shield" style="color:#fff;width:22px;height:22px;"></i>
+      </div>
+      <h3 style="font-size:18px;font-weight:900;text-align:center;">管理者登入</h3>
+      <p style="font-size:12px;color:#8E8E93;text-align:center;margin-top:6px;margin-bottom:20px;">請輸入管理者專屬密碼</p>
+      <div class="pw-wrap">
+        <input id="owner-pw-input" type="password" placeholder="管理者密碼" class="input" style="height:52px;padding-right:48px;" onkeydown="if(event.key==='Enter')verifyOwner()">
+        <button class="pw-eye" onclick="toggleOwnerPwEye()" type="button">
+          <i data-lucide="eye" id="owner-pw-eye-icon" style="width:18px;height:18px;"></i>
+        </button>
+      </div>
+      <p id="owner-err" style="font-size:12px;color:#FF3B30;margin-top:8px;text-align:center;display:none;">密碼錯誤，請再試一次</p>
+      <div style="display:flex;gap:10px;margin-top:20px;">
+        <button onclick="closeModal({force:true},'owner-modal')" class="btn btn-ghost" style="flex:1;padding:14px;border-radius:14px;justify-content:center;">取消</button>
+        <button onclick="verifyOwner()" class="btn btn-primary" style="flex:1;padding:14px;border-radius:14px;justify-content:center;">驗證進入</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ GUIDELINE MODAL ══ -->
+<div id="guideline-modal" class="modal-backdrop" style="display:none;" onclick="closeModal(event,'guideline-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-content-wrapper">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+        <h2 style="font-size:20px;font-weight:900;">評選說明</h2>
+        <button onclick="closeModal({force:true},'guideline-modal')" class="icon-btn"><i data-lucide="x" style="width:16px;height:16px;"></i></button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+        <section>
+          <h3 style="font-size:14px;font-weight:800;border-left:3px solid var(--orange);padding-left:12px;margin-bottom:16px;">評選核心原則</h3>
+          <p style="font-size:13px;line-height:1.8;color:var(--text2);">感謝您擔任評審。為確保評選能準確反映本獎項「鼓勵個人微小但真誠的善舉」之核心精神，請在評分前，建立以下共識：</p>
+          <ul style="list-style-type:none;margin-top:16px;display:flex;flex-direction:column;gap:12px;">
+            <li style="font-size:13px;line-height:1.7;display:flex;gap:12px;">
+              <i data-lucide="sparkles" style="width:16px;height:16px;color:var(--orange);flex-shrink:0;margin-top:3px;"></i>
+              <div><strong>著重初衷，而非規模：</strong>我們鼓勵的是個人自發的行動，其價值在於真誠的動機，而非專案大小或成果的完整性。</div>
+            </li>
+            <li style="font-size:13px;line-height:1.7;display:flex;gap:12px;">
+              <i data-lucide="heart-handshake" style="width:16px;height:16px;color:var(--orange);flex-shrink:0;margin-top:3px;"></i>
+              <div><strong>看見精神，而非形式：</strong>請將「Small Act, Big Impact」視為核心。一個微小的行動，若能展現良善精神或啟發他人，即具備獲獎潛力。</div>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h3 style="font-size:14px;font-weight:800;border-left:3px solid var(--blue);padding-left:12px;margin-bottom:16px;">評審注意事項</h3>
+          <ul style="list-style-type:none;display:flex;flex-direction:column;gap:12px;font-size:12px;line-height:1.7;color:var(--text2);">
+            <li>•&nbsp;&nbsp;<strong>保密原則：</strong>所有評分資料與參選內容均為機密，請勿外流或與他人討論。</li>
+            <li>•&nbsp;&nbsp;<strong>客觀公正：</strong>請僅依據您所收到的匿名化資料進行評估，避免個人情感或既有印象影響判斷。</li>
+            <li>•&nbsp;&nbsp;<strong>依循標準：</strong>請嚴格遵循「評分級距指引」來給分，以確保所有評審標準的一致性。</li>
+            <li>•&nbsp;&nbsp;<strong>加分項說明：</strong>「長期投入」加分項僅適用於持續服務已明確超過一年的專案，若無明確證明，則不予加分。</li>
+            <li>•&nbsp;&nbsp;<strong>重視質化回饋：</strong>您的文字評語是對志工最直接的鼓勵，對他們意義重大，請務必填寫。</li>
+            <li>•&nbsp;&nbsp;<strong>獨立評分：</strong>請對每一個專案獨立進行評分，避免與其他參選專案進行橫向比較。</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NETWORK WARNING MODAL ══ -->
+<div id="network-modal" class="modal-backdrop" style="display:none;" onclick="closeModal(event,'network-modal')">
+  <div class="modal" style="max-width:420px;" onclick="event.stopPropagation()">
+    <div class="modal-content-wrapper" style="padding:32px;">
+      <div style="width:56px;height:56px;background:#FFF0F0;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+        <i data-lucide="alert-triangle" style="color:#FF3B30;width:26px;height:26px;"></i>
+      </div>
+      <h3 style="font-size:18px;font-weight:900;text-align:center;">網路環境提醒</h3>
+      <div style="font-size:13px;line-height:1.6;color:var(--text2);margin-top:12px;">
+        <p>您目前登入為**聯發科技內部評審**。</p>
+        <p style="margin-top:8px;">若您正在使用<strong>公司內部網路</strong>，<span style="color:var(--orange);font-weight:800;">自動雲端同步功能可能會被阻擋。</span></p>
+        <ul style="margin-top:12px;padding-left:18px;gap:6px;display:flex;flex-direction:column;">
+          <li>若想享受無縫的**跨裝置雲端同步**，建議改用「個人網路或行動裝置」評分。</li>
+          <li>若仍須使用公司網路，請放心，您的所有資料會安全**儲存在本地端**。請務必在評完後點擊「匯出 CSV」寄給專案負責人 Jane。</li>
+        </ul>
+      </div>
+      <button onclick="closeModal({force:true},'network-modal')" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;border-radius:14px;margin-top:24px;">了解並繼續</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/*** CONFIG ***/
+const GAS_URL=''; // 【請在此貼上您的 Google Apps Script 網頁應用程式 URL】
+const JUDGES={
+  '001':{name:'代號 001',welcomeName:'Sherry',type:'internal',password:'001'},
+  '002':{name:'代號 002',welcomeName:'Collin',type:'internal',password:'002'},
+  '003':{name:'代號 003',welcomeName:'Yenwen',type:'internal',password:'003'},
+  '004':{name:'代號 004',welcomeName:'Beatrice',type:'internal',password:'004'},
+  '005':{name:'代號 005',welcomeName:'Jennifer',type:'internal',password:'005'},
+  '006':{name:'代號 006',welcomeName:'Cynthia',type:'internal',password:'006'},
+  'ex001':{name:'代號 ex001',welcomeName:'TFT',type:'external',password:'TFT000'},
+  'ex002':{name:'代號 ex002',welcomeName:'Impact Hub',type:'external',password:'Impact_Hub'},
+  'ex003':{name:'代號 ex003',welcomeName:'EY',type:'external',password:'EY000'},
+  'owner':{name:'獎項管理者',welcomeName:'管理者',type:'owner',password:'gvhowner'}
+};
+const DEADLINE=new Date('2026-04-14T23:59:59+08:00');
+const W={a:0.40,i:0.35,r:0.25};
+const applicants=[
+  {id:'001',project:'無聲世界的溝通橋樑：新竹聾人協會手語翻譯與陪伴計畫',region:'新竹，台灣',category:'個人/社會關懷',photoUrl:'https://drive.google.com/drive/folders/1eYlrbsu4nmWpyT0O_O51iEdlC2pTzss2',longTerm:true,
+    content:[
+      {t:'背景與動機',c:'我看見手語翻譯服務的人力極度稀缺，深信被忽略的聲音更值得被聽見。考取證照後成為聾人朋友的耳朵與嘴巴。'},
+      {t:'行動與角色',c:'提供即時翻譯與聽打，處理生活租屋糾紛、居家訪視，更在就醫時協助精準轉譯，解決誤診風險。'},
+      {t:'投入時間與頻率',c:'2020 至今，每月約 2 次翻譯，累計超過 400 小時。',h:true},
+      {t:'成果與影響',c:'服務聽障朋友 >100 人次。解決醫療陪同中的溝通斷點，並將補助回捐協會支持永續。'},
+      {t:'共鳴與啟發',c:'在社群平台倡議正名（聾人非啞巴），科普手語文化，成功帶領更多人認識聾人世界。'},
+      {t:'心得與反思',c:'學會不將擁有的一切視為理所當然，期許將無聲的需求轉化為有溫度的行動。'}
+    ],
+    ai:{strengths:['專業證照加持，解決高難度醫療溝通場景','服務年資 >4 年，具高度穩定性','月均 2 次出勤，累計 400+ 小時，量化清晰'],concerns:['屬高度技術型志工，較難大規模複製推廣','缺少團隊組建或傳承計畫說明']}
+  },
+  {id:'002',project:'跨越山林與校園的雙重守護：從香山淨山到自閉症兒童陪伴',region:'新竹，台灣',category:'個人/環境 & 特教',photoUrl:'https://drive.google.com/drive/folders/1w1-aO5WkYl8zYgVw_J6hVqF3RkPjSg2b',longTerm:false,
+    content:[
+      {t:'背景與動機',c:'結合對自然的熱愛與對弱勢的關懷，希望同時為環境與社會盡一份力。'},
+      {t:'行動與角色',c:'週末參與香山淨灘/淨山活動，撿拾垃圾並進行分類。平日下班後，前往機構陪伴自閉症兒童，透過遊戲和閱讀建立信任。'},
+      {t:'投入時間與頻率',c:'淨山約每季 1 次；兒童陪伴則是近半年開始，每週 1-2 次。'},
+      {t:'成果與影響',c:'淨灘活動共清運超過 50 公斤廢棄物。在機構中，成功幫助一位原本不願開口的孩童，開始用簡單詞語表達需求。'},
+      {t:'共鳴與啟發',c:'將淨灘成果與環保知識分享於公司內部論壇，引發了同事對海洋廢棄物議題的關注。'},
+      {t:'心得與反思',c:'發現看似不相關的兩種志工服務，核心都是「耐心」與「看見」。無論是撿拾微小的塑膠碎片，還是等待一個孩子的回應，都是在守護珍貴的事物。'}
+    ],
+    ai:{strengths:['跨領域服務，展現多元關懷面向','質化故事溫暖，尤其在兒童陪伴方面有具體突破','有內部分享，具備初步漣漪效應'],concerns:['兩項服務的投入時間與深度較為分散，持續性待觀察','成果量化數據相對單薄']}
+  },
+  {id:'003',project:'藝暖人心：寺院義演與長者陪伴',region:'成都，中國',category:'個人/藝術關懷',photoUrl:'https://drive.google.com/drive/folders/1hMgs2sPfurA6EhX8Q6uebVwKOvhd2Dsd',longTerm:true,
+    content:[
+      {t:'背景與動機',c:'源於對藝術的熱愛，希望透過舞蹈調心，幫助別人也療癒自己。讓養老院長者感受到溫暖。'},
+      {t:'行動與角色',c:'表演中國古典舞，參與編創與教學。除了表演，也協助發放物資、剪指甲、陪伴長者聊天。'},
+      {t:'投入時間與頻率',c:'持續 5 年，去年累計服務 135 小時，每週進行教學，每季慰問。',h:true},
+      {t:'成果與影響',c:'舞蹈班學員期期 30+ 人，義演觀眾上百人。長者的眼神與掌聲展現了藝術療癒的價值。'},
+      {t:'共鳴與啟發',c:'成功號召 5 位朋友加入。常在朋友圈分享公益力量，鼓勵大眾參與。'},
+      {t:'心得與反思',c:'理解什麼是無私的奉獻。未來會持續用舞蹈服務，讓更多人感受溫暖。'}
+    ],
+    ai:{strengths:['技能型志工典型，兼具表演高度與服務溫度','五年長期投入，數據具說服力','號召他人參與，具良好轉介能力'],concerns:['影響力多侷限於特定區域與受惠群體','建議補充倡議/媒體曝光等更廣泛影響力']}
+  },
+  ...Array.from({length:36},(_,i)=>({
+    id:(i+4).toString().padStart(3,'0'),project:`範例專案 #${i+4}`,region:'全球',category:'範例/分類',
+    photoUrl:'#',longTerm:Math.random()>0.5,
+    content:[{t:'背景與動機',c:`這是專案 #${i+4} 的動機說明。`},{t:'行動與角色',c:`這是專案 #${i+4} 的行動說明。`}],
+    ai:{strengths:['範例優點'],concerns:['範例弱點']}
+  })),
+  {id:'040',project:'守護微光：性別平權與創傷陪伴的溫柔力量',region:'新竹，台灣',category:'個人/性別平權',photoUrl:'https://drive.google.com/drive/folders/1c-GZB_XvM4R9UyXzOCseeelyS_B6aJ3Q',longTerm:true,
+    content:[
+      {t:'背景與動機',c:'看見社會中「少數群體」需求常被忽視。目標是成為少數群體與大眾之間的橋樑。'},
+      {t:'行動與角色',c:'擔任深度聊天會帶領者，進行性別平權宣講、彩虹遊行策劃與執行、紅絲帶基金會志工。'},
+      {t:'投入時間與頻率',c:'自 2019 年投入至今，持續超過 5 年。每月固定會議與活動。',h:true},
+      {t:'成果與影響',c:'帶領 20 場聊天會、陪伴 200 位夥伴、接觸近 1000 位民眾。幫助受難者找回勇氣。'},
+      {t:'共鳴與啟發',c:'主動邀請同事參與講座與遊行，在個人社群平台分享志工心得，傳遞共融價值。'},
+      {t:'心得與反思',c:'看見受傷的靈魂展露笑容，知道這一切都是值得的，深信微小的善意終將改變社會。'}
+    ],
+    ai:{strengths:['參與多個 NGO 機構，角色多元且深入','量化數據極具規模，觸及近千人','社群倡議能力強，具高傳播潛力'],concerns:['投入內容廣泛，建議評估專一深度','各計畫的個人貢獻比例可進一步釐清']}
+  }
+];
+
+/*** STATE & PERSISTENCE ***/
+const judgeScores=JSON.parse(localStorage.getItem('gvh2026_scores')||'{}');
+const judgeRegistry=JSON.parse(localStorage.getItem('gvh2026_judges')||'{}');
+function persistScores(){localStorage.setItem('gvh2026_scores',JSON.stringify(judgeScores))}
+function persistJudges(){localStorage.setItem('gvh2026_judges',JSON.stringify(judgeRegistry))}
+function clearAllData(){localStorage.removeItem('gvh2026_scores');localStorage.removeItem('gvh2026_judges');location.reload()}
+const S={role:null,judgeId:null,curIdx:0,bonus:false,histOpen:false,dashFilterActive:false};
+
+/*** LAYOUT ***/
+function applyLayout(){
+  const g=document.getElementById('content-grid');
+  g.style.gridTemplateColumns=window.innerWidth>=960?'1fr 420px':'1fr';
+}
+window.addEventListener('resize',applyLayout);
+
+/*** TOAST ***/
+let _tt=null;
+function toast(msg,type='success'){
+  const c={success:'var(--green)',error:'#FF3B30',warn:'var(--amber)',info:'var(--blue)'};
+  const ic={success:'✓',error:'✕',warn:'⚠',info:'ℹ'};
+  const el=document.getElementById('toast');
+  document.getElementById('toast-icon').textContent=ic[type]||'•';
+  document.getElementById('toast-icon').style.color=c[type]||'var(--green)';
+  document.getElementById('toast-msg').textContent=msg;
+  el.className='show toast-'+type;
+  if(_tt)clearTimeout(_tt);
+  _tt=setTimeout(()=>el.classList.remove('show'),3200);
+}
+
+/*** MODAL ***/
+function showModal({icon,iconBg,title,body,confirmText='確認',cancelText='取消',onConfirm,onCancel}){
+  const wrap=document.getElementById('modal-wrap');
+  const iw=document.getElementById('modal-icon-wrap');
+  iw.style.display=icon?'flex':'none';
+  if(icon){iw.style.background=iconBg||'#F2F2F7';iw.innerHTML=icon.length>2?`<i data-lucide="${icon}" style="width:28px;height:28px;"></i>`:icon;if(icon.length>2)lucide.createIcons()}
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-body').innerHTML=body;
+  const cb=document.getElementById('modal-confirm');
+  cb.textContent=confirmText;
+  cb.onclick=()=>{if(onConfirm)onConfirm();else closeModal({force:true})};
+  const canc=document.getElementById('modal-cancel');
+  canc.textContent=cancelText;
+  canc.onclick=()=>{if(onCancel)onCancel();else closeModal({force:true})};
+  wrap.style.display='flex';requestAnimationFrame(()=>wrap.classList.add('active'));
+}
+function closeModal(event,modalId='modal-wrap'){
+  if(event&&event.force!==true&&event.target&&!event.target.classList.contains('modal-backdrop'))return;
+  const w=document.getElementById(modalId);
+  if(!w)return;
+  w.classList.remove('active');
+  setTimeout(()=>{w.style.display='none'},250);
+}
+
+/*** LOGIN ***/
+let _loginRole=null;
+function selectLoginRole(role){
+  _loginRole=role;
+  document.getElementById('rc-internal').className='role-card'+(role==='internal'?' sel-orange':'');
+  document.getElementById('rc-external').className='role-card'+(role==='external'?' sel-blue':'');
+  const sel=document.getElementById('judge-select');
+  const opts=Object.entries(JUDGES).filter(([,j])=>j.type===role).map(([id,j])=>`<option value="${id}">${j.name}</option>`);
+  sel.innerHTML='<option value="" disabled selected>請選擇您的代號</option>'+opts.join('');
+  const box=document.getElementById('auth-box');
+  box.style.display='block';
+  box.style.animation='slideDown 0.3s ease';
+  document.getElementById('pw-input').value='';
+  document.getElementById('auth-err').style.display='none';
+  lucide.createIcons();
+}
+function togglePwEye(){
+  const inp=document.getElementById('pw-input');
+  const ico=document.getElementById('pw-eye-icon');
+  const isPass=inp.type==='password';
+  inp.type=isPass?'text':'password';
+  ico.setAttribute('data-lucide',isPass?'eye-off':'eye');
+  lucide.createIcons();
+}
+function toggleOwnerPwEye(){
+  const inp=document.getElementById('owner-pw-input');
+  const ico=document.getElementById('owner-pw-eye-icon');
+  const isPass=inp.type==='password';
+  inp.type=isPass?'text':'password';
+  ico.setAttribute('data-lucide',isPass?'eye-off':'eye');
+  lucide.createIcons();
+}
+function showOwnerLoginModal(e){
+  e.preventDefault();
+  const m=document.getElementById('owner-modal');
+  m.style.display='flex';
+  document.getElementById('owner-pw-input').value='';
+  document.getElementById('owner-err').style.display='none';
+  requestAnimationFrame(()=>m.classList.add('active'));
+  lucide.createIcons();
+}
+function verifyOwner(){
+  const pw=document.getElementById('owner-pw-input').value.trim();
+  const err=document.getElementById('owner-err');
+  if(pw===JUDGES['owner'].password){
+    closeModal({force:true},'owner-modal');
+    startApp('owner','owner');
+  } else {
+    err.style.display='block';
+    const inp=document.getElementById('owner-pw-input');
+    inp.style.borderColor='#FF3B30';
+    setTimeout(()=>{inp.style.borderColor='transparent'},1500);
+  }
+}
+function verifyAuth(){
+  if(!_loginRole){toast('請先選擇評審身份','warn');return}
+  const judgeId=document.getElementById('judge-select').value;
+  const pw=document.getElementById('pw-input').value.trim();
+  const errEl=document.getElementById('auth-err');
+  errEl.style.display='none';
+  if(!judgeId){errEl.textContent='請選擇您的代號';errEl.style.display='block';return}
+  if(!pw){errEl.textContent='請輸入您的專屬密碼';errEl.style.display='block';return}
+  const judgeInfo=JUDGES[judgeId];
+  if(!judgeInfo||pw!==judgeInfo.password){
+    errEl.textContent='代號或密碼錯誤，請再試一次';errEl.style.display='block';
+    const inp=document.getElementById('pw-input');
+    inp.style.borderColor='#FF3B30';
+    setTimeout(()=>{inp.style.borderColor='transparent'},1500);
+    return;
+  }
+  const btn=document.getElementById('verify-btn');
+  btn.innerHTML='<i data-lucide="loader" style="width:14px;animation:spin 1s linear infinite;"></i> 驗證中…';
+  btn.disabled=true;
+  lucide.createIcons();
+  setTimeout(()=>{btn.textContent='驗證進入';btn.disabled=false;startApp(judgeInfo.type,judgeId)},380);
+}
+function startApp(role,judgeId){
+  S.role=role;S.judgeId=judgeId;
+  const isOwner=role==='owner';
+  if(!isOwner){
+    if(!judgeScores[S.judgeId])judgeScores[S.judgeId]={};
+    const ji=JUDGES[judgeId];
+    judgeRegistry[judgeId]={name:ji.name,type:ji.type};
+    persistJudges();
+  }
+  document.getElementById('login-overlay').style.display='none';
+  if(isOwner){
+    openAdmin();
+    document.getElementById('smart-nav').style.display='flex';
+    document.getElementById('admin-btn-wrap').style.display='block';
+    document.getElementById('smart-nav-role').textContent='管理者';
+  } else {
+    if(GAS_URL && role==='internal' && !localStorage.getItem('gvh_nw_'+judgeId)){
+      const m=document.getElementById('network-modal');
+      m.style.display='flex';requestAnimationFrame(()=>m.classList.add('active'));
+      localStorage.setItem('gvh_nw_'+judgeId,'true');
+    }
+    if(GAS_URL){
+      document.getElementById('cloud-status').style.display='flex';
+      syncUIState('syncing');
+      fetchFromCloud(judgeId).then(data=>{
+        if(data && Object.keys(data).length>0){
+          judgeScores[judgeId]={...judgeScores[judgeId], ...data};
+          persistScores();
+        }
+        syncUIState('success');
+        if(document.getElementById('dashboard-view').style.display==='block') showDashboard();
+      }).catch(e=>syncUIState('error'));
+    }
+    showDashboard();
+  }
+  updateDays();lucide.createIcons();
+}
+
+/*** DAYS COUNTDOWN ***/
+function updateDays(){const d=Math.ceil((DEADLINE-new Date())/86400000);document.getElementById('days-left').textContent=d>0?d:'已截止'}
+setInterval(updateDays,3600000);
+
+/*** DASHBOARD ***/
+let _dashFilterActive=false;
+function showDashboard(){
+  document.getElementById('dashboard-view').style.display='block';
+  document.getElementById('main-content-wrapper').style.display='none';
+  document.getElementById('smart-nav').style.display='none';
+  const ji=JUDGES[S.judgeId];
+  const wn=ji.welcomeName||ji.name;
+  document.getElementById('dashboard-welcome').innerHTML=`歡迎回來，<span class="text-gradient-orange">${wn}</span>`;
+  const done=Object.keys(judgeScores[S.judgeId]||{}).length;
+  const total=applicants.length;
+  const pct=total>0?Math.round((done/total)*100):0;
+  document.getElementById('dashboard-prog-pct').textContent=`${pct}%`;
+  document.getElementById('dashboard-prog-count').textContent=`${done}/${total} 件`;
+  document.getElementById('dashboard-prog-sub').textContent=pct===100?'🎉 全部完成！':done>0?`還剩 ${total-done} 份待評`:'尚未開始評分';
+  const ring=document.getElementById('dashboard-prog-ring');
+  const circum=2*Math.PI*15;
+  setTimeout(()=>{ring.style.strokeDashoffset=circum-(pct/100)*circum},100);
+  renderDashboardGrid();
+  const fb=document.getElementById('dashboard-filter-btn');
+  const firstUnscoredIdx=applicants.findIndex(a=>!(judgeScores[S.judgeId]||{})[a.id]);
+  if(done>0)fb.style.display='flex';
+  document.getElementById('dashboard-continue-btn').onclick=()=>enterScoringView(firstUnscoredIdx!==-1?firstUnscoredIdx:0);
+  document.getElementById('dashboard-continue-sub').textContent=firstUnscoredIdx!==-1?`從第 #${applicants[firstUnscoredIdx].id} 份繼續`:'所有申請書已完成評分 ✓';
+  lucide.createIcons();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleDashboardFilter(){
+  _dashFilterActive=!_dashFilterActive;
+  document.getElementById('filter-btn-text').textContent=_dashFilterActive?'顯示全部':'只看未評';
+  renderDashboardGrid();
+}
+function renderDashboardGrid(){
+  const myScores=judgeScores[S.judgeId]||{};
+  const grid=document.getElementById('dashboard-grid');
+  const list=_dashFilterActive?applicants.filter(a=>!myScores[a.id]):applicants;
+  if(list.length===0){grid.innerHTML='<p style="color:var(--text3);font-size:13px;grid-column:1/-1;text-align:center;padding:32px;">🎉 所有申請書均已完成評分！</p>';return}
+  grid.innerHTML=list.map((app,idx)=>{
+    const isDone=!!myScores[app.id];const realIdx=applicants.indexOf(app);
+    const hoverColor=isDone?'var(--green)':'var(--orange)';
+    const textColor=isDone?'var(--green)':'var(--orange)';
+    return `<div class="card dash-card${isDone?' done-card':''}" onclick="enterScoringView(${realIdx})" style="padding:20px;" onmouseover="this.style.borderColor='${hoverColor}'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+        <span style="font-size:16px;font-weight:800;">${app.id}</span>
+        ${isDone?'<span class="badge badge-green">✓ 已評分</span>':'<span class="badge badge-gray">待評</span>'}
+      </div>
+      <p style="font-size:13px;font-weight:700;line-height:1.4;margin-bottom:12px;min-height:4.2em;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${app.project}</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:11px;font-weight:700;color:${textColor};">${isDone?'修改評分':'進入評分'}</span>
+        ${app.longTerm?'<span class="badge badge-amber">⭐ 長期</span>':''}
+      </div>
+    </div>`;
+  }).join('');
+  lucide.createIcons();
+}
+
+/*** SCORING VIEW ***/
+function enterScoringView(idx){
+  document.getElementById('dashboard-view').style.display='none';
+  document.getElementById('main-content-wrapper').style.display='block';
+  document.getElementById('smart-nav').style.display='flex';
+  applyLayout();
+  const ji=JUDGES[S.judgeId];
+  document.getElementById('smart-nav-role').textContent=`評審 / ${ji.welcomeName}`;
+  document.getElementById('ai-panel').style.display=S.role==='internal'?'block':'none';
+  S.curIdx=idx;
+  renderApp();renderSmartNav();renderHistory();bindKeys();
+}
+
+/*** SMART NAV ***/
+function renderSmartNav(){
+  const myS=judgeScores[S.judgeId]||{};const total=applicants.length;
+  const prevIdx=(S.curIdx-1+total)%total;const nextIdx=(S.curIdx+1)%total;
+  document.getElementById('smart-nav-prev-id').textContent=applicants[prevIdx].id;
+  document.getElementById('smart-nav-current-id').textContent=`#${applicants[S.curIdx].id}`;
+  document.getElementById('smart-nav-next-id').textContent=applicants[nextIdx].id;
+  const pc=document.getElementById('smart-nav-seg-prog');
+  pc.innerHTML=applicants.map((app,idx)=>{
+    const isDone=!!myS[app.id];const isCur=idx===S.curIdx;
+    let cls='seg';if(isCur)cls+=' current';else if(isDone)cls+=' done';
+    return `<div class="${cls}" title="#${app.id}: ${app.project}"></div>`;
+  }).join('');
+}
+
+/*** RENDER APP ***/
+function renderApp(){
+  const app=applicants[S.curIdx];const saved=(judgeScores[S.judgeId]||{})[app.id];
+  document.getElementById('app-header').innerHTML=`
+    <div class="fade-up" style="display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-start;">
+      <div style="flex:1;min-width:200px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="font-size:22px;font-weight:900;color:var(--orange);letter-spacing:-1px;">#${app.id}</span>
+          ${saved?`<span class="badge badge-green">✓ 已評 ${saved.total} 分</span>`:'<span class="badge badge-gray">未評分</span>'}
+          ${app.longTerm?'<span class="badge badge-amber">⭐ 長期</span>':''}
+        </div>
+        <h2 style="font-size:20px;font-weight:900;letter-spacing:-.3px;line-height:1.3;">${app.project}</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">
+          <span class="badge badge-gray">📍 ${app.region}</span>
+          <span class="badge badge-gray">🏷 ${app.category}</span>
+          <span class="badge badge-gray">📋 ${S.curIdx+1}/${applicants.length}</span>
+        </div>
+      </div>
+      <a href="${app.photoUrl}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;padding:12px 18px;background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;font-size:12px;font-weight:700;color:var(--text);text-decoration:none;transition:all 0.2s;flex-shrink:0;"
+         onmouseover="this.style.background='var(--orange)';this.style.color='#fff';this.style.borderColor='var(--orange)'"
+         onmouseout="this.style.background='var(--surface2)';this.style.color='var(--text)';this.style.borderColor='var(--border)'">
+        <i data-lucide="image" style="width:14px;height:14px;"></i> 查看照片資料夾
+      </a>
+    </div>`;
+  document.getElementById('app-body').innerHTML=app.content.map((s,i)=>`
+    <section class="fade-up" style="animation-delay:${i*50}ms;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <div style="width:3px;height:18px;background:var(--orange);border-radius:99px;flex-shrink:0;"></div>
+        <h4 style="font-size:13px;font-weight:800;">${s.t}</h4>
+        ${s.h?'<span class="badge badge-orange" style="margin-left:auto;">⭐ 重點</span>':''}
+      </div>
+      <div style="padding:14px 16px;border-radius:14px;font-size:13px;line-height:1.7;${s.h?'background:#FFF8F0;border:1.5px solid #FFDEC8;font-weight:500;':'background:var(--surface2);color:#3C3C43;'}">${s.c}</div>
+    </section>`).join('');
+  if(S.role==='internal'&&app.ai){
+    document.getElementById('ai-panel').style.display='block';
+    document.getElementById('ai-body').innerHTML=`
+      <div style="background:rgba(255,255,255,0.07);border-radius:16px;padding:20px;border:1px solid rgba(255,255,255,0.1);">
+        <h5 style="font-size:12px;font-weight:800;color:#FFCC02;margin-bottom:14px;display:flex;align-items:center;gap:6px;"><i data-lucide="thumbs-up" style="width:13px;height:13px;"></i> 優勢摘要</h5>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">${app.ai.strengths.map(s=>`<li style="font-size:11px;color:rgba(255,255,255,0.85);display:flex;gap:8px;line-height:1.5;"><span style="color:#FFCC02;flex-shrink:0;">•</span>${s}</li>`).join('')}</ul>
+      </div>
+      <div style="background:rgba(255,255,255,0.07);border-radius:16px;padding:20px;border:1px solid rgba(255,255,255,0.1);">
+        <h5 style="font-size:12px;font-weight:800;color:#FF6B6B;margin-bottom:14px;display:flex;align-items:center;gap:6px;"><i data-lucide="alert-circle" style="width:13px;height:13px;"></i> 建議提問／弱點</h5>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">${app.ai.concerns.map(c=>`<li style="font-size:11px;color:rgba(255,255,255,0.85);display:flex;gap:8px;line-height:1.5;"><span style="color:#FF6B6B;flex-shrink:0;">•</span>${c}</li>`).join('')}</ul>
+      </div>`;
+  } else {document.getElementById('ai-panel').style.display='none'}
+  if(saved){
+    document.getElementById('in-a').value=saved.a;document.getElementById('in-i').value=saved.i;document.getElementById('in-r').value=saved.r;
+    document.getElementById('fb-h').value=saved.h;document.getElementById('fb-e').value=saved.e;setBonus(saved.bonus);
+  } else {
+    document.getElementById('in-a').value=5;document.getElementById('in-i').value=5;document.getElementById('in-r').value=5;
+    document.getElementById('fb-h').value='';document.getElementById('fb-e').value='';setBonus(app.longTerm);
+  }
+  checkLen('fb-h','lh',20);checkLen('fb-e','le',10);
+  document.getElementById('prev-btn').disabled=S.curIdx===0;
+  document.getElementById('next-btn').disabled=S.curIdx===applicants.length-1;
+  updateScore();window.scrollTo({top:0,behavior:'smooth'});lucide.createIcons();
+}
+
+/*** SCORE LOGIC ***/
+function updateScore(){
+  const a=+document.getElementById('in-a').value,i=+document.getElementById('in-i').value,r=+document.getElementById('in-r').value;
+  const b=S.bonus?5:0;
+  const ca=a*W.a,ci=i*W.i,cr=r*W.r,tot=ca+ci+cr+b;
+  document.getElementById('val-a').textContent=a;document.getElementById('val-i').textContent=i;document.getElementById('val-r').textContent=r;
+  const el=document.getElementById('total-score');
+  el.textContent=tot.toFixed(2);el.classList.remove('score-anim');void el.offsetWidth;el.classList.add('score-anim');
+  const lbl=document.getElementById('score-label');
+  const lvl=tot>=12.5?{t:'🏆 卓越表現',c:'var(--amber)'}:tot>=9.5?{t:'⭐ 優良表現',c:'var(--green)'}:tot>=6.5?{t:'✓ 達標表現',c:'var(--blue)'}:{t:'需要補強',c:'var(--text3)'};
+  lbl.innerHTML=`<span style="display:inline-block;padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;color:${lvl.c};background:${lvl.c}22;">${lvl.t}</span>`;
+  document.getElementById('ca').textContent=ca.toFixed(2);document.getElementById('ci').textContent=ci.toFixed(2);document.getElementById('cr').textContent=cr.toFixed(2);
+  document.getElementById('bar-a').style.width=`${(ca/(10*W.a))*100}%`;
+  document.getElementById('bar-i').style.width=`${(ci/(10*W.i))*100}%`;
+  document.getElementById('bar-r').style.width=`${(cr/(10*W.r))*100}%`;
+  updateAccHighlight('a',a);updateAccHighlight('i',i);updateAccHighlight('r',r);
+}
+
+/*** ACCORDION RUBRIC ***/
+const _accOpen={a:false,i:false,r:false};
+function toggleAcc(dim){
+  _accOpen[dim]=!_accOpen[dim];
+  const body=document.getElementById(`acc-body-${dim}`);
+  const chev=document.getElementById(`acc-chev-${dim}`);
+  const trigger=document.getElementById(`acc-trigger-${dim}`);
+  body.classList.toggle('open',_accOpen[dim]);
+  chev.style.transform=_accOpen[dim]?'rotate(180deg)':'';
+  trigger.className='rubric-trigger'+(_accOpen[dim]?' acc-open'+(dim==='i'?' blue-acc':dim==='r'?' purple-acc':''):'');
+}
+function updateAccHighlight(dim,val){
+  const act=val<=2?1:val<=5?2:val<=8?3:4;
+  const colorClass=dim==='i'?' blue-item':dim==='r'?' purple-item':'';
+  for(let k=1;k<=4;k++){
+    const el=document.getElementById(`r${dim}${k}`);
+    if(!el)continue;
+    el.className='rubric-item'+(k===act?' active-item'+colorClass:'');
+  }
+  const label=document.getElementById(`acc-label-${dim}`);
+  const texts={1:'1–2 分',2:'3–5 分',3:'6–8 分',4:'9–10 分'};
+  if(label)label.textContent=`目前選取：${texts[act]}`;
+}
+
+/*** BONUS ***/
+function toggleBonus(){setBonus(!S.bonus)}
+function setBonus(on){S.bonus=on;document.getElementById('bonus-track').classList.toggle('on',on);updateScore()}
+
+/*** TEXT COUNTER ***/
+function checkLen(fid,cid,min){
+  const len=document.getElementById(fid).value.length;
+  const el=document.getElementById(cid);
+  el.textContent=`${len}/${min}`;
+  el.style.color=len>=min?'#34C759':len>0?'var(--amber)':'#8E8E93';
+}
+
+/*** NAVIGATION ***/
+function nav(dir){const n=S.curIdx+dir;if(n<0||n>=applicants.length)return;S.curIdx=n;renderApp();renderSmartNav()}
+function jump(idx){S.curIdx=idx;renderApp();renderSmartNav()}
+function jumpById(id){const idx=applicants.findIndex(a=>a.id===id);if(idx!==-1)jump(idx)}
+
+/*** SAVE SCORE ***/
+function saveScore(){
+  const fbH=document.getElementById('fb-h').value.trim();
+  const fbE=document.getElementById('fb-e').value.trim();
+  if(fbH.length<20){toast('請填寫至少 20 字的亮點簡評','error');document.getElementById('fb-h').focus();return}
+  if(fbE.length<10){toast('請填寫至少 10 字的鼓勵語句','error');document.getElementById('fb-e').focus();return}
+  const app=applicants[S.curIdx];
+  const a=+document.getElementById('in-a').value,i=+document.getElementById('in-i').value,r=+document.getElementById('in-r').value;
+  const total=(a*W.a+i*W.i+r*W.r+(S.bonus?5:0)).toFixed(2);
+  if(!judgeScores[S.judgeId])judgeScores[S.judgeId]={};
+  const isUp=!!judgeScores[S.judgeId][app.id];
+  judgeScores[S.judgeId][app.id]={appId:app.id,a,i,r,bonus:S.bonus,total,h:fbH,e:fbE,ts:new Date().toLocaleString('zh-TW',{timeZone:'Asia/Taipei'}),judgeId:S.judgeId};
+  persistScores();
+  if(GAS_URL){
+    syncUIState('syncing');
+    syncToCloud(S.judgeId, judgeScores[S.judgeId][app.id])
+      .then(res=>{if(res.success)syncUIState('success');else syncUIState('error')})
+      .catch(e=>syncUIState('error'));
+  }
+  toast(`#${app.id} 評分${isUp?'已更新':'已儲存'} → ${total} 分`,'success');
+  const btn=document.getElementById('submit-btn');
+  btn.innerHTML='<i data-lucide="check" style="width:14px;"></i> 已儲存';btn.style.opacity='0.65';
+  lucide.createIcons();
+  setTimeout(()=>{btn.textContent='提交評分';btn.style.opacity='1'},1400);
+  renderSmartNav();renderHistory();
+  const doneCount=Object.keys(judgeScores[S.judgeId]||{}).length;
+  const totalCount=applicants.length;
+  if(doneCount===totalCount){
+    if(!sessionStorage.getItem('gvh2026_completed_'+S.judgeId)){
+      setTimeout(()=>{
+        const doExport=()=>exportMyScores(()=>{
+          document.getElementById('modal-title').textContent='匯出成功！';
+          document.getElementById('modal-body').innerHTML='您的評分總表已下載。請點擊下方按鈕，將檔案附加到信件中並寄給 Jane。';
+          const cb=document.getElementById('modal-confirm');
+          const ji=JUDGES[S.judgeId];
+          cb.textContent='📧 寄信給 Jane';
+          cb.onclick=()=>{
+            const sub=`GVH 2026 評分總表 - ${ji.welcomeName}`;
+            const body=`Hi Jane,\n\n附件是我的 GVH 2026 評分總表，請查收。\n\nBest,\n${ji.welcomeName}`;
+            window.location.href=`mailto:jane-yc.huang@mediatek.com?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;
+          };
+          document.getElementById('modal-cancel').textContent='完成';
+          document.getElementById('modal-cancel').onclick=()=>closeModal({force:true});
+        });
+        showModal({icon:'🎉',iconBg:'#F0FFF4',title:'恭喜！您已完成所有評分！',body:`您已完成全部 ${totalCount} 份申請資料的評分。請匯出您的評分總表並寄送給 Jane。`,confirmText:'匯出 Excel 評分總表',cancelText:'稍後再說',onConfirm:doExport});
+        sessionStorage.setItem('gvh2026_completed_'+S.judgeId,'true');
+      },800);
+    }
+  } else {
+    if(S.curIdx<applicants.length-1)setTimeout(()=>nav(1),550);
+    else showModal({icon:'check-circle',iconBg:'#F0FFF4',title:'最後一份已完成',body:`您已完成最後一份評分！還有 ${totalCount-doneCount} 份未完成，請從儀表板選擇。`,confirmText:'返回儀表板',onConfirm:showDashboard});
+  }
+}
+
+/*** EXPORT ***/
+function exportMyScores(cb){
+  if(!S.judgeId||S.role==='owner')return;
+  const myS=judgeScores[S.judgeId]||{};
+  if(!Object.keys(myS).length){toast('您尚未有任何評分可匯出','warn');return}
+  const rows=applicants.map(app=>{const s=myS[app.id];if(!s)return null;return[app.id,`"${app.project}"`,s.a,s.i,s.r,s.bonus?'5':'0',s.total,`"${(s.h||'').replace(/"/g,'""')}"`,`"${(s.e||'').replace(/"/g,'""')}"`]}).filter(Boolean);
+  const hdr=['申請編號','專案名稱','行動力分數','影響力分數','共鳴力分數','長期加分','總分','亮點簡評','鼓勵一句'];
+  const csv=[hdr,...rows].map(r=>r.join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');const jn=(JUDGES[S.judgeId]||{}).welcomeName||S.judgeId;
+  a.href=URL.createObjectURL(blob);a.download=`GVH2026_評分總表_${jn.replace(/\//g,'-')}.csv`;a.click();URL.revokeObjectURL(a.href);
+  toast('您的評分總表已匯出','success');if(cb)cb();
+}
+
+/*** HISTORY ***/
+function toggleHistory(){
+  S.histOpen=!S.histOpen;
+  document.getElementById('history-panel').classList.toggle('collapsed',!S.histOpen);
+  document.getElementById('hist-body').style.maxHeight=S.histOpen?'180px':'0';
+  document.getElementById('hist-chev').style.transform=S.histOpen?'rotate(180deg)':'';
+  document.getElementById('hist-hint').textContent=S.histOpen?'點擊收合':'點擊展開';
+}
+function renderHistory(){
+  const ev=Object.values(judgeScores[S.judgeId]||{});
+  document.getElementById('hist-count').textContent=`已評 ${ev.length} 份`;
+  const list=document.getElementById('hist-list');
+  if(!ev.length){list.innerHTML='<p style="font-size:11px;color:#8E8E93;padding:8px 0;">尚無評分紀錄...</p>';return}
+  list.innerHTML=ev.map(e=>`
+    <div style="flex-shrink:0;width:200px;background:#fff;border-radius:16px;border:1.5px solid var(--border);padding:14px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:11px;font-weight:900;color:var(--orange);">#${e.appId}</span><span class="badge badge-orange">${e.total}分</span></div>
+      <p style="font-size:10px;color:#8E8E93;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${applicants.find(a=>a.id===e.appId)?.project||''}</p>
+      <div style="display:flex;gap:4px;margin-bottom:8px;">
+        <span style="font-size:9px;background:#FFF3EE;color:var(--orange);padding:2px 6px;border-radius:6px;font-weight:700;">行${e.a}</span>
+        <span style="font-size:9px;background:#EEF4FF;color:var(--blue);padding:2px 6px;border-radius:6px;font-weight:700;">影${e.i}</span>
+        <span style="font-size:9px;background:#F5F0FF;color:var(--purple);padding:2px 6px;border-radius:6px;font-weight:700;">共${e.r}</span>
+        ${e.bonus?'<span style="font-size:9px;background:#FFFBEB;color:var(--amber);padding:2px 6px;border-radius:6px;font-weight:700;">+5</span>':''}
+      </div>
+      <button onclick="jumpById('${e.appId}')" style="width:100%;font-size:10px;font-weight:700;padding:6px;border-radius:10px;border:none;background:var(--surface2);cursor:pointer;color:var(--text2);transition:all 0.2s;" onmouseover="this.style.background='#FFF3EE';this.style.color='var(--orange)'" onmouseout="this.style.background='var(--surface2)';this.style.color='var(--text2)'">編輯評分</button>
+    </div>`).join('');
+}
+
+/*** AGG SCORES ***/
+function getAgg(appId){
+  const all=Object.entries(judgeScores).map(([jid,js])=>({jid,ev:js[appId],info:JUDGES[jid]})).filter(x=>x.ev&&x.info&&x.info.type!=='owner');
+  if(!all.length)return null;
+  const int=all.filter(x=>x.info.type==='internal'),ext=all.filter(x=>x.info.type==='external');
+  let avgA,avgI,avgR;
+  if(int.length>0&&ext.length>0){
+    const avg=(arr,k)=>arr.reduce((s,x)=>s+x.ev[k],0)/arr.length;
+    avgA=avg(int,'a')*.6+avg(ext,'a')*.4;avgI=avg(int,'i')*.6+avg(ext,'i')*.4;avgR=avg(int,'r')*.6+avg(ext,'r')*.4;
+  } else {
+    const avg=k=>all.reduce((s,x)=>s+x.ev[k],0)/all.length;avgA=avg('a');avgI=avg('i');avgR=avg('r');
+  }
+  const hasBonus=all.some(x=>x.ev.bonus);
+  const weighted=avgA*W.a+avgI*W.i+avgR*W.r+(hasBonus?5:0);
+  return{avgA,avgI,avgR,hasBonus,total:weighted.toFixed(2),n:all.length,ni:int.length,ne:ext.length};
+}
+
+/*** ADMIN ***/
+function openAdmin(){
+  document.getElementById('admin-view').style.display='block';
+  document.getElementById('dashboard-view').style.display='none';
+  document.getElementById('main-content-wrapper').style.display='none';
+  renderAdminStats();renderJudgeProgress();renderLeaderboard();renderAdminComments();lucide.createIcons();
+}
+function closeAdmin(){
+  document.getElementById('admin-view').style.display='none';
+  if(S.role==='owner')location.reload();
+}
+function renderAdminStats(){
+  const allJIds=Object.keys(JUDGES).filter(id=>id!=='owner');
+  const totalApps=applicants.length;
+  let completedScores=0;allJIds.forEach(jid=>{completedScores+=Object.keys(judgeScores[jid]||{}).length});
+  const aggs=applicants.map(a=>getAgg(a.id)).filter(Boolean);
+  const scores=aggs.map(a=>parseFloat(a.total));
+  const stats=[
+    {label:'申請總數',val:totalApps,icon:'users',color:'var(--blue)'},
+    {label:'評分完成度',val:`${completedScores} / ${totalApps*allJIds.length}`,icon:'check-circle',color:'#34C759'},
+    {label:'平均總分',val:scores.length?(scores.reduce((s,x)=>s+x,0)/scores.length).toFixed(2):'—',icon:'bar-chart-2',color:'var(--purple)'},
+    {label:'最高總分',val:scores.length?Math.max(...scores).toFixed(2):'—',icon:'trophy',color:'var(--amber)'},
+  ];
+  document.getElementById('admin-stats').innerHTML=stats.map(s=>`
+    <div class="card" style="padding:20px 24px;display:flex;align-items:center;gap:16px;border-left:3px solid ${s.color};">
+      <div style="width:44px;height:44px;border-radius:14px;background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i data-lucide="${s.icon}" style="width:20px;height:20px;color:${s.color};"></i>
+      </div>
+      <div><div style="font-size:10px;font-weight:700;color:#8E8E93;text-transform:uppercase;letter-spacing:.07em;">${s.label}</div><div style="font-size:26px;font-weight:900;letter-spacing:-.5px;">${s.val}</div></div>
+    </div>`).join('');
+}
+function renderJudgeProgress(){
+  const allJIds=Object.keys(JUDGES).filter(id=>id!=='owner');
+  document.getElementById('judge-progress').innerHTML=allJIds.map(jid=>{
+    const info=JUDGES[jid];const done=Object.keys(judgeScores[jid]||{}).length;const total=applicants.length;const pct=total?done/total*100:0;const isInt=info.type==='internal';
+    return `<div style="display:flex;align-items:center;gap:16px;padding:10px 0;border-bottom:1px solid var(--border);">
+      <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:800;">${info.welcomeName||jid}</div><span class="badge ${isInt?'badge-orange':'badge-blue'}" style="margin-top:4px;display:inline-block;">${isInt?'MTK內部':'外部'}</span></div>
+      <div style="display:flex;align-items:center;gap:10px;flex:1;">
+        <div class="prog-bar" style="flex:1;height:6px;"><div class="prog-fill" style="width:${pct}%;background:${isInt?'var(--orange)':'var(--blue)'};"></div></div>
+        <span style="font-size:11px;font-weight:800;color:${pct===100?'#34C759':'#8E8E93'};width:44px;text-align:right;">${done}/${total}</span>
+      </div>
+      ${pct===100?'<span class="badge badge-green">完成 ✓</span>':done>0?'<span class="badge badge-amber">進行中</span>':'<span class="badge badge-gray">未開始</span>'}
+    </div>`;
+  }).join('');
+}
+function renderLeaderboard(){
+  const MEDALS=['🥇','🥈','🥉'];
+  const rows=applicants.map(app=>{const agg=getAgg(app.id);return{app,agg,score:agg?parseFloat(agg.total):-Infinity}}).sort((a,b)=>b.score-a.score);
+  document.getElementById('leader-body').innerHTML=rows.map(({app,agg},idx)=>`
+    <tr>
+      <td style="font-size:20px;padding-left:24px;">${MEDALS[idx]||`<span style="font-weight:800;color:#8E8E93;">#${idx+1}</span>`}</td>
+      <td><div style="font-weight:800;font-size:13px;">${app.id} — ${app.project.length>36?app.project.slice(0,36)+'…':app.project}</div><div style="font-size:10px;color:#8E8E93;margin-top:2px;">📍 ${app.region} · ${app.category}</div></td>
+      <td style="text-align:center;"><span style="font-weight:800;font-size:14px;color:${agg&&agg.avgA>=8?'var(--orange)':'#8E8E93'}">${agg?agg.avgA.toFixed(1):'—'}</span></td>
+      <td style="text-align:center;"><span style="font-weight:800;font-size:14px;color:${agg&&agg.avgI>=8?'var(--blue)':'#8E8E93'}">${agg?agg.avgI.toFixed(1):'—'}</span></td>
+      <td style="text-align:center;"><span style="font-weight:800;font-size:14px;color:${agg&&agg.avgR>=8?'var(--purple)':'#8E8E93'}">${agg?agg.avgR.toFixed(1):'—'}</span></td>
+      <td style="text-align:center;">${agg&&agg.hasBonus?'<span class="badge badge-amber">+5</span>':'<span style="color:#8E8E93;">—</span>'}</td>
+      <td style="text-align:center;">${agg?`<span style="font-size:22px;font-weight:900;color:var(--orange);">${agg.total}</span><div style="font-size:9px;color:#8E8E93;">${agg.ni||0}內 ${agg.ne||0}外</div>`:'<span style="color:#8E8E93;font-size:12px;">未評分</span>'}</td>
+      <td style="text-align:center;">${agg?`<span class="badge badge-green">✓ ${agg.n}位評審</span>`:'<span class="badge badge-gray">待評分</span>'}</td>
+    </tr>`).join('');
+}
+function renderAdminComments(){
+  const jf=document.getElementById('judge-comment-filter');
+  const allJWS=Object.keys(judgeScores).filter(jid=>jid!=='owner');
+  jf.innerHTML='<option value="">-- 選擇一位評審 --</option>'+allJWS.map(jid=>{const ji=JUDGES[jid]||judgeRegistry[jid]||{name:jid};return`<option value="${jid}">${ji.welcomeName||ji.name}</option>`}).join('');
+  showCommentView('overview');
+}
+function showCommentView(view){
+  const ov=document.getElementById('admin-comments-overview'),jv=document.getElementById('admin-comments-judge');
+  const ot=document.getElementById('tab-overview'),jf=document.getElementById('judge-comment-filter');
+  if(view==='overview'){ov.style.display='block';jv.style.display='none';ot.classList.add('active');jf.value='';renderCommentsOverview()}
+  else{ov.style.display='none';jv.style.display='block';ot.classList.remove('active');const sid=jf.value;if(sid)renderCommentsByJudge(sid);else showCommentView('overview')}
+}
+function renderCommentsOverview(){
+  const c=document.getElementById('admin-comments-overview');
+  const allJWS=Object.keys(JUDGES).filter(jid=>jid!=='owner'&&Object.keys(judgeScores[jid]||{}).length>0);
+  const sorted=applicants.map(app=>{const agg=getAgg(app.id);return{app,agg,score:agg?parseFloat(agg.total):-Infinity}}).sort((a,b)=>b.score-a.score);
+  c.innerHTML=`<div style="overflow-x:auto;"><table class="data-table" style="min-width:800px;"><thead><tr><th style="width:250px;">申請案</th><th style="text-align:center;">加權總分</th><th style="text-align:center;">評分進度</th><th>所有亮點摘要</th></tr></thead><tbody>${sorted.map(({app,agg})=>{
+    const coms=[];allJWS.forEach(jid=>{const s=(judgeScores[jid]||{})[app.id];if(s&&s.h){const ji=JUDGES[jid]||judgeRegistry[jid]||{name:jid};coms.push(`<strong>${ji.welcomeName||ji.name}:</strong> ${s.h}`)}});
+    return`<tr><td><div style="font-weight:800;">#${app.id}</div><div style="font-size:11px;color:var(--text2);">${app.project}</div></td><td style="text-align:center;">${agg?`<span style="font-size:20px;font-weight:900;color:var(--orange);">${agg.total}</span>`:'<span style="color:var(--text3);">--</span>'}</td><td style="text-align:center;">${agg?`<span class="badge badge-blue">${agg.n}/${allJWS.length}位</span>`:`<span class="badge badge-gray">0/${allJWS.length}位</span>`}</td><td style="font-size:12px;line-height:1.6;max-width:400px;padding-top:20px;padding-bottom:20px;">${coms.length?coms.join('<hr style="border:0;border-top:1px solid #F2F2F7;margin:12px 0;">'):'<span style="color:var(--text3);">尚無亮點摘要</span>'}</td></tr>`;
+  }).join('')}</tbody></table></div>`;
+}
+function renderCommentsByJudge(judgeId){
+  const c=document.getElementById('admin-comments-judge');
+  const ji=JUDGES[judgeId]||judgeRegistry[judgeId]||{name:judgeId};
+  const scores=judgeScores[judgeId]||{};
+  if(!Object.keys(scores).length){c.innerHTML=`<h4 style="font-size:13px;font-weight:800;margin-bottom:16px;">${ji.welcomeName||ji.name} 的評分與意見</h4><p style="font-size:13px;color:#8E8E93;text-align:center;padding:24px;">這位評審尚未提交任何意見</p>`;return}
+  const sorted=applicants.map(app=>({app,score:parseFloat((scores[app.id]||{total:-Infinity}).total)})).sort((a,b)=>b.score-a.score);
+  c.innerHTML=`<h4 style="font-size:13px;font-weight:800;margin-bottom:16px;">${ji.welcomeName||ji.name} 的評分與意見</h4>`+sorted.map(({app})=>{const ev=scores[app.id];if(!ev)return'';return`<div style="background:var(--surface2);border-radius:16px;padding:20px;border:1px solid var(--border);margin-bottom:12px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;"><span style="font-weight:900;color:var(--orange);">#${ev.appId}</span><span style="font-size:11px;color:#8E8E93;flex:1;">${app.project}</span><span class="badge badge-orange">${ev.total}分</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">${ev.h?`<div style="background:#fff;border-radius:12px;padding:14px;border:1px solid var(--border);"><p style="font-size:10px;font-weight:700;color:#8E8E93;text-transform:uppercase;margin-bottom:6px;">✦ 亮點</p><p style="font-size:12px;line-height:1.6;">${ev.h}</p></div>`:''}${ev.e?`<div style="background:#fff;border-radius:12px;padding:14px;border:1px solid var(--border);"><p style="font-size:10px;font-weight:700;color:#8E8E93;text-transform:uppercase;margin-bottom:6px;">💬 鼓勵</p><p style="font-size:12px;line-height:1.6;">${ev.e}</p></div>`:''}</div><p style="font-size:9px;color:#C7C7CC;margin-top:8px;">${ev.ts}</p></div>`}).join('');
+}
+function exportCSV(){
+  const rows=applicants.map(app=>{const agg=getAgg(app.id);return[app.id,`"${app.project}"`,app.region,agg?agg.avgA.toFixed(1):'',agg?agg.avgI.toFixed(1):'',agg?agg.avgR.toFixed(1):'',agg&&agg.hasBonus?'+5':'',agg?agg.total:'',agg?agg.n:'']});
+  const csv=[['申請編號','專案名稱','地區','行動力均值','影響力均值','共鳴力均值','長期加分','加權總分','評審人數'],...rows].map(r=>r.join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`GVH2026_排名_${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(a.href);
+  toast('CSV 已匯出','success');
+}
+
+/*** GUIDELINE ***/
+function showGuideline(){
+  const m=document.getElementById('guideline-modal');m.style.display='flex';requestAnimationFrame(()=>m.classList.add('active'));lucide.createIcons();
+}
+
+/*** LOGOUT ***/
+function confirmLogout(isFromDashboard=false){
+  const body=isFromDashboard?'確定要登出並回到初始歡迎頁面嗎？':`已提交 ${Object.keys(judgeScores[S.judgeId]||{}).length} 份評分，資料已自動儲存。確定要登出嗎？`;
+  showModal({icon:'log-out',iconBg:'#FFF0F0',title:'確認登出？',body,confirmText:'確認登出',onConfirm:()=>location.reload()});
+}
+
+/*** KEYBOARD ***/
+function bindKeys(){
+  document.addEventListener('keydown',e=>{
+    const tag=document.activeElement.tagName;
+    if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')return;
+    const adminV=document.getElementById('admin-view').style.display!=='none';
+    const modalV=document.getElementById('modal-wrap').classList.contains('active')||document.getElementById('guideline-modal').classList.contains('active');
+    if(e.key==='Escape'){
+      if(document.getElementById('guideline-modal').classList.contains('active'))closeModal({force:true},'guideline-modal');
+      else if(document.getElementById('modal-wrap').classList.contains('active'))closeModal({force:true},'modal-wrap');
+      else if(document.getElementById('owner-modal').classList.contains('active'))closeModal({force:true},'owner-modal');
+      else if(adminV)closeAdmin();
+    }
+    if(adminV||modalV)return;
+    if(e.key==='ArrowRight'){e.preventDefault();nav(1)}
+    if(e.key==='ArrowLeft'){e.preventDefault();nav(-1)}
+    if(e.key==='Enter'){e.preventDefault();saveScore()}
+  });
+}
+
+/*** CLOUD SYNC ***/
+function syncUIState(state){
+  const el=document.getElementById('cloud-status'), ico=document.getElementById('cloud-icon'), txt=document.getElementById('cloud-text');
+  if(!el)return;
+  if(state==='syncing'){
+    ico.setAttribute('data-lucide','refresh-cw');ico.style.animation='spin 1s linear infinite';
+    ico.style.color='var(--blue)';txt.textContent='同步中';txt.style.color='var(--blue)';
+  } else if(state==='success'){
+    ico.setAttribute('data-lucide','cloud-check');ico.style.animation='';
+    ico.style.color='var(--green)';txt.textContent='已同步雲端';txt.style.color='var(--green)';
+  } else {
+    ico.setAttribute('data-lucide','cloud-off');ico.style.animation='';
+    ico.style.color='var(--orange)';txt.textContent='僅存本地';txt.style.color='var(--orange)';
+  }
+  lucide.createIcons();
+}
+async function fetchFromCloud(jid){
+  const res=await fetch(GAS_URL+'?action=get&judgeId='+jid);
+  if(!res.ok)throw new Error('Net err');
+  const json = await res.json();
+  return json.data || {};
+}
+async function syncToCloud(jid, scoreObj){
+  const res=await fetch(GAS_URL, {
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({action:'save', judgeId:jid, data:scoreObj})
+  });
+  const text = await res.text();
+  return JSON.parse(text);
+}
+
+/*** INIT ***/
+document.addEventListener('DOMContentLoaded',()=>{lucide.createIcons();updateDays();applyLayout()});
+</script>
+</body>
+</html>
