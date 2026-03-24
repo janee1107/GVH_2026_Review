@@ -29,8 +29,8 @@
     .card-lg{background:var(--surface);border-radius:28px;box-shadow:var(--shadow);border:1px solid var(--border)}
 
     /* Buttons */
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:100px;font-weight:700;font-size:12px;border:none;cursor:pointer;transition:all 0.2s ease;text-decoration:none;font-family:inherit}
-    .btn:active{transform:scale(0.97)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:100px;font-weight:700;font-size:12px;border:none;cursor:pointer;transition:all 0.25s cubic-bezier(0.25,0.8,0.25,1);text-decoration:none;font-family:inherit}
+    .btn:active{transform:scale(0.94);opacity:0.85;transition:all 0.1s ease}
     .btn-primary{background:var(--text);color:#fff;box-shadow:0 4px 14px rgba(0,0,0,0.12)}
     .btn-primary:hover{background:#000;box-shadow:0 6px 20px rgba(0,0,0,0.18);transform:translateY(-1px)}
     .btn-orange{background:var(--orange);color:#fff;box-shadow:0 4px 14px rgba(232,71,28,0.25)}
@@ -42,6 +42,7 @@
     .btn-danger{background:#FF3B30;color:#fff}
     .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:transparent;border:none;cursor:pointer;color:var(--text2);transition:all 0.2s}
     .icon-btn:hover{background:rgba(0,0,0,0.06);color:var(--text)}
+    .icon-btn:active{transform:scale(0.9);opacity:0.8;transition:all 0.1s ease}
 
     /* Inputs */
     input,textarea,select{font-family:inherit;font-size:14px;-webkit-appearance:none;-moz-appearance:none;appearance:none}
@@ -108,7 +109,9 @@
     /* Toggle */
     .toggle-track{width:48px;height:28px;border-radius:99px;background:#E5E5EA;position:relative;transition:background 0.25s;cursor:pointer;flex-shrink:0}
     .toggle-track.on{background:var(--amber)}
-    .toggle-thumb{position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.2);transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1)}
+    .toggle-thumb{position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.2);transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1), width 0.2s ease, margin-left 0.2s ease}
+    .toggle-track:active .toggle-thumb{width:26px;}
+    .toggle-track.on:active .toggle-thumb{margin-left:-6px;}
     .toggle-track.on .toggle-thumb{transform:translateX(20px)}
 
     /* Segment progress */
@@ -135,8 +138,9 @@
     .data-table tr:last-child td{border-bottom:none}
 
     /* Role card */
-    .role-card{border:2px solid var(--border);border-radius:20px;padding:20px 16px;text-align:center;cursor:pointer;transition:all 0.2s;background:#fff;flex:1}
+    .role-card{border:2px solid var(--border);border-radius:20px;padding:20px 16px;text-align:center;cursor:pointer;transition:all 0.25s cubic-bezier(0.25,0.8,0.25,1);background:#fff;flex:1}
     .role-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+    .role-card:active{transform:scale(0.96);box-shadow:var(--shadow-sm);transition:all 0.1s ease}
     .role-card.sel-orange{border-color:var(--orange);background:#FFF8F5;box-shadow:0 0 0 4px rgba(232,71,28,0.08)}
     .role-card.sel-blue{border-color:var(--blue);background:#F0F6FF;box-shadow:0 0 0 4px rgba(0,101,164,0.08)}
 
@@ -176,8 +180,9 @@
     #score-panel{position:sticky;top:80px;height:fit-content}
 
     /* Dashboard card hover */
-    .dash-card{cursor:pointer;transition:all 0.2s}
+    .dash-card{cursor:pointer;transition:all 0.25s cubic-bezier(0.25,0.8,0.25,1)}
     .dash-card:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,0.10)}
+    .dash-card:active{transform:scale(0.96);box-shadow:var(--shadow-sm);transition:all 0.1s ease}
     .dash-card.done-card{border-left:3px solid var(--green)!important}
 
     @media(max-width:768px){
@@ -378,7 +383,7 @@
               <h3 style="font-size:16px;font-weight:800;color:#FFCC02;">AI 初審報告</h3>
               <span class="badge" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.15);margin-left:auto;">僅供內部參考</span>
             </div>
-            <div id="ai-body" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;"></div>
+            <div id="ai-body" style="display:grid;grid-template-columns:1fr;gap:16px;"></div>
           </div>
         </div>
       </div>
@@ -494,7 +499,7 @@
             </div>
 
             <!-- Bonus toggle -->
-            <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border-radius:16px;padding:16px 20px;cursor:pointer;transition:background 0.2s;" onclick="toggleBonus()" id="bonus-row" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='var(--surface2)'">
+            <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border-radius:16px;padding:16px 20px;cursor:pointer;transition:all 0.25s cubic-bezier(0.25,0.8,0.25,1);" onclick="toggleBonus()" id="bonus-row" onmouseover="this.style.background='#FFFBEB'" onmouseout="this.style.background='var(--surface2)'" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
               <div>
                 <div style="font-size:13px;font-weight:800;">⭐ 長期投入加分</div>
                 <div style="font-size:11px;color:#8E8E93;margin-top:2px;">持續服務超過 1 年 → <strong style="color:var(--amber);">+5 分</strong></div>
@@ -628,7 +633,7 @@
 </div>
 
 <!-- ══ OWNER LOGIN MODAL ══ -->
-<div id="owner-modal" class="modal-backdrop" style="display:none;" onclick="closeModal(event,'owner-modal')">
+<div id="owner-modal" class="modal-backdrop" style="display:none;z-index:10000;" onclick="closeModal(event,'owner-modal')">
   <div class="modal" style="max-width:380px;" onclick="event.stopPropagation()">
     <div class="modal-content-wrapper" style="padding:32px;">
       <div style="width:56px;height:56px;background:#1C1C1E;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
@@ -690,6 +695,51 @@
   </div>
 </div>
 
+<!-- ══ ONBOARDING GUIDE MODAL ══ -->
+<div id="guide-modal" class="modal-backdrop" style="display:none;z-index:12000;" onclick="">
+  <div class="modal" style="max-width:460px;" onclick="event.stopPropagation()">
+    <div class="modal-content-wrapper" style="padding:36px;">
+      <div style="text-align:center;margin-bottom:28px;">
+        <div style="width:60px;height:60px;background:linear-gradient(135deg,#E8471C,#FF6B3D);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 6px 20px rgba(232,71,28,0.25);">
+          <i data-lucide="compass" style="color:#fff;width:26px;height:26px;"></i>
+        </div>
+        <h3 style="font-size:20px;font-weight:900;">歡迎使用 GVH 2026 評選平台</h3>
+        <p style="font-size:12px;color:#8E8E93;margin-top:6px;">快速導覽，幫助您順利完成評分</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px;">
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:16px;background:var(--surface2);border-radius:16px;">
+          <div style="width:32px;height:32px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+            <span style="color:#fff;font-weight:900;font-size:14px;">1</span>
+          </div>
+          <div>
+            <p style="font-size:13px;font-weight:800;margin-bottom:4px;">閱讀評選說明</p>
+            <p style="font-size:12px;color:var(--text2);line-height:1.6;">登入後點擊右上角「📖 評選說明」，了解評分原則與游戲規則，確保評分標準一致。</p>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:16px;background:var(--surface2);border-radius:16px;">
+          <div style="width:32px;height:32px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+            <span style="color:#fff;font-weight:900;font-size:14px;">2</span>
+          </div>
+          <div>
+            <p style="font-size:13px;font-weight:800;margin-bottom:4px;">逐一評分並儲存進度</p>
+            <p style="font-size:12px;color:var(--text2);line-height:1.6;">對每份申請書評分後點「提交評分」，系統會自動儲存。若出現雲端同步失敗（橘色灯號），請立刻點擊「匯出 CSV」以免喊失記錄。</p>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:16px;background:var(--surface2);border-radius:16px;">
+          <div style="width:32px;height:32px;background:var(--green);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+            <span style="color:#fff;font-weight:900;font-size:14px;">3</span>
+          </div>
+          <div>
+            <p style="font-size:13px;font-weight:800;margin-bottom:4px;">於 4/14 前完成所有評選</p>
+            <p style="font-size:12px;color:var(--text2);line-height:1.6;">請在截止14 日 23:59 前評完所有 42 份申請書。進度會自動儲存，不同裝置也可繼續開始（需外部網路）。</p>
+          </div>
+        </div>
+      </div>
+      <button onclick="closeGuide()" class="btn btn-primary" style="width:100%;justify-content:center;padding:16px;border-radius:16px;font-size:14px;font-weight:800;">🚀 開始評分</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ NETWORK WARNING MODAL ══ -->
 <div id="network-modal" class="modal-backdrop" style="display:none;" onclick="closeModal(event,'network-modal')">
   <div class="modal" style="max-width:420px;" onclick="event.stopPropagation()">
@@ -706,78 +756,1678 @@
           <li>若仍須使用公司網路，請放心，您的所有資料會安全**儲存在本地端**。請務必在評完後點擊「匯出 CSV」寄給專案負責人 Jane。</li>
         </ul>
       </div>
-      <button onclick="closeModal({force:true},'network-modal')" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;border-radius:14px;margin-top:24px;">了解並繼續</button>
+      <button onclick="closeModal({force:true},'network-modal'); setTimeout(()=>showGuide(S.judgeId), 300);" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;border-radius:14px;margin-top:24px;">了解並繼續</button>
     </div>
   </div>
 </div>
 
 <script>
 /*** CONFIG ***/
-const GAS_URL=''; // 【請在此貼上您的 Google Apps Script 網頁應用程式 URL】
+const GAS_URL='https://script.google.com/macros/s/AKfycbyWOeG6yq-Ugcsq0sFg7_Fs3HaI2MV47wF6D_I8yoIX4kAXCSowNAhS_ZzXL7PtH1WkPw/exec'; // 【請在此貼上您的 Google Apps Script 網頁應用程式 URL】
+// 【如何更新評審姓名】
+// 1. 找到對應的代號（如 '001' 對應 Sherry）
+// 2. 更改 welcomeName 欄位的內容，例如 welcomeName:'Sherry' 改為 welcomeName:'新姓名'
+// 3. 對應的 name 欄位則是展示在系統內的代號文字
+//
+// 【密碼安全】密碼都已經過 SHA-256 逳乃處理，在原始碼中看到的是雜湊字符串而非明文密碼。
+// 若要更新密碼: 先在瀏覽器 Console 執行: hashStr('新密碼').then(h=>console.log(h))
+// 將印出的永久雜湊字符串貼上來即可。
 const JUDGES={
-  '001':{name:'代號 001',welcomeName:'Sherry',type:'internal',password:'001'},
-  '002':{name:'代號 002',welcomeName:'Collin',type:'internal',password:'002'},
-  '003':{name:'代號 003',welcomeName:'Yenwen',type:'internal',password:'003'},
-  '004':{name:'代號 004',welcomeName:'Beatrice',type:'internal',password:'004'},
-  '005':{name:'代號 005',welcomeName:'Jennifer',type:'internal',password:'005'},
-  '006':{name:'代號 006',welcomeName:'Cynthia',type:'internal',password:'006'},
-  'ex001':{name:'代號 ex001',welcomeName:'TFT',type:'external',password:'TFT000'},
-  'ex002':{name:'代號 ex002',welcomeName:'Impact Hub',type:'external',password:'Impact_Hub'},
-  'ex003':{name:'代號 ex003',welcomeName:'EY',type:'external',password:'EY000'},
-  'owner':{name:'獎項管理者',welcomeName:'管理者',type:'owner',password:'gvhowner'}
+  '001':{name:'代號 001',welcomeName:'Sherry',type:'internal',pw:'7a3e6b16cb75f48fb897eff3ae732f3154f6d203b53f33660f01b4c3b6bc2df9'},
+  '002':{name:'代號 002',welcomeName:'Collin',type:'internal',pw:'a1dd6837f284625bdb1cb68f1dbc85c5dc4d8b05bae24c94ed5f55c477326ea2'},
+  '003':{name:'代號 003',welcomeName:'Yenwen',type:'internal',pw:'88c0413bfef1d0570a8a6f9c780a8d2c9e90c4d107551d62bf3cec9ff1f5b634'},
+  '004':{name:'代號 004',welcomeName:'Beatrice',type:'internal',pw:'9c1850fcaa632f2189deac5e9b66e02fa85be92a920b6cae7696c9b691e4bacb'},
+  '005':{name:'代號 005',welcomeName:'Jennifer',type:'internal',pw:'5a96acc64c72c5b2b890cf2855d036cacc054d61a360be4da12c1fa47dc0b480'},
+  '006':{name:'代號 006',welcomeName:'Cynthia',type:'internal',pw:'c0f890f2fd6b058103ded8d296e49ba3b924661210ca87ff190de41dbb91dee0'},
+  'ex001':{name:'代號 ex001',welcomeName:'TFT',type:'external',pw:'4476a748e8cbe26e12f632e61acffc5d1714b7987fe12d3766f37dd4c89020fd'},
+  'ex002':{name:'代號 ex002',welcomeName:'Impact Hub',type:'external',pw:'d1a75d728ceeb14b8e97fbe9a361a7241b34df1b2c126ef71e9d145502fd5316'},
+  'ex003':{name:'代號 ex003',welcomeName:'EY_Vincent',type:'external',pw:'2dbe1a0581043861595d1ddf315b2fe9a6472d1b4af890066d423cbeae7a3009'},
+  'owner':{name:'獎項管理者',welcomeName:'管理者',type:'owner',pw:'cf7959e0d6ba96a059329ce2b9625632bb1b29e3be4ef7a664f0af497500e889'}
 };
 const DEADLINE=new Date('2026-04-14T23:59:59+08:00');
 const W={a:0.40,i:0.35,r:0.25};
 const applicants=[
-  {id:'001',project:'無聲世界的溝通橋樑：新竹聾人協會手語翻譯與陪伴計畫',region:'新竹，台灣',category:'個人/社會關懷',photoUrl:'https://drive.google.com/drive/folders/1eYlrbsu4nmWpyT0O_O51iEdlC2pTzss2',longTerm:true,
-    content:[
-      {t:'背景與動機',c:'我看見手語翻譯服務的人力極度稀缺，深信被忽略的聲音更值得被聽見。考取證照後成為聾人朋友的耳朵與嘴巴。'},
-      {t:'行動與角色',c:'提供即時翻譯與聽打，處理生活租屋糾紛、居家訪視，更在就醫時協助精準轉譯，解決誤診風險。'},
-      {t:'投入時間與頻率',c:'2020 至今，每月約 2 次翻譯，累計超過 400 小時。',h:true},
-      {t:'成果與影響',c:'服務聽障朋友 >100 人次。解決醫療陪同中的溝通斷點，並將補助回捐協會支持永續。'},
-      {t:'共鳴與啟發',c:'在社群平台倡議正名（聾人非啞巴），科普手語文化，成功帶領更多人認識聾人世界。'},
-      {t:'心得與反思',c:'學會不將擁有的一切視為理所當然，期許將無聲的需求轉化為有溫度的行動。'}
+  {
+    "id": "001",
+    "project": "無聲世界的溝通橋樑：新竹聾人協會手語翻譯與陪伴計畫",
+    "region": "新竹",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>大一時加入手語社，讓我初次踏入無聲的世界。我看見手語翻譯服務的人力極度稀缺，但我深信「人數少不代表沒有需求，被忽略的聲音更值得被聽見」。</div><div style='margin-bottom:6px; line-height: 1.6;'>這份信念驅使我不僅在大學時期擔任手語社社長、主動前往當時沒有手語資源的竹教大進行教學推廣、去台北啟聰課後輔導，日後更進一步考取手語翻譯員證照。</div><div style='margin-bottom:6px; line-height: 1.6;'>畢業後，我持續在新竹聾人協會這份專業志工服務。我看見聾人朋友在日常生活中——從看診、租屋到參與講座——面臨的重重溝通障礙，因此決心成為他們的耳朵與嘴巴，協助他們跨越這些無形的牆。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>作為專業手語翻譯志工與陪伴者，我的角色不僅是語言的轉換，更是信任的橋樑。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>專業翻譯與聽打：協助協會辦理各類講座、會員大會及戶外活動，提供即時手語翻譯與聽打服務，確保資訊平權。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>生活支持與家訪：深入聾人朋友的生活，協助解決租屋糾紛、居家訪視，甚至處理生活瑣事。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>醫療陪同：令我印象最深的一次，是陪同一位聾人朋友看眼科。透過我的精準轉譯，醫生終於釐清他長期「配鏡無效」的原因是同時患有老花與近視，需配戴兩副眼鏡。過程中，我化解了醫病間的雞同鴨講，建立起病患的安全感。後續回診時，他甚至向護理師指定「希望能有上次那位志工陪同」，這份來自醫護與病患雙方的信任，是對我最大的肯定。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>自 2020 年至今，我長期穩定投入服務。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>頻率：平均每月約 2 次翻譯任務（含全天活動或數小時的陪同）。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>時數：依活動性質每次約 3-8 小時不等。若加計大學時期在啟聰學校的課後輔導，累計服務時數已超過 400 小時。這是一場長達數年的馬拉松，而非短暫的衝刺。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>量化效益：這幾年來，我服務的聽障朋友超過 100 人次。以一般手語翻譯市價（每小時 500-1000 元）計算，我為協會節省了數萬元的經費，讓這些資源能轉而支持更多經濟弱勢的聾人家庭。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>質化改變：在上述的醫療案例中，我不僅解決了誤診風險，更讓醫護人員見證了友善溝通的重要性。此外，在經費許可時，我堅持將申請到的補助回捐給協會，確保組織能永續運作。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>除了第一線服務，我也致力於消除社會的誤解。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>教育傳承：學生時期曾主動至無手語社團的學校教學，帶領更多青年認識聾人文化。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>破除迷思：我常在社群平台與日常對話中向親友倡議——「聾人不一定啞，他們只是沒學過口語，請避免使用『聾啞』這個帶有標籤的詞彙」、教學簡單的日常手語以及科普「手語並非世界通用，台灣甚至有南北之分」。這些分享成功影響了身邊親友，讓大家在面對聽障者時，能多一份理解與尊重。</div>"
+      }
     ],
-    ai:{strengths:['專業證照加持，解決高難度醫療溝通場景','服務年資 >4 年，具高度穩定性','月均 2 次出勤，累計 400+ 小時，量化清晰'],concerns:['屬高度技術型志工，較難大規模複製推廣','缺少團隊組建或傳承計畫說明']}
+    "ai": {
+      "strengths": [
+        "初評 AI 建議 (僅供參考用)",
+        "整體評價：此申請案展現了極高的專業性與持續性。申請者運用特有技能（手語翻譯）解決了弱勢族群最迫切的生活與醫療痛點，故事動人且具體，完全符合「全球傑出志工」的精神。",
+        "關鍵佐證：醫療陪同案例（協助釐清老花與近視共存問題）非常有說服力，證明了志工服務不僅是陪伴，更實質解決了專業落差。",
+        "加分提醒：申請者自 2020 年持續投入至今，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
   },
-  {id:'002',project:'跨越山林與校園的雙重守護：從香山淨山到自閉症兒童陪伴',region:'新竹，台灣',category:'個人/環境 & 特教',photoUrl:'https://drive.google.com/drive/folders/1w1-aO5WkYl8zYgVw_J6hVqF3RkPjSg2b',longTerm:false,
-    content:[
-      {t:'背景與動機',c:'結合對自然的熱愛與對弱勢的關懷，希望同時為環境與社會盡一份力。'},
-      {t:'行動與角色',c:'週末參與香山淨灘/淨山活動，撿拾垃圾並進行分類。平日下班後，前往機構陪伴自閉症兒童，透過遊戲和閱讀建立信任。'},
-      {t:'投入時間與頻率',c:'淨山約每季 1 次；兒童陪伴則是近半年開始，每週 1-2 次。'},
-      {t:'成果與影響',c:'淨灘活動共清運超過 50 公斤廢棄物。在機構中，成功幫助一位原本不願開口的孩童，開始用簡單詞語表達需求。'},
-      {t:'共鳴與啟發',c:'將淨灘成果與環保知識分享於公司內部論壇，引發了同事對海洋廢棄物議題的關注。'},
-      {t:'心得與反思',c:'發現看似不相關的兩種志工服務，核心都是「耐心」與「看見」。無論是撿拾微小的塑膠碎片，還是等待一個孩子的回應，都是在守護珍貴的事物。'}
+  {
+    "id": "002",
+    "project": "跨越山林與校園的雙重守護：從香山淨山到自閉症兒童陪伴的公益起步",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我從2025年11月起便積極尋找合適的公益團隊，歷經半年努力，才終於挖掘到「此心公益組織」以及「不負韶華志願團隊」。我一直希望能用自己的行動為特殊兒童帶來一些改變，也願意為自然環境盡一份心力。第一次踏入馨翼教育中心，自閉症孩子們純真的笑容與教室溫暖的氛圍深深感動我。我相信主動付出和陪伴，可以照亮每個孩子心中的希望。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>2025/12/30：我加入「不負韶華志願團隊」參與北京海淀區香山不負韶華志願團隊發起的清山公益行動——長達6公里的香山邮局-香山好漢坡防火道志願清山服務，身兼防火巡查員與環境守護者。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>2026/01/21：我加入「此心公益組織」在北京市丰台区馨翼教育中心的志工團隊，協助老師製作課件、陪伴自閉症孩子運動、協助上課與安全守護，親身學習與孩子們溝通交流。過程中主動學習專業知識、耐心引導，成功陪伴並鼓勵孩子勇敢參與活動。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>志工紀錄證據：2025/12/30（4小時）、2026/01/21（3小時），共7小時。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>活動時數均有公司正式志工請假紀錄，並附上佐證圖片。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>目前已聯繫負責人，後續將定期長期投入服務，目標2026年持續參與更多公益行動。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>- 清山活動完成6公里路線，守護香山森林防火，協助環境清潔。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>教育陪伴志工，協助老師完成10份課件製作、輔導多位自閉症孩子學習與運動，見證他們露出真摯笑容與進步。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>親身感受無助到溫暖，逐步學會理解、包容、堅持，也領悟志工行動的深層價值。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>活動結束後，我積極向部門同事分享這段志工故事，不僅收穫同事的讚賞，也獲得志願組團的建議。目前已將組織更多人一同服務自閉症孩子列入2026年計劃，並打算從部門率先開始擴大影響。</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>（已於公司內社群發表心情紀錄，活動照片紀錄也將附上——請確認有貼文截圖及合照。）</div>"
+      }
     ],
-    ai:{strengths:['跨領域服務，展現多元關懷面向','質化故事溫暖，尤其在兒童陪伴方面有具體突破','有內部分享，具備初步漣漪效應'],concerns:['兩項服務的投入時間與深度較為分散，持續性待觀察','成果量化數據相對單薄']}
+    "ai": {
+      "strengths": [
+        "AI初步審查建議",
+        "初評 AI 建議",
+        "整體評價：這是一份充滿潛力的「志工新鮮人」申請案。雖然累積時數不多，但申請者展現了極佳的主動性（Active Seeking），勇於嘗試戶外環保與室內陪伴兩種截然不同的服務。其故事真誠，展現了從「個人參與」到「想要號召同事」的轉變，非常符合 GVH 鼓勵志工文化的精神。",
+        "關鍵佐證：申請者詳細描述了在馨翼教育中心「製作課件」與「引導孩子」的細節，證明其並非走馬看花，而是有實質投入心力協助機構運作。",
+        "加分提醒：年資未滿 1 年，不符合年資加分項目。"
+      ],
+      "concerns": []
+    }
   },
-  {id:'003',project:'藝暖人心：寺院義演與長者陪伴',region:'成都，中國',category:'個人/藝術關懷',photoUrl:'https://drive.google.com/drive/folders/1hMgs2sPfurA6EhX8Q6uebVwKOvhd2Dsd',longTerm:true,
-    content:[
-      {t:'背景與動機',c:'源於對藝術的熱愛，希望透過舞蹈調心，幫助別人也療癒自己。讓養老院長者感受到溫暖。'},
-      {t:'行動與角色',c:'表演中國古典舞，參與編創與教學。除了表演，也協助發放物資、剪指甲、陪伴長者聊天。'},
-      {t:'投入時間與頻率',c:'持續 5 年，去年累計服務 135 小時，每週進行教學，每季慰問。',h:true},
-      {t:'成果與影響',c:'舞蹈班學員期期 30+ 人，義演觀眾上百人。長者的眼神與掌聲展現了藝術療癒的價值。'},
-      {t:'共鳴與啟發',c:'成功號召 5 位朋友加入。常在朋友圈分享公益力量，鼓勵大眾參與。'},
-      {t:'心得與反思',c:'理解什麼是無私的奉獻。未來會持續用舞蹈服務，讓更多人感受溫暖。'}
+  {
+    "id": "003",
+    "project": "藝暖人心：寺院義演與長者陪伴",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>自 2019 年起，我在成都市著名的文殊院參與寺院志工服務，主要負責舞蹈義演並定期進行養老院的慰問活動。我的志工行動源於對藝術的熱愛以及希望透過舞蹈調心，幫助別人也療癒自己。每次表演不僅帶來精神上的愉悅，更能讓長者感受到溫暖與關懷。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我主要表演中國古典舞和現代舞，也積極參與舞蹈編創與教學。除了舞台表演外，還會幫忙發放物資、為長者剪指甲、陪伴他們聊天，並偶爾參與活動策劃、建議。在志工團隊中屬於主力人員，也是教學的骨幹，與伙伴共同促成每一場活動順利圓滿。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>去年每半年為一個學期，每週都會進行舞蹈課教學。養老院慰問活動平均每季參加一次，大型表演頻次則不固定。志工服務已持續五年，去年全年累計服務時長約 135 小時，展現長期且穩定的投入。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>每次去養老院有數十位長者參與，寺院表演則吸引上百名觀眾。舞蹈班教學自去年開始，班上一期大約有 30 多名學員。最讓我感動的是，長者觀看舞蹈後熱烈鼓掌，眼神流露出真誠的快樂與認可，這種回饋讓我倍感價值。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>在我的號召下，已有約 5 位朋友一同加入志工行動。我也時常在朋友圈分享活動記錄，並用照片來傳遞公益力量，鼓勵更多人關注與參與。</div>"
+      }
     ],
-    ai:{strengths:['技能型志工典型，兼具表演高度與服務溫度','五年長期投入，數據具說服力','號召他人參與，具良好轉介能力'],concerns:['影響力多侷限於特定區域與受惠群體','建議補充倡議/媒體曝光等更廣泛影響力']}
+    "ai": {
+      "strengths": [
+        "初評 AI 建議",
+        "整體評價：此申請案為典型的「技能型志工」，將個人舞蹈專長結合公益服務。申請者展現了極高的持續性（5年）與穩定的投入頻率（每週/每季），且行動內容從表演延伸至生活陪伴（剪指甲、聊天），兼具藝術高度與服務溫度。",
+        "關鍵佐證：去年累積 135 小時 的服務時數與 5 年 的持續資歷，是實踐力最有力的證明。",
+        "加分提醒：年資自 2019 年開始，已超過 1 年，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
   },
-  ...Array.from({length:36},(_,i)=>({
-    id:(i+4).toString().padStart(3,'0'),project:`範例專案 #${i+4}`,region:'全球',category:'範例/分類',
-    photoUrl:'#',longTerm:Math.random()>0.5,
-    content:[{t:'背景與動機',c:`這是專案 #${i+4} 的動機說明。`},{t:'行動與角色',c:`這是專案 #${i+4} 的行動說明。`}],
-    ai:{strengths:['範例優點'],concerns:['範例弱點']}
-  })),
-  {id:'040',project:'守護微光：性別平權與創傷陪伴的溫柔力量',region:'新竹，台灣',category:'個人/性別平權',photoUrl:'https://drive.google.com/drive/folders/1c-GZB_XvM4R9UyXzOCseeelyS_B6aJ3Q',longTerm:true,
-    content:[
-      {t:'背景與動機',c:'看見社會中「少數群體」需求常被忽視。目標是成為少數群體與大眾之間的橋樑。'},
-      {t:'行動與角色',c:'擔任深度聊天會帶領者，進行性別平權宣講、彩虹遊行策劃與執行、紅絲帶基金會志工。'},
-      {t:'投入時間與頻率',c:'自 2019 年投入至今，持續超過 5 年。每月固定會議與活動。',h:true},
-      {t:'成果與影響',c:'帶領 20 場聊天會、陪伴 200 位夥伴、接觸近 1000 位民眾。幫助受難者找回勇氣。'},
-      {t:'共鳴與啟發',c:'主動邀請同事參與講座與遊行，在個人社群平台分享志工心得，傳遞共融價值。'},
-      {t:'心得與反思',c:'看見受傷的靈魂展露笑容，知道這一切都是值得的，深信微小的善意終將改變社會。'}
+  {
+    "id": "004",
+    "project": "守護微光：性別平權與創傷陪伴的溫柔力量」。",
+    "region": "新竹",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我看見社會中許多「少數群體」的需求往往被忽視，當身邊出現相關的朋友時，大眾常因缺乏知識而無法提供適當的協助。這份「看見需求」的急迫感，驅使我投入志工行列。自 2021 年起，我積極參與 暖暖 Sunshine (性暴力倖存者陪伴)、社團法人台灣基地協會 (性別平權教育)、新竹市性別友善行動聯盟 (性別平權教育) 及 財團法人台灣紅絲帶基金會風城部屋 (性別平權與公共衛生) 等多個機構的行動。我的目標很明確：不僅是陪伴受傷的個體，更要透過宣講與倡議，提升大眾意識，成為少數群體與社會大眾之間的橋樑。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我不僅是參與者，更是倡議者與陪伴者，在不同場域切換多重角色：</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>深度陪伴者 (社團法人台灣基地協會)：擔任「聊天會」帶領者。這是一個需要高度同理心的角色，我負責引導話題、傾聽心聲，陪伴少數族群面對生活中的困境，建立安全的信任空間。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>教育倡議者 (暖暖 Sunshine / 社團法人台灣基地協會)：我站上講台進行教育宣講，或在 NGO 展覽擺攤，向民眾講解生命故事，傳遞正確的性別平權知識及性暴力相關知識與支援網。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>活動策劃與執行 (新竹彩虹遊行 / 大型活動)：參與每月的活動規劃會議，並在大型活動（如 2025 新竹彩虹遊行）擔任服務台志工，負責第一線應對，協助廠商報到與即時解答民眾疑問。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我的志工旅程始於 2019 年投入科技研討會志工，並於 2021 年起深耕多元性別議題至今，持續超過 5 年。這是一場長期的馬拉松，而非單次短跑。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>固定投入：每月固定參與 1-3 小時的規劃會議，以及每月 1-2 場的小型活動（每場 2-3 小時）。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>大型專案：針對年度大型活動（如遊行），單日投入超過 8 小時，包含事前的場地佈置與籌備。</div><div style='margin-bottom:6px; line-height: 1.6;'>註：因投入機構眾多，實際服務時數遠大於已申請之時數證明，但我相信持續不間斷的行動更能證明這份熱忱。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>多年來，我見證了從個人到環境的具體改變：</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>量化影響：我帶領過近 20 場深度聊天會，陪伴超過 200 位少數夥伴走過低潮；在大型遊行與宣講中，累計接觸近 1,000 位民眾，曾創下單日服務台解答近百位民眾諮詢的紀錄。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>質化改變：最讓我感動的，是有位夥伴曾對我說：「是你讓我找回面對社會的勇氣，成為我跨出那一步的動力來源。」</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>社會觀察：我也看見了環境的善意正在發芽，例如性別友善廁所的普及、校園性別暴力的減少以及教師性別意識的提升，這些都是我們共同努力的成果。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>這份影響力不只停留在 NGO，我也將它帶回我的生活圈。我會主動邀請身邊的親友與同事參與遊行或講座，並在現場留下合影紀念。透過個人的社群平台分享志工心得與活動紀錄，讓更多原本不了解議題的人開始關注，進而理解並支持多元共融的價值。</div>"
+      }
     ],
-    ai:{strengths:['參與多個 NGO 機構，角色多元且深入','量化數據極具規模，觸及近千人','社群倡議能力強，具高傳播潛力'],concerns:['投入內容廣泛，建議評估專一深度','各計畫的個人貢獻比例可進一步釐清']}
+    "ai": {
+      "strengths": [
+        "初評 AI 建議",
+        "整體評價：該申請者展現了極高的投入度與專業性，從第一線的陪伴到公開倡議，角色多元且深入。其行動不僅具備長期的持續性，更有明確的量化與質化影響力，完全符合 GVH 獎項精神。",
+        "關鍵佐證：帶領近 20 場深度聊天會並獲得受助者關於「找回勇氣」的直接回饋，證明其行動具有深層的生命影響力。",
+        "加分提醒：年資超過 5 年（始於 2019/2021），符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "005",
+    "project": "Silent Guardianship: Nurturing Lives from Goshala to Girl Child Education",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>My journey into volunteering is not driven by a desire for recognition, but by a deep-seated belief in God and a personal commitment to \"shared existence.\" In my daily life, I consciously minimize my materialistic desires and extra expenses so that I can direct my salary toward those who truly need it.</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>This year, I was profoundly moved by the heartbreaking stories of four young girls at the Maathru Sree Orphanage in Guntur. One child was abandoned at a railway station; another was left by a single mother battling illness; one was abandoned by parents who remarried separately. Hearing their plight broke my heart. I realized that while feeding the hungry is immediate, education is the only tool that can permanently change their destiny. This realization, combined with my regular support for the Maadhiam Goshala (Bangalore) and Thaagam Foundation, motivates my actions.</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>My role is that of a \"Guardian and Enabler.\" I operate silently, ensuring that resources reach the beneficiaries directly.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Educational Guardianship (Long-term): I have taken full responsibility for the educational expenses of 4 girl children (three in LKG, one in 1st Grade) at Maathru Sree Orphanage. I have committed to sponsoring their entire education.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Current Action: I have already paid the first term fees (20,000 INR) in early 2026 to secure their admission.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Sustenance Support (Periodic): Whenever I receive a reward or have surplus funds, I direct them to:</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Maadhiam Goshala: Providing fodder and care for over 100 cows/oxen.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Thaagam Foundation: Donating towards food distribution for roadside children and orphans.</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>My commitment is structured into two tiers:</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Systematic Support (Annual/Ongoing): For the four girls, I pay school fees term-wise (3 terms per year). This is a fixed, long-term financial commitment deducted directly from my salary.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Ad-hoc Support (Reward-based): Throughout 2025, I made multiple visits/donations to the Goshala and Thaagam Foundation (e.g., 8,000 INR and 4,000 INR tranches) whenever I received performance rewards or bonuses.</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>* Securing Futures: The most significant impact is the security provided to 4 vulnerable girl children. By covering their education costs (approx. 60,000-75,000 INR projected for 2026), I am ensuring they remain in the safety of the school system rather than falling into child labor or poverty.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Animal Welfare: My contributions at Maadhiam Goshala help sustain 40+ feeble cows that require intensive care and feeding.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Hunger Relief: Through Thaagam, my contributions have provided meals to hundreds of roadside children.</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>I rarely share my activities, as I believe charity should be a private conversation between the giver and the receiver. I do not seek to influence others by words, but perhaps by action—my sister, seeing my dedication, also donates to the same orphanage monthly. My hope is that by silently doing my part, I balance the scales of fortune for these children.</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：此申請案展現了高度的個人犧牲與道德承諾。申請者將公益融入生活方式，透過縮減個人慾望來資助他人。雖然形式偏向「長期資助/捐贈」多於勞力密集的「志工服務」，但對受助者（4位女童）的改變是深遠且具體的，符合廣義的志工精神。",
+        "關鍵佐證：2026 第一學期 20,000 INR 的官方學費收據，是其「守護者」角色的強力證明。",
+        "加分提醒：提及「整個 2025 年」的持續投入並延伸至 2026，若認定其多次探訪為持續性參與，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "006",
+    "project": "Bridging Borders: Delivering Dignity & Education to Rural Colombia",
+    "region": "全球",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>This initiative began in 2021, during the critical post-COVID period. Witnessing severe economic hardships in rural communities near Popayán, Cauca (Colombia)—where my family has roots—we started by providing emergency grocery packs to sustain families.</div><br><div style='margin-bottom:6px; line-height: 1.6;'>We realized children lacked basic educational resources and emotional support. Motivated to provide not just supplies but dignity, we evolved the project into a bi-annual mission: delivering Personalized Christmas Gift Boxes and Back-to-School Kits. Our goal is to ensure poverty does not take away the joy of childhood or the tools needed for education.</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>My wife and daughter carries the heavy lifting of this initiative and lead the full coordination from the USA, I joint in my free time and PTO days:</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Data & Matching: We gather specific information for every child, then recruit \"Godfathers\" in the USA and assign each to a child.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Guidance & Quality Control: We instruct Godfathers to hand-paint the box, fill it with new clothes, shoes, toys, and include a personalized letter. We support them with instructions and collect shipping contributions.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Logistics Hub: My home serves as the consolidation center. We collect, inspect, stack, and palletize boxes before sending to the courier, carefully preparing customs paperwork to ensure safe delivery to Colombia.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>No Child Left Behind: For any child without a Godfather, my family and I personally construct and fund their gift boxes, ensuring 100% coverage.</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Period: Since 2021 (Ongoing)  with the basic food supplies for a month during Christmas season, then evolve to Backpacks for back to school and now we have the Godfather and kid giftbox since 2025</div><div style='margin-bottom:6px; line-height: 1.6;'>Frequency: Twice a year (Christmas & Back-to-School)</div><div style='margin-bottom:6px; line-height: 1.6;'>Intensity: Each season requires weeks of preparation, recruiting donors, personalizing boxes, and handling international shipping.</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Operating in two rural communities near Popayán:</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>2025 Impact: 47 children received Christmas gift boxes and 130 children received school supplies.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Qualitative Impact: Personalized boxes and letters help children feel seen and valued, boosting self-esteem and motivation.  While for the Godfather creates an special connection and motivate them to continue helping the next year</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>The project engages families and donors as active participants, not just funders. By painting boxes and writing heartfelt letters, we foster true empathy and global citizenship between the USA and Colombia.</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：這是一個具備高度執行力與溫度的跨國志工行動。申請者不僅負責後勤重任（Logistics Hub），更設計了「Godfather」機制，讓捐贈者深度參與（彩繪、寫信），大幅提升了活動的共鳴力與情感價值。",
+        "關鍵佐證：家中堆滿待運送箱子的照片（Packing & Shipping）以及具體的物流執行描述，有力證明了申請者的實質投入。",
+        "加分提醒：活動自 2021 年開始，符合長期投入定義，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "007",
+    "project": "守護生命的隱形翅膀：新竹市鳳凰志工的熱血協勤路",
+    "region": "新竹",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>自2024年7月起，我投入新竹市鳳凰志工隊，主要協助消防局119救護車出勤，幫忙傷病患處置、搬運救護器材與患者，讓緊繃的消防人力得以喘息。2025年全年累積服務360多小時。加入鳳凰志工的契機，源於自己一直受惠於社會，想以自身能力回饋，且對醫療有興趣、心理素質冷靜，不怕血、不怕傷口，渴望在生命關鍵時刻貢獻一份力量。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>在協勤中除了搬運、器材整理，更協助CPR、AED、止血包紮、生命徵象量測、有時還需安撫家屬情緒並協助現場分區。印象最深刻的案例包括：1）OHCA患者急救，現場判斷並即時壓胸、貼AED，最終成功出院並獲消防局表揚；2）虎林國中重大車禍，現場物資混亂、傷患眾多，協助大傷分區並處理緊急搬運；3）家暴案件，為13歲男孩包紮傷口及情緒安撫，深感社會安全網的重要。每次協勤都見證生命脆弱與堅韌。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>排班彈性，每週大約平日晚上協勤1~2次，假日則多協助一兩個時段。志工隊每日分早午晚三時段，協勤方式視個人空閒自行填班表。2025年度協勤累計超過360小時，並獲消防局頒發獎狀及證明。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>除了急救技能與現場實戰經驗，成功協助OHCA患者出院，是目前唯一一個成功出院案例，獲消防局專門頒獎表揚。此外，也參與多起重大事故與家暴案件，深度體會生命無常、珍惜身邊之人。協勤經歷也鍛鍊自己心理素質，更能冷靜面對突發狀況及挫折。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我常在午休時間與同事分享特殊協勤案件，同事也會主動關心與詢問；並經常於IG、Threads等社群公開紀錄志工經歷。也有在FB社團「新竹大小事」被民眾拍攝出現身影，不只記錄，更希望喚醒更多人關懷生命與公益。這些經驗讓更多人注意到急難救護與鳳凰志工的重要，也成為職場與社會推動正向影響力的種子。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：此申請案展現了極高的專業度與生命關懷價值。申請者在需具備高度抗壓性的急救場域中，付出了大量時間（360+小時），並有直接挽回生命的具體成果。故事結合了「專業技能」與「溫暖人性」，極具說服力。",
+        "關鍵佐證：協助 OHCA 患者成功出院之表揚與消防局頒發之時數獎狀，為強而有力的實質影響力證明。",
+        "加分提醒：申請者自 2024 年 7 月加入，至 2026 年評選時年資已超過 1 年，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "008",
+    "project": "熱血傳愛三十載：從 250cc 到 500cc 的生命承諾",
+    "region": "新竹",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我的捐血旅程始於 18 歲就讀新竹中學時的那場校園宣導。當時體重不足 55 公斤，只能捐 250cc 全血，護理師還不斷叮囑我要注意身體是不是有不舒服的反應。那份既緊張又想助人的初衷，卻意外開啟了我長達數十年的熱血生涯。之後不論人在台灣, 或者在美國攻讀博士與工作，我還是維持著這個習慣。即便離開美國十幾年，我的捐血紀錄依然留存；甚至在 2026 年赴舊金山參加 ISSCC 研討會時，還接到了紐約捐血中心的電話邀約。這份跨越國界與時間的連結，讓我深刻體會到，血液的連結是如此緊密且真實。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我選擇以「默默行善」的方式實踐這份承諾，不造成同仁壓力，而是用行動說話。我透過打籃球、重訓、騎自行車，甚至陪田徑隊的女兒練短跑，維持健康，所以血液品質一直都也能符合捐血標準。如今，年過五十的我，體重需要透過飲食和運動控制了，但這也讓我可以一次捐 500cc 全血。在公司服務的近 22 年間，只要沒有海外行程（如前往美國、新加坡、印度探視團隊或個人假期安排），我幾乎每三個月一次，都會主動前往捐血車或新竹捐血站報到。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>這份堅持已持續超過 30 年。在聯發科技任職期間，我已累計在公司與周邊站點完成超過 全血60 次 的捐血紀錄；若算上學生時期與早期的累積，在台灣的總捐血次數已達 全血80 次。對我而言，捐血不是等到「血荒」才做的事，而是一種規律的習慣。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>每一次挽袖，都是對生命的實質貢獻。累積 80 次的全血捐贈，意味著曾有數十位急需輸血的病患因此受惠。更重要的是，這種長期的穩定性，能在血庫最需要時提供最即時的支援。即使公務繁忙，只要有心，每個人都能成為他人生命中的隱形守護者。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>在家中，這份熱血也成了與女兒之間溫馨的默契。每當我帶回捐血中心的小贈品，女兒總會開玩笑地說：「爸爸，你今天又減重 0.5 公斤了！」這句玩笑話背後，是家人對我健康的信任與對這項行動的認同。這份「健康的幽默」與「默默的堅持」，已潛移默化地在家庭中種下善念的種子。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：此申請案為典型的「長期主義」志工典範。申請者展現了驚人的毅力與自律，將單次行為轉化為長達 30 年的生命承諾。雖非組織型志工，但其穩定且高品質的血液捐贈，對社會醫療體系有著不可或缺的實質貢獻。",
+        "關鍵佐證：累計 80 次全血捐贈的感謝狀，以及持續運動以維持捐血資格的生活紀錄。",
+        "加分提醒：捐血資歷超過 30 年，遠超 1 年門檻，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "009",
+    "project": "生態守護者：25年的生態教育與公民科學實踐",
+    "region": "新竹",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我的志工旅程始於 1999 年，最初的起點很單純——尋找一個能與家人共同成長、從稚齡到年老都能一起參與的活動。這份初衷帶領我踏入了「新竹鳥會」，開啟了長達 25 年的生態觀察之路。</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>隨著時間推移，這份對自然的熱愛不再僅止於個人興趣或家庭活動，更感染了身邊的同事與朋友。我看見台灣生態環境在變遷下的脆弱，也意識到唯有透過長期的科學調查與正確的觀念教育，才能真正守護這片土地。這份使命感驅使我從一位單純的賞鳥者，轉變為肩負教育責任的生態守護者。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我的志工行動橫跨「公民科學家」與「生態教育推廣」兩大主軸，足跡遍及新竹、關渡與南投：</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>公民科學家 (Citizen Scientist)：</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>長期監測：自 1999 年起參與新竹鳥會的「四季調查」，在新竹金城湖區域進行長達 25 年不間斷的鳥類種類與數量調查；後續參與關渡自然公園的「穿越線調查」。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>專業貢獻：這項工作需要高度專業（如鳥類、鳥音辨識）與耐力，我們累積的長期數據，為學者研究氣候變遷與環境影響提供了珍貴的第一手資料。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>生態教育導覽 (Ecological Education)：</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>新竹鳥會：於每年新竹水鳥季，定點架設高倍數望遠鏡，引導民眾與孩童親眼觀察水鳥姿態；也帶領三天兩夜的賞鳥團，深入介紹各地特有種。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>關渡自然公園：負負責定時導覽、心濕地導覽與活動支援，向大眾傳遞濕地對人類的重要性，對人類而言：水源和水稻是重中之重。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>臺大實驗林 (溪頭)：2024年開始服務，包含在溪頭帶領「知性之旅」介紹台灣杉、藪鳥等中海拔生態，以及在國內首座食農教育為主的「食農館」解說布農族歲時祭儀與先民對植物運用。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>這是一場超過 1/4 個世紀的馬拉松：</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>新竹鳥會 (1999 迄今)：持續服務超過 25 年，從未間斷。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>關渡自然公園 (2006 迄今)：每季排班 12 小時，加上一年 20 次的穿越線調查，累積服務超過 1,500 小時。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>臺大實驗林 (2024 迄今)：雖需長途跋涉，但我全心投入，去年單一年度即累積服務達 262 小時 (含訓練)。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>25 年來，我直接影響的民眾與學童估計超過 1,000 人次。但我認為更重要的成就是對專業與毅力的堅持：</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>榮譽肯定：我獲得了新竹鳥會頒發的 「四季全勤獎」、中華鳥會調查感謝狀，這是我對承諾的實踐；在關渡自然公園也屢獲「優良志工獎」；近期更被臺大實驗林選任為 「志工導師」，負責培訓下一期志工。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>觀念導正：除了數據積累，我致力於傳遞正確生態知識。例如，我曾在新竹海邊調查時發現本該在深山溪流的「河烏」，這極可能是人為捕捉後棄養的悲劇。這樣的畫面讓我更堅信，導覽不只是聊天，而是要將「愛護與尊重」的種子種入遊客心中。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>這份熱情具有感染力，我不僅帶著家人參與，也成功引導對賞鳥有興趣的同事與朋友一同走入野外，從入門到熟悉。在社群媒體上，我會避開敏感的調查數據，轉而分享調查過程中「意外遇見的美好」或是植物知識，希望透過軟性的分享，讓更多人看見大自然的奧妙，進而願意親近與保護它。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：此申請案為「大師級」的志工典範。申請者展現了極高水準的專業度、持續力與影響力。長達 25 年的投入，不僅在公民科學領域貢獻卓著（提供學術研究數據），更在環境教育與傳承上扮演關鍵角色（培訓志工、國際導覽）。",
+        "關鍵佐證：新竹鳥會頒發的「四季全勤獎」與關渡自然公園累積逾 1,500 小時的服務紀錄，皆為無法撼動的實踐力證明。",
+        "加分提醒：服務年資 25 年，遠超 1 年門檻，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "010",
+    "project": "Fueling Hope: San Diego Team’s Fight Against Hunger & Mission for Joy.",
+    "region": "台灣",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>San Diego is often seen as a paradise, but hidden hunger and economic hardship affect thousands of local families. Recognizing this gap, the San Diego team decided that \"one-time volunteering\" wasn't enough. We wanted to build a sustained commitment to our community.</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>Our motivation was twofold: Security and Joy. We wanted to ensure families had food on the table during critical months (through the San Diego Food Bank and Feeding San Diego) and ensure children didn't go without gifts during the holidays (through Toys for Tots). This wasn't just about corporate responsibility; it was about neighbors helping neighbors and strengthening our own team bonds through meaningful action.</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Over the past two years, our team mobilized for four major hands-on volunteering events, dedicating our time to logistics, sorting, and packing:</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>San Diego Food Bank (May 10, 2024): The team spent the morning strictly sorting and packaging produce to ensure rapid distribution to shelters.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Feeding San Diego (May 29, 2024): We returned weeks later to continue the fight against food insecurity, handling large-scale food sorting.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Feeding San Diego (Aug 5, 2025): For two energetic hours, we tackled a massive shipment of fresh avocados, sorting them into 3-pound family-sized bags.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Marine’s Toys for Tots (Dec 15, 2025): shifting focus to child welfare, where we visited the military Marine base. We collected toys at the office and then spent three hours on the base sorting gifts by age and gender and bagging them for delivery to local schools.</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>This application represents a multi-year commitment (2024-2025) with consistent engagement.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>2024: Two major food sorting events in May (SD Food Bank & Feeding SD) + a Holiday Food Drive.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>2025: Summer service in August (Feeding SD) and Winter service in December (Toys for Tots).</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>This regular cadence allows different team members to step up and keeps our connection to the community alive year-round.</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Our impact can be measured in both weight and smiles:</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>23,500+ lbs of Food Processed: Through our combined efforts at the food banks, we sorted approximately 9,000 lbs (May '24), 10,000 lbs (May '24), and 4,500 lbs (Aug '25). This massive effort translates to thousands of meals for vulnerable families.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Supporting Children: At the Marine base, we processed hundreds of toys. While our office collection was humble, our labor at the base helped ensure that thousands of donated items reached the right children on time.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Team Cohesion: These events provided a rare opportunity for cross-functional bonding outside the office, boosting morale and a sense of purpose among the 40+ unique participants.</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>We realized that consistency matters. By showing up repeatedly, we didn't just \"help out\"; we became a reliable partner for these non-profits. The experience reminded us that while we work in high-tech, the basic human needs of food and connection are where we can make the most immediate, tangible difference. We value this tradition and plan to continue expanding our impact in 2026.</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：這是一份組織非常完善的團隊申請，在實踐力與影響力上表現優異。團隊不僅僅是捐款，而是投入了實質的後勤勞動力（分類/包裝），解決了非營利組織的痛點。跨年度的持續性以及清晰的量化成果（食物磅數），使其成為非常有力的獲獎候選者。",
+        "關鍵佐證：申請書中詳細列出了三個特定日期的工作成果總和達 23,500 磅食物，為其影響力提供了不可反駁的數據支持。",
+        "加分提醒：申請資料確認涵蓋 2024 與 2025 年的活動。請標記符合「長期服務加分項目 (+5%)」資格。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "011",
+    "project": "內容不符，未通過初審",
+    "region": "-",
+    "category": "-",
+    "photoUrl": "#",
+    "longTerm": false,
+    "content": [
+      {
+        "t": "審查備註",
+        "c": "內容不符合本次評選範疇，未通過初審。"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "未通過初審"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "012",
+    "project": "Empowering Rural Education through Digital Infrastructure",
+    "region": "全球",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Growing up in a rural village and studying in government-run schools, I witnessed firsthand the challenges faced by both teachers and students in traditional classroom settings. These experiences deeply inspired me to improve learning opportunities in my hometown by equipping local schools with modern digital tools. I aspired to provide students with greater clarity and engagement, believing that digital infrastructure could transform their educational journey.</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Over the past 3–4 years, I donated projectors and laptops to multiple schools where I studied in Karnataka, India, including Aralikatti Senior Primary School, Jawahar Navodaya Vidyalaya (JNV Kothali), and Aralikatti Higher Secondary School. My managers and HR team assisted in coordinating donations and obtaining MediaTek laptops from an NGO affiliated with MTK Bangalore’s CSR initiative.</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>I made donations annually and visited the schools whenever I returned to my native village. Each time, I looked after the equipment usage and consistently observed how teachers and students were adopting digital resources.</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Outcomes can be quantitative and qualitative. This award encourages small but regular volunteer actions.</div><div style='margin-bottom:6px; line-height: 1.6;'>Each class benefited around 30 students, and digital infrastructure has been in use for nearly 3–4 years. Teachers shared that it made their teaching easier by providing visual aids, while students found concepts much clearer and learning more enjoyable. The positive impact extended to hundreds of students, enabling them to develop digital learning skills and access better educational resources. These actions continue to transform rural education and inspire curiosity among students.</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Did the applicant share this action? Did it call for or inspire others to join?</div><div style='margin-bottom:6px; line-height: 1.6;'>Our managers and HR team helped negotiate with the NGO for MediaTek laptops, making this project possible. I shared the progress and stories through WhatsApp status but am not active on other social media platforms.</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 建議",
+        "整體評價：這是一份典型的「回饋鄉里」提案。申請者不僅運用個人資金，更聰明地槓桿公司 CSR 資源（MediaTek Laptops），將個人善意擴大為公司內部的協作專案，值得肯定。",
+        "關鍵佐證：具體的學校名稱（Aralikatti, JNV Kothali）與跨年度（2022, 2023）的照片紀錄，充分證明了行動的真實性與持續性。",
+        "加分提醒：年資 > 1 年（3-4 years），符合實踐力加分項目 (+5%)"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "013",
+    "project": "公益行動：科技傳愛，點亮孤老與無聲世界",
+    "region": "台灣",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>自 2023 年起，聯發科技上海分公司 (MSHC) 志工團隊便致力於將企業溫暖延伸至社區角落。我們看見了公司周邊社區中「孤寡老人」面臨的孤獨與生活困境，以及「聽障兒童」在特殊教育環境中對外界知識的渴望。</div><div style='margin-bottom:6px; line-height: 1.6;'>這不僅僅是物資的匱乏，更是心理陪伴與知識啟蒙的缺口。作為活動組織者，我看見了同事們心中熾熱的公益熱忱，也見證了弱勢群體在逆境中展現的堅韌生命力與樂觀態度。這份雙向的感動，成為推動我們堅持每年舉辦公益活動、並號召全公司共同參與的最大動力。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我們的行動分為「社區關懷」與「科技啟蒙」兩大主軸，團隊成員各司其職，並展現了強大的組織號召力：</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**全員號召與物資籌集**：</div><div style='margin-bottom:6px; line-height: 1.6;'>我們不只是一群人行動，而是號召 MSHC 各部門同仁共同參與。所有的米、麵、油以及給聽障兒童的新年禮物，皆由各部門愛心籌集而來，展現了集體的社會責任感。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**孤老探訪 (2024 - 持續進行)**：</div><div style='margin-bottom:6px; line-height: 1.6;'>團隊親自走訪公司周邊社區，為 26 位孤寡老人送上生活必需品。這些長輩多數身患慢性病、癌症或是失獨老人。我們不僅是送物資，更在現場陪伴聊天，傾聽他們的故事，緩解他們的孤獨感。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**聾校科技課堂 (2025 - 持續進行)**：</div><div style='margin-bottom:6px; line-height: 1.6;'>我們與上海市第四聾校合作，為 20 位聽障兒童舉辦「科技公益課堂」。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**科技實作**：我們帶去了 DIY 小衛星與顯微鏡，手把手教導孩子們組裝，讓他們透過顯微鏡觀察微觀世界，了解科技運作的原理。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**跨越障礙的溝通**：在專業手語老師的協助下，志工們耐心、細心地指導每一個步驟，用真誠的互動跨越了聽覺的障礙，將科學的種子種進孩子心中。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**持續性**：本計畫自 2023 年啟動，已持續運作 3 年。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**頻率**：未來已規劃與聾校建立長期合作，預計每年固定舉辦 2 次探訪活動。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**時數**：每位志工每次服務投入約 4 小時（不含前期籌備與物資整理時間），確保服務品質與深度。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>* **社區溫暖**：累計服務 **26 位** 孤寡老人，每位長輩皆獲得牛奶、食用油與大米等生活物資。更重要的是，我們看見病痛與孤獨中的長輩因志工的到來而展露笑顏，那份樂觀面對生活的態度，反過來深深感動了年輕的志工們。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**教育啟蒙**：惠及 **20 位** 聽障兒童。透過親手製作 DIY 小衛星與使用顯微鏡，孩子們不僅獲得了新年禮物，更在無聲的世界中看見了科技的奧妙，激發了他們對科學的興趣與自信。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我們的行動具有高度的擴散性與感染力：</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**內部共鳴**：透過活動後發送給 MSHC 全體同仁的「活動回顧郵件」，我們將現場的感動與成果分享給每一位員工，讓沒能到場的同事也能感受到公益的價值。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**愛心漣漪**：活動物資來自各部門的共同籌集，證明了這項行動成功喚起了全公司的公益意識，讓愛心從 13 人的團隊擴散至整個分公司。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 建議",
+        "整體評價：這是一個將「科技核心職能（科普教育）」與「在地人文關懷」完美結合的優秀團隊案例，展現了企業志工的多元價值。",
+        "關鍵佐證：具體提及與「上海市第四聾校」的合作細節（DIY 小衛星、顯微鏡），以及志工與孩子互動的畫面感，說服力強。",
+        "加分提醒：本計畫自 2023 年啟動，符合實踐力加分項目「持續投入超過 1 年 (+5%)」。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "014",
+    "project": "災難救援與團隊協作：馬太鞍花蓮救災志工行動",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>「當我看見需求時，我能否跨越家庭的限制，成為那個伸出援手的人？」</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>2025 年 9 月下旬，花蓮馬太鞍的災情震撼全台。泥水掩埋家園的畫面讓我徹夜難眠，雖然第一時間已捐款，但內心有個聲音不斷告訴我：「還能做更多」。</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>然而，身為兩個孩子的母親，其中一位更是需要高度關注的特殊生，我的時間與精力極度受限。「親自去救災」對我的家庭 Routine 是巨大的挑戰。但在獲得家人的支持後，我決定勇敢突破——我想讓孩子看到，媽媽不是超人，但願意在別人需要時站出來。這不僅是一次救災，更是一次對自我的挑戰與身教。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>角色：行動發起人、總召集人、現場協作志工</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我不僅是參與者，更主動承擔起「發起人」的角色，將一個人的心意擴大為一群人的力量。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>策劃與動員：利用 ChatGPT 協助規劃流程，於公司生活版發文招募，並建立 Line 群組統籌資訊。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>後勤與安全：負責遊覽車比價、聯繫司機、規劃交通動線，並製作 Google 簽到表確實掌握 30 位同仁的動向與安全回報。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>現場協作：抵達花蓮鳳林與光復災區後，即便面臨地震警報與堰塞湖撤離警報，仍冷靜帶領同仁配合國軍與當地指揮，進行地下室積水清理、搬運物資，以及協助清理被泥流掩埋的受災戶家園。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>活動日期：2025/10/08（當日來回，清晨出發至夜間返家）。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>籌備投入：行前兩週密集進行招募、溝通、行程規劃與風險評估，共計約 30 小時。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>現場服務：實際志工服務時數 8 小時（附志工假證明）。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>未來承諾：此次行動開啟了我對在地災害援助的關注，未來將持續投入相關急難救助行動。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>這場行動證明了企業志工的機動性與團結力：</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>擴大參與：成功號召 30 位 聯發科技同仁親赴前線，合計貢獻超過 200 小時 的服務時數。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>資源整合：串聯無法到場的同仁進行捐款，解決了車資與物資認領問題，形成「出錢出力」的完整支援網。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>實質援助：協助光復商工清理地下室積水，並在佛祖街重災區協助挖掘被泥流掩埋僅剩屋頂的民宅（後確認為受災小女孩的家），減輕災民重建負擔。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>制度推廣：透過本次行動，實際運用並推廣公司「志工假」制度，讓更多同仁了解並善用此福利投入公益。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>這次行動的漣漪效應遠超乎預期：</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>家庭層面：我的先生與孩子共同承擔了家務與適應變動，讓「公益」成為我們家的共同話題，孩子看著媽媽穿著雨鞋出門的背影，學習到了責任與勇氣。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>同仁層面：活動紀錄在 Line 群組與公司論壇分享後，引發熱烈迴響，許多未能參與的同仁表示深受感動，並主動詢問下次機會。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>社會層面：在現場，我們看見來自各地的志工（徒手挖泥的大哥、送冰涼飲料的路人）不分彼此。這種安靜、柔軟但強大的台灣力量，深深震撼了每一位參與的聯發人。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：此申請案為「行動力」與「領導力」的絕佳展現。申請者不僅是參與者，更是資源整合者（Initiator）。在單次行動中創造了槓桿效應（1人帶動30人），且故事中克服家庭限制的背景極具啟發性，完美詮釋了「每個人都能成為英雄」的獎項精神。",
+        "關鍵佐證：活動簽到表（30人名單）與志工假證明，以及協助清理受災戶的現場紀錄照片。",
+        "加分提醒：雖為單次大型專案行動，未滿 1 年長期服務加分條件，但其「發起人」角色的困難度與動員力值得在實踐力項目給予高分評價。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "015",
+    "project": "石头巴巴智慧DIY：讓科技教育點亮童年",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我從事半導體行業17年，感受到科技不斷改變世界，也深刻體會到教育的重要性。身為家長，在與孩子們分享電子產品知識時看到他們的求知眼神，啟發我創立「石头巴巴智慧DIY志願者團隊」，讓更多孩子能在童年親身體驗科技的原理、動手DIY作品（如收音機、智能紅綠燈等），以科技教育提升及豐富生活，培養未來世界的建設者。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我負責團隊所有DIY活動的產品選擇、設計課程並擔任講師，負責講解科技原理、操作步驟並協助孩子們解決實際困難。例如在「DIY收音機」活動中，我會提前準備材料，帶領孩子們認識收音機構造、協助他們順利完成組裝、親身測試成果。活動內容涵蓋科普講座、作品製作以及帶領孩子們參觀公司、科技館，實現理論與實踐的結合。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>自2024年創立團隊至今已超過2年，每個月擇一週末於安徽合肥高新區林溪社區固定舉辦志工科普活動，累計服務超過500人次，完成十多個不同科技DIY作品。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>活動深受孩子與家長歡迎，每次活動名額皆「秒光」，參與家庭高度熱情並主動加入協助。孩子們在DIY電話完成後，親身體驗兩台電話互通的驚喜，親手搭建智能紅綠燈感受到科技與生活的聯結。活動不僅激發孩子們的學習熱情，也促進親子共學，共同探索科技世界。2025年團隊榮獲合肥高新區第一屆「志同道合，益麓同行」志願服務項目大賽一等獎，展示團隊科普、公益實力。（見獎狀照片、朋友圈貼文截圖）</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>雖然親友與同事未正式參與，但家長們主動投入志工、活動氛圍熱烈。我亦在朋友圈等社群分享活動成果，獲得許多正面回饋與支持，進一步擴大公益影響力，形成社區與家庭的良性互動。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 建議",
+        "整體評價：這是一份素質極高的申請案，申請者成功將半導體專業技能與社區公益結合。亮點在於其長期投入（>2年）的持續性，以及獲得外部官方獎項認證的影響力，展現了 MediaTek 員工以科技回饋社會的優良典範。",
+        "關鍵佐證：2025年合肥高新區志願服務項目大賽「一等獎」獎狀，有力證明了該項目的品質與社會價值。",
+        "加分提醒：志工年資自 2024 年起，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "016",
+    "project": "Oulu2026 Ambassadors: Catalysts for Cultural Climate Change",
+    "region": "台灣",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": false,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Our journey began in November 2025 as we joined the movement to transform our hometown, Oulu, into “the European Capital of Culture 2026”. Being part of the \"Oulu2026\" initiative means contributing to a \"cultural climate change\", a mission to bring vibrancy, art, and international attention to Northern Finland.</div><div style='margin-bottom:6px; line-height: 1.6;'>However, our motivation goes far deeper than simply hosting events. We believe that art and culture are the glue that holds a community together; providing the empathy and sense of belonging that help a society thrive.</div><div style='margin-bottom:6px; line-height: 1.6;'>We volunteer because we know culture is vital for mental well-being and reducing stress. In a fast-changing world, these events give us a new way to look at complex social and environmental problems. We wanted to actively build this \"Cultural Climate Change,\" ensuring our city offers not just a place to live, but a space to heal, connect, and find new ideas.</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>As part of a group of nearly 700 volunteers, we serve as the face of the city. Our roles are diverse and dynamic, ranging from guiding international guests to logistical support.</div><div style='margin-bottom:6px; line-height: 1.6;'>Most recently we volunteered at the Frozen People Festival. We managed an info to assist visitors at this unique electronic music and northern art festival. We acted as problem-solvers for artists, press, and tourists—providing everything from location guidance to earplugs.</div><div style='margin-bottom:6px; line-height: 1.6;'>Previously we have been involved for example in the Opening Weekend events and Forest Art Trail. We guided visitors during the massive opening festivities and supported international guides on forest art trails. Whether decorating venues or directing crowds, our role is to ensure a smooth, welcoming experience for all.</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Our commitment is long-term and consistent throughout the cultural capital year 2026.</div><div style='margin-bottom:6px; line-height: 1.6;'>Start Date: Induction in Nov 2025; official events began Dec 31, 2025.</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>Volume: We have contributed approximately 13–16 hours each so far in early 2026.</div><div style='margin-bottom:6px; line-height: 1.6;'>Frequency: We plan to dedicate 4–8 hours per month for the remainder of the year, adapting to the seasonal rhythm of the cultural calendar.</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Outcome includes quantitative and qualitative impact. This award aims to **encourage** small but regular volunteer actions.*</div><div style='margin-bottom:6px; line-height: 1.6;'>Our efforts act as the gears turning a massive cultural engine. The Oulu2026 Opening Weekend alone attracted over 250,000 visits across 200 events, supported by over 1,100 total volunteer hours.</div><div style='margin-bottom:6px; line-height: 1.6;'>By manning the info desks and guiding crowds, we directly contributed to the safety and enjoyment of these thousands of visitors. On a micro level, our impact was personal: solving small but critical issues for confused tourists or stressed artists on the frozen sea ensured that their memory of Oulu was one of hospitality and warmth, despite the freezing temperatures.</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Did the applicant actively share this action? Did they successfully call for or inspire others to join?*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>We actively advocate for the Oulu2026 volunteer program among our colleagues and networks. We emphasize the flexibility of the program—allowing people to commit as much time as suits them—and the incredible variety of tasks available. By sharing our experiences, we hope to show that there is a role for everyone in this cultural movement, encouraging others to join the team of 700+ volunteers.</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "AI 評審觀點 (AI 敘事策略與動機 (Narrative Strategy & Motivation)",
+        "申請者成功將常見的「活動志工 (Event Volunteering)」昇華為「文化氣候變遷 (Cultural Climate Change)」的宏大敘事。將單純的活動支援連結至「心理健康」與「社群凝聚力」，顯示出申請者對於志工服務有深層的思考與高度的內在驅動力。",
+        "執行細節的可信度 (Operational Credibility)",
+        "儘管未附上時數證明，但文中提及的細節極具說服力——如在 \"Frozen People Festival\" 具體協助解決藝術家與遊客的突發狀況（提供耳塞、指引方向）。這些「解決問題 (Problem-solving)」的微小敘述，比單純的時數數字更能佐證其在第一線的實際投入與服務品質。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "017",
+    "project": "從星願心語到賽場守護：一份動靜皆宜的志工初心",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>工作之餘，我常思考如何能更深度地融入這座城市，並為需要幫助的人群提供實質支持。我的志工旅程始於對「多元需求」的關注——無論是需要情感支持的弱勢兒童，還是需要秩序維護的大型城市活動。我希望透過自己的雙手，在不同的角落傳遞善意，從靜謐的陪伴到熱情的賽事支援，都是我回饋社會的方式。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我的志工行動主要分為「關懷陪伴」與「專業支援」兩大面向：</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**MSZ 星願心語·愛心之行（聖誕老人）**：在 2024 年聖誕節，我化身為聖誕老人，走進「星星的孩子」（自閉症兒童）的世界。我不只是分發禮物，更是在傳遞一份被看見的關愛。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**中國足球聯賽（擔架員與秩序維護）**：作為一個資深足球迷，我選擇從觀眾席走向場邊，擔任擔架員與秩序維護志工。這一角色要求極高的專注力與反應速度。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**城市文明守護**：此外，我也長期投入大梅沙海濱公園的文明引導、市民中心燈光秀指引以及兒童樂園的清潔服務，用行動維護城市的整潔與秩序。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**長期投入**：除單次活動外，我特別針對「中國足球聯賽」進行了整個賽季的持續支援，累計服務 **3 場** 關鍵賽事。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**重點節日**：在 2024 年聖誕節期間，投入全天時間陪伴特殊兒童。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**日常累積**：包含田園音樂節、大梅沙假期引導等，累計服務時數已達數十小時（詳見附件 PDF 紀錄表）。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>*   **守護童心的快樂**：在「星願心語」活動中，我為 **30 位** 自閉症兒童送上了 **30 份** 專屬禮物。最讓我感動的成果，不是禮物本身，而是孩子們打破常規的反應——當老師試圖引導他們說「謝謝」時，孩子們卻迫不及待地直接拆開禮物。那一刻，我看見了他們最純粹的快樂與天性，這也讓我意識到，真正的關懷是讓對方感到自在與喜悅。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**保障賽事安全**：在 3 場高強度的足球聯賽中，我深刻體會到擔架員「快與穩」的重要性。透過高度集中的注意力，我確保了傷員能被迅速且安全地移送，避免二次傷害，為賽事的順利進行提供了堅實的後勤保障。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我的志工行動不僅是個人的投入，也逐漸影響了身邊的人：</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**帶動同事**：我曾邀請同事一同參與足球聯賽的志工服務，讓他們從單純的觀賽者轉變為服務的提供者，共同體驗付出的快樂。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**社群傳播**：我經常在微信朋友圈分享志工服務的照片與心得（詳見附件截圖），希望透過社群的力量，讓更多朋友關注到這些社會需求，並加入志工行列。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 建議",
+        "整體評價：這是一份兼具廣度與溫度的優秀申請。申請者成功將個人興趣（足球）轉化為專業服務，同時在面對弱勢群體（自閉症兒童）時展現出細膩的同理心。其「動靜皆宜」的特質，完美詮釋了志工角色的多元可能性。",
+        "關鍵佐證：申請者對於自閉症兒童「不說謝謝直接拆禮物」的觀察與反思，極具故事感染力，證明其服務並非流於形式，而是真正走入受助者的內心。",
+        "加分提醒：依據描述，申請者參與足球聯賽為「整個賽季」且有「長期投入」大梅沙公園服務的描述。若附件紀錄確認跨度超過一年，請標註「符合實踐力加分項目 (+5%)」。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "018",
+    "project": "科技人的溫暖足跡：從守護海岸線到智慧長照的初心",
+    "region": "新竹",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>身為聯發科技的一份子，我深信科技始終來自於對人的關懷。過去兩年，我將這份信念轉化為實際行動，參與了環境永續與社會關懷的志工服務。無論是在新竹海岸線對抗嚴苛的種樹環境，或是深入社區探訪獨居長者，我的動機始終如一：希望透過身體力行的投入，結合科技人的理性觀察與感性陪伴，為這片土地與社會角落帶來實質的改變。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我的志工行動跨越了環境保護與社區照護兩個領域：</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**守護海岸線 (環境永續)**：在前年的植樹節，我前往竹北新月沙灘參與植樹計畫。面對海邊烈日與強風的嚴苛環境，我們採用了具備環保概念的「水寶盆」技術。這個可生物分解的容器能有效儲水，保護樹苗根部，成功將海濱植栽的存活率從 20% 大幅提升至 80%。我親手種下木麻黃與林投樹，期許這些綠色衛兵能守護沙灘不再流失。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**端午送暖與長者訪視 (社會關懷)**：去年端午節前夕，我先參與了公司內部的「艾草按摩槌」手作活動，隨後與華山基金會合作，親自前往新竹市北區探訪 6 位獨居長者。除了致贈肉粽、物資與按摩槌，我更負責協助量測血壓與深度陪伴。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**耐心陪伴**：在探訪一位住在愛文街的伯伯時，發現他遲遲不起床，原來是褲袋裡的硬幣散落在床底。我們花了好長一段時間協助他找齊零錢與手機，這個過程讓我深刻體會到，對長者而言，耐心的「等待與陪伴」比物質更重要。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**看見韌性**：我遇見了一位「發明家」長輩，利用流水與風扇自製「類冷氣」消暑；也見證了一位中風伯伯靠意志力復健到能正常生活。這些互動讓我看見了長者在困境中的生命力。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我持續投入公司舉辦的永續志工活動，跨度超過一年，展現長期的承諾：</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**2023 年 3 月**：竹北新月沙灘植樹活動（半天）。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**2024 年 5 月**：艾草按摩槌製作（半天）+ 華山基金會獨居老人訪視（半天）。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>透過團隊的合作，我們創造了具體的量化成果：</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**環境效益**：在植樹活動中，我與百名同仁共同種下了 **660 棵樹苗**，透過水寶盆技術確保了高存活率，為新竹海岸線建立了穩固的防風林。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**社會效益**：在端午送暖活動中，我們集結 118 位同仁之力，手工打造了 **236 支艾草按摩槌**。在訪視當天，確認了 6 位長者的血壓健康數據（收縮與舒張壓皆正常），並解決了他們生活中的即時困難（如尋找遺失物）。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我將這兩次深刻的志工體驗與照片分享於個人的社群平台 (FB 與 LinkedIn)，獲得了許多親友與同事的迴響。透過分享「水寶盆」的科技應用與長者訪視的溫馨故事，我希望能喚起更多人關注環境議題與高齡化社會的需求，證明科技人不僅有專業，更有溫暖的心。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 建議",
+        "整體評價：申請者成功將科技專業（水寶盆技術觀察）與人文關懷（耐心陪伴長者）結合，故事敘述細膩動人，展現了「科技人」在公益場域的獨特溫度與反思深度。",
+        "關鍵佐證：植樹存活率由20%提升至80%的數據，以及「床底下找硬幣」的具體陪伴細節，皆為強力佐證。",
+        "加分提醒：符合實踐力加分項目 (+5%)，志工年資累積超過 1 年 (2023-2024)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "019",
+    "project": "書香傳愛：為慢飛天使募集閱讀翅膀",
+    "region": "新竹",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>本次行動源於對「慢飛兒庇護工場」的長期關注。我們看見了舊書對於庇護工場不僅是商品，更是支持身心障礙者（慢飛天使）穩定就業的重要資源。為了讓這些承載知識與祝福的書本能發揮更大的價值，同時響應公司 ESG 永續理念，我們決定發起這場「COVID 疫後首次重啟」的大型跨區募書行動。我們希望透過書籍的循環再生，成為支持慢飛天使自立更生的堅強後盾。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>這是一場由新竹、竹北、台北三地串聯的高效行動。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>跨區動員：團隊代表發起號召後，志工們迅速響應，分別於各辦公棟別設置募集箱，並透過信件與口耳相傳，呼籲同仁在歲末年終進行「斷捨離」，捐出保存良好的書籍。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>自發協作：我們採取「去中心化」的靈活分工模式。志工們透過線上表單認領時段，利用空檔時間自發排班，進行書籍的檢查、分類與包裝，展現了極高的自主性與執行力。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>物流串接：將散落在各棟的愛心匯聚，最後由一批志工合力將打包好的書籍運送至收發室，安排物流統一配送至庇護工場。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>活動期間： 2026 年 1 月12~19日 (募書期)。後續一周則為志工整理、包裝、運送行動時間。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>參與模式：本次行動強調「精準投入、高效產出」。雖然沒有冗長的會議，但超過20位分布在各辦公室的志工各司其職，核心成員最高投入時數達 8 小時。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>長期承諾：這是聯發科技在疫情後首次重啟的大型實體募書，我們期許這不僅是一次性的活動，而是能成為每年固定的公益傳統，持續為慢飛兒及更多公益機構注入活水。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>本次行動成效斐然，具體成果如下：</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>募集數量：短短一周的募集時間，共計募集將近 2,300 本 書籍，成果遠超預期。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>參與廣度：核心志工團隊超過20 位，並帶動了新竹、竹北、台北三地難以計數的同仁熱情響應。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>機構回饋：慢飛兒庇護工場收到書籍後，特地在公司社群貼文留言致謝：「感謝聯發科技志工社與每一位 MediaTekers 的愛心支持 ❤️ 每一本書都將化為慢飛兒朋友努力工作的力量，讓愛與知識持續流動！」</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>最讓我們感動的時刻，是最後大家聚在一起搬運書籍的當下。那一箱箱沉甸甸的書籍，手中感受到的不只是紙張的重量，更是同事們滿滿的愛心。這讓我們深刻體會到，即使是平日忙碌的科技人，透過簡單但有效率的組織，也能匯聚出巨大的能量。這 2,300 本書的奇蹟，歸功於每一位自發協助整理的志工，那份「不問回報、只求付出」的默契，是團隊最珍貴的收穫。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 建議",
+        "整體評價：此專案為典型的高效能團隊志工行動。雖活動期間短（一週），但動員力強、成果具體（2,300本書），且成功重啟了疫後中斷的實體公益傳統，值得肯定。",
+        "關鍵佐證：機構（慢飛兒庇護工場）在社群媒體上的直接留言回饋截圖，有力證明了行動的實際效益與社會連結。",
+        "加分提醒：目前為疫後「首次重啟」，雖展現長期承諾意願，但若無連續兩年以上紀錄，暫不列入+5%長期服務加分，建議評審視為具潛力的年度亮點活動。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "020",
+    "project": "Bridging Cultures, Serving Communities: The MTK Global ERG Year of Impact",
+    "region": "台灣",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Our team is born from the Employee Resource Group (ERG) at MediaTek, driven by a dual mission: to serve our local communities and to bridge the cultural gap between local Taiwanese and foreign employees. We recognized that while we work in the same buildings, language and cultural barriers often exist. We believed that the best way to dissolve these barriers was not just through meetings, but through shared acts of kindness. By bringing diverse colleagues together for a common cause, we aimed to create a comfortable, inclusive environment where technical knowledge and friendship could flow freely, while simultaneously contributing to the land and people of Taiwan.</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>Motivation: Bringing local & foreign employees together was to build closer and comfortable work environment where people feel free to express their technical knowledge while share common interest without language barrier and make work life more beautiful and enthusiastic. Also to encouraged foreign employee to contribute without cultural and language barrier.</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Our volunteering strategy was holistic, covering financial knowledge exchange b/n local & foreign colleagues, environmental protection, social welfare, and elderly care throughout the year:</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**Financial knowledge exchange (April - May):** Partnering with a local firm to share tax filing knowledge to all colleagues.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**Cultural exchange (Q2 every year):** Foreign colleagues introduce their culture & tradition to Taiwanese colleagues and global employee and build a platform to embrace various cultures around the world by tasting their food and playing traditional games while engaging in technical discussions as a moment of refreshment.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**Environmental Stewardship (April - Arbor Day):** Partnering with a local charitable trust in Hsinchu, our diverse team of local and foreign colleagues put on their boots to plant trees. We worked side-by-side digging soil and securing saplings to support re-forestation and prevent soil erosion.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**Supporting Special Needs Youth (December - Christmas):** We collaborated with the **Hsinchu Catholic Social Welfare Foundation** to bring joy to mentally challenged students. Our team prepared \"chocolate buckets\" and personalized gifts, engaging the students in games and songs to ensure they felt seen and celebrated during the holidays.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**Elderly Care:** We prepared essential daily tools under professional guidance for the elderly living in the countryside. Beyond just making the tools, team members personally visited these seniors to deliver the items and provide companionship to those whose children are working far away.</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>This core team has been driving these initiatives for **more than one year**, establishing a consistent calendar of giving.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**Accumulated Effort:** Each core member has dedicated approximately **20 hours** of direct service across these events.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**Sustainability:** This is not a one-time event but a sustained annual commitment (April, December, and throughout the year) that is now embedded in our ERG's culture.</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Our actions have generated tangible results for the community and our company culture:</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**Environmental:** We successfully planted **over 20 trees**, contributing to a greener Hsinchu coastline and erosion protection.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**Social:** We brought direct happiness and companionship to **10-15 students** with special needs and provided tools/visits for **10+ elderly citizens**. And also share tax filing knowledge and showcase the efficiency of system as most earlier thought would require special assistance while filing tax to all foreign colleagues and enrich their living experience loaclly.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**Cultural:** Most importantly, we demonstrated that care has no language. Seeing foreign employees actively serving the local Taiwanese community bridged a gap that words alone could not fill.</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>Our actions have rippled outwards. By sharing our experiences and the joy of \"Global Day\" cultural exchanges, we have successfully recruited **5-10 new active participants** annually. Currently, we have a growing pool of **10-20 employees** who have expressed willingness to join future ERG community service events, proving that our initiative is inspiring a wider circle of kindness within MediaTek.</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "***",
+        "| 面向 | 權重 | 現況評估 | AI 證據觀察摘要 |",
+        "|---|---|---|---|",
+        "| **實踐力** | 45% | ✅ Sufficient | 該團隊長期經營 ERG，組織繁雜的文化活動與專業稅務講座，展現高度自發性與執行力。投入時間超過一年，具備持續性。 |",
+        "| **影響力** | 35% | ✅ Sufficient | 量化數據明確（每年招募 5-10 人，核心成員 20+ 人）。質化影響深遠：解決外籍同仁報稅痛點，並建立「Global Family」的歸屬感，有效促進內部融合。 |",
+        "| **共鳴力** | 20% | ✅ Sufficient | \"We were no longer just colleagues, we were a family\" 具備強烈感染力，且成功號召新成員加入，顯示其行動具有擴散性。 |",
+        "*初評 AI 評分建議**",
+        "*整體評價**：這是一份優秀的「內部文化建設」型志工申請。申請者成功將志工精神應用於企業內部，解決了跨文化溝通與生活適應的實際問題（如報稅），並進一步將這股力量轉化為對外的公益行動（植樹、長者關懷）。其核心價值在於「Bridging Cultures」，完美呼應 Global Company 的願景。",
+        "*關鍵佐證**：Tax Seminar Photo（證明其實質解決問題的能力）與 Global Family Photo（證明其建立社群情感的成效）。",
+        "*加分提醒**：符合實踐力加分項目 (+5%)，志工行動持續超過一年。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "021",
+    "project": "AI翻轉教育：偏鄉孩童現場教學支援與AI運用",
+    "region": "新竹",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>AI是學習歷程的好夥伴，我相信若能將科技資源帶進偏鄉，讓孩子善用AI工具，他們將擁有與都市學童同樣的學習機會。但多數偏鄉學童缺乏動力與方法，因此我希望透過行動與陪伴帶來改變，讓每個孩子都能勇敢嘗試、展現自信。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>身為志工社翻轉教育計畫的召集人與現場講師，我設計課程、帶領AI工具操作、協助學生寫作、培養表達能力，並親自講解與激勵。在峨眉國中這場行動，共帶領10位志工，與誠致教育基金會合作服務，團隊全程陪伴與互動，協助學生突破表達難題，提升自主學習。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>本次活動於新竹峨眉鄉峨眉國中舉行，為單次整日服務（每人8小時）。我們志工社每年固定於不同學校推動翻轉教育行動，平均一個月一次，長期持續推進教育公平。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>本次服務約六十位國中學生，當場每位學童完成一篇AI協作文章，小組成員皆能上台發表五分鐘短講。這是師生、志工與AI協作的成果，也是偏鄉孩子自信展現的難得畫面。活動結束後每位志工均有服務時數紀錄、證書與回饋，並於社群貼文公開分享服務心得與成效。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>除了直接邀請同仁組隊參與外，我也在公司推動三場內部培訓課程，協助更多人投入教育志工。活動結束，團隊分組討論、交換經驗，大家在協作中找到成就感，志工氣氛正向熱烈。個人社群貼文記錄心得，分享現場觀察與偏鄉教育特色，鼓勵更多人用AI教學、跨域服務、體會「施比受更有福」的精神。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 建議",
+        "整體評價：這是一份高品質的團隊申請案。主題緊扣 MediaTek 核心科技職能（AI），並精準對接社會需求（偏鄉教育資源落差）。申請者不僅是參與者，更是發起者與培訓者，展現了完整的專案領導力。",
+        "關鍵佐證：申請者提供的「內部培訓與小組討論照片」以及學生當場產出的「AI 協作文章與短講」是證明其行動深度與影響力的強力證據。",
+        "加分提醒：申請內容提到「志工社每年固定...平均一個月一次」，顯示為長期投入，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "022",
+    "project": "陪伴浪浪，父子共成長──新竹浪浪志工營現場輔導員紀事",
+    "region": "新竹",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>2023年12月收到公司志工社舉辦「浪浪志工一日營」的活動訊息，剛好孩子需要國中公共服務時數，家中原有長毛臘腸犬，孩子熱愛狗狗，協會可提供服務證明，我們便一同參加，認識收容所的狗狗。活動課程內容包括保護動物環境、狗狗肢體語言、陪伴動物舒壓等，讓參與者能以正面方式服務浪浪。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>在志工營活動期間，協助課程實作分享、帶領新學員帶浪浪放風、陪籠安撫浪浪，並於活動結束時整理並恢復環境。與孩子共同投入，從旁觀者成為實際參與者，於志工營期間與資深輔導員交流，見證志工們細膩照料犬隻與情感傳遞的價值。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>每年參與協會志工營1~2次，輔導新進學員，每次1~2天共18小時，均有協會服務證明（佐證已附），日常亦會參與週六上午協會開放陪伴活動。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>活動期間協助照顧約10~20隻浪浪，每隻狀態各異，依其性格與狀態選擇適合的陪伴方式。經志工陪伴漸漸願意親近志工、願意出籠放風。孩子在服務歷程中也獨當一面參與學員分享、提升承擔能力與信任度，親子共同話題成為關係更加緊密的種子。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>活動過程在親友群組推廣，也鼓勵同事與親友參與，親子共同學習跨出舒適圈。希望能將這份陪伴與愛心持續傳遞，讓更多人成為浪浪小天使。</div><div style='margin-bottom:6px; line-height: 1.6;'>(影片佐證：[協會志工製作 志工營活動紀錄影片])</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 建議",
+        "整體評價：此申請案完美體現了「個人行動帶動家庭，進而影響社群」的擴散效應。申請者不滿足於單次參與，而是深入學習成為輔導員，展現了極高的投入度與志工精神。",
+        "關鍵佐證：M3 照片顯示其作為輔導員引導新人的畫面，以及 Instagram 的活動紀錄影片，皆有力證明其角色的轉變與行動的真實性。",
+        "加分提醒：符合實踐力加分項目 (+5%)：志工年資超過 1 年（2023.12 至今）。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "023",
+    "project": "熱血傳承30載：從全血到分離術的生命守護",
+    "region": "新竹",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我的捐血旅程從高三開始，迄今已逾30年。回憶當時，捐血車開進校園，我初次捐血，體驗到助人是一件有意義且隨手可做的事。大學後，因校園沒有捐血車次數較少，改去嘉義捐血室。護理人員建議我嘗試捐血小板，透過這種方式我能每兩週都助人一次。自此不論搬遷、工作換地點，第一時間就尋找最近捐血中心，堅持這份陪伴生命的承諾。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>為了能夠持續每兩週捐出健康的血小板，我會在捐血前一天特別自律飲食，避免油膩並維持正常作息，時時注意自身健康狀態。捐血過程中，長達1.5~2小時，我會將時間當作讓身體休息和沈澱的片刻。長期與新竹捐血中心的護理人員互動，大家早已熟悉我的血管，也形成默契與信任，像是志工行動的老戰友。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>截至目前，已累積1132次捐血紀錄。只要健康與時間允許，都會維持每兩週前往新竹捐血中心。這三十年來，捐血已融入生活日常，象徵著我對社會、生命的長期承諾。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>捐血已成為我生活的重要部分，也帶來許多意外溫暖。曾因為我經常步行去捐血，捐血中心與La New辦活動，主動送我兩雙運動鞋，讓我感受到行動的被肯定和鼓勵。雖然沒有收到直接受血者的回饋，但每一次捐血都深信自己在默默守護未知生命。也因累積超過1000單位的紀錄，獲新竹捐血中心特別表揚，這份榮譽是長年小小付出的最佳證明。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>（申請者提及善念不需宣揚，強調善的影響會默默傳遞，詳見下方心得與反思）</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：這是一位極致展現「長期主義」與「自律精神」的志工英雄。雖然在「共鳴力（擴散性）」上較為內斂，但其驚人的持續時間（30年）與投入頻率（每兩週），完全彌補了宣傳面向的不足，是實踐力滿分的典範。",
+        "關鍵佐證：「1132次捐血紀錄報告」與「1000單位特別表揚獎牌」是無可辯駁的強大證據。",
+        "加分提醒：符合資歷 > 1 年（達 30 年），請標註「符合實踐力加分項目 (+5%)」。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "024",
+    "project": "黑暗跑團陪跑計畫：以繩繫心，共享奔跑自由",
+    "region": "台灣",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我們長期在上海世紀公園與閔行文化公園參加「黑暗跑團」志願陪跑活動，每週六上午、每週日各自報名，每季度一次團體活動。初衷本是運動健身，後來深入認識到黑暗跑團是全國性公益平台，旨在促進殘障群體與社會共融。視障夥伴運動機會有限，身心健康常被忽略，藉由陪跑行動，我們希望以運動無障礙，促人心無障礙。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>陪跑團隊標準配置為主陪跑員、領跑員、後伴跑員。主陪跑員持專用陪跑繩，利用語言與繩子拉力引導視障者方向與節奏，提醒坡度及障礙物。領跑員負責賽道預判與信息傳遞，後伴跑員負責安全護衛。所有成員都需接受 2 小時新人培訓，並由經驗志願者指導新手逐步上崗，確保專業與安全。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>鄭培軍一年內參與超過 14 次視障陪跑活動，累計 44 小時，陪伴過 7 位不同視障夥伴，累計幫他們完成超過 100 公里路程；劉玉蘭參與 4 次陪跑，累計 16 小時，幫助 3 位不同視障夥伴，累計 30 公里。二人持續帶動公司同事參與和家庭成員（孩子也加入陪跑），團隊影響力不斷擴大。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>多位視障夥伴因陪跑活動走出家門、重拾自信，每次活動他們都笑得非常燦爛，積極面對人生。我們也從他們身上獲得堅韌與樂觀的鼓舞。團隊不僅自身參與，還成功號召 8 位同事初體驗視障陪跑，推動公益認知在公司和家庭延續。這 8 位同事分別是：盧O、徐OO、張O、曹OO、吳OO、唐OO、周O、牛OO，他們已陸續開始日常陪跑。現場照片體現團隊凝聚力與陪跑場景，歡迎評審參閱。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>公益陪跑不僅鍛鍊身體，更培養了責任與耐心。每一次陪跑，都在彼此之間建立信任，也讓社會關注到運動平等和無障礙議題。我們希望持續推廣，動員更多員工和家庭成員，將這份愛心擴散到更廣的社群。團隊合影、親子陪跑場景、陪跑繩握在手中，都是最具象徵意義的畫面。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 建議",
+        "整體評價：這是一份高品質的團隊申請案。不僅自身投入時間可觀，更難得的是將「個人行動」轉化為「社群影響力」，具體列出受影響加入的 8 位同仁名單是極強的加分項，充分體現了 GVH 獎項鼓勵的志工文化擴散精神。",
+        "關鍵佐證：明確列出 8 位被號召同事的工號與姓名，以及親子陪跑的照片說明，直接證明了行動的擴散力。",
+        "加分提醒：鄭員提到「長期在...參加」且一年內數據完整，若經確認年資大於 1 年，符合實踐力加分項目"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "025",
+    "project": "每一步都算數：用奔跑串聯愛心，五年不間斷的公益長跑",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>自 2020 年起，我關注到安徽仁愛公益基金會的「仁愛助學手拉手」專案獲得騰訊公益配捐的機會。這讓我意識到，透過平台的機制，個人的微薄力量可以被「放大」，讓貧困兒童獲得更實質的支持。這份「讓愛加倍」的契機，驅使我投身志工行列。除此之外，我也希望能在忙碌的工作之餘，尋找一種既能強身健體，又能回饋社會的方式，於是開啟了這段長達 5 年的公益長跑。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>在這 5 年間（2020-2024），我擔任了「募捐發起人」與「健康領跑者」的雙重角色：</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**策略性募捐**：我不僅直接捐款支持安徽 “仁爱助学手拉手”弱勢兒童，更善用騰訊公益平台，參與「一根拐杖計劃」（助老）、「守護深圳灣」（環保）及「大山的孩子會英語」（教育）等多元專案。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**捐步行動**：我將每天的行走步數轉化為愛心，透過平台機制兌換成公益金。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**團隊號召**：我主動動員了跨部門共 10 餘位同事，組成「公益跑團」。我們利用工作之餘一起跑步、爬山、做拉伸運動，並互相提醒將步數捐出。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>這是一場持續 5 年（2020-2024）的長期抗戰。不同於單次活動，我們的投入是「每日」的累積。無論工作多忙，我與團隊夥伴都堅持上傳步數，將運動習慣融入生活，並轉化為常態性的公益輸出。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>這份堅持帶來了具體且可觀的成效：</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**量化貢獻**：我個人累計捐出了 **105 萬步**，並成功兌換了 **31.96 元** 的公益金。雖然金額看似不多，但這每一分錢都代表了數萬步的汗水與堅持，實實在在地幫助了需要的弱勢群體。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**團隊改變**：成功帶動 10 餘位跨部門同事養成了固定的運動習慣。團隊成員的身體素質明顯提升，比參與「一塊走」之前更加健壯。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**公益常態化**：最讓我驕傲的是，團隊成員現在已經養成了「下意識」的公益習慣，每天會自動自發地在騰訊公益上捐出步數，讓愛心成為一種生活方式。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>這項行動打破了部門藩籬，讓我和不同部門同事有了共同的話題與目標。我們在跑步與拉伸的過程中建立了深厚的革命情感，也證明了公益不需要悲情，它可以是充滿活力、汗水與歡笑的。透過社群分享與口耳相傳，我也希望能影響更多聯發科技的同仁，重視個人健康的同時，也能輕鬆做公益。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 建議",
+        "整體評價：此申請案完美體現了「勿以善小而不為」的精神。申請者將個人興趣昇華為群體公益行動，展現了高度的續航力與影響力，是推廣職場健康公益文化的極佳範例。",
+        "關鍵佐證：騰訊公益平台的「105 萬步」累計記錄與「公益榮譽證書」，證實了其長期的投入並非空談。",
+        "加分提醒：投入時間涵蓋 2020-2024，年資滿 5 年，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "026",
+    "project": "Nourishing the Community: The Cycle of Kindness at Feeding San Diego",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>I volunteered twice at Feeding San Diego, a local food bank in San Diego (May 10, 2024 and August 6, 2025). My motivation was simple: I believe that acts of kindness comes back around, and helping those in need creates a positive energy for both giver and receiver.</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Each time, our team worked with huge crates of fresh produce—potatoes, onions, avocados. My main role was to sort, weigh, and package 2lb bags, removing spoiled items (which were repurposed for animals). In total, we sorted and packaged over 9,000 lbs (May 2024) and 3,900 lbs (Aug 2025) of food.</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>I participated in two major events—May 10, 2024 and Aug 6, 2025. These were intensive sessions, sorting and packing more than 23,000 lbs of fresh food for the local community.</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Our efforts helped ensure thousands of healthy meals reached families in need, with zero waste as unsalvageable produce was directed to feed animals. This work is recognized in team emails and photos, confirming our contribution.</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>I invited my Mediatek colleagues to join, and together we made a meaningful impact. Their presence is captured in our group photos from each event.</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：此申請案展現了高效率的短期志工投入。雖然頻率非定期（年度型），但在單次活動中處理的物資量體巨大（數千磅），對當地食物銀行運作有實質幫助。",
+        "關鍵佐證：活動照片與具體的食物處理重量數據（9,000 lbs & 3,900 lbs），清楚證明了行動的產出。",
+        "加分提醒：申請者參與時間跨越 2024 至 2025 年，符合實踐力加分項目 (+5%) 的年資認定。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "027",
+    "project": "跨世代共融橋樑：『世代偵探』職場文化解碼行動",
+    "region": "台灣",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>在多元世代共存的職場環境中，我們觀察到許多溝通摩擦並非源自惡意，而是「頻率不同」。例如，資深同仁習慣在訊息結尾加上句號「。」以示完整，但年輕世代卻常解讀為「對方在生氣」或「嚴肅拒絕」。這些微小的誤解長期累積，便成為團隊協作的隱形阻礙。</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>為了解決此痛點，我們 10 位來自不同世代的夥伴成立了專注於 世代交流 (Generational Engagement) 的 ERG 團隊。我們的初衷很簡單：希望透過輕鬆有趣的活動，搭建一座理解的橋樑，讓同仁看見彼此行為背後的出發點，進而減少紛爭、提升溝通效率，打造更包容 (Inclusive) 的職場文化。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我們不採用傳統的說教式講座，而是設計了 「世代偵探之謎」 等沉浸式解謎活動。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>創意策劃：團隊每週進行腦力激盪，蒐集各世代專屬的「語言」與「梗」，將其轉化為謎題。我們設計情境題，讓參與者扮演偵探，推敲不同世代的思考邏輯。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>分工執行：團隊 10 人分工縝密，涵蓋題目發想、廠商接洽、器材租用、宣傳視覺設計及現場引導。每位成員在活動當天皆轉身為「引路人」，引導同仁在遊戲中打破隔閡。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>持續推動：除了大型解謎活動，我們亦定期舉辦工作坊與講座，創造持續性的對話空間。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>這是一場持續性的文化推動行動，而非一次性的煙火。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>常態投入：團隊 每週固定召開 1.5 小時會議，並視活動需求，成員每週額外投入約 3 小時進行籌備與細節確認。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>活動頻率：自2024年以來，每年舉辦至少一次大型旗艦活動（如世代偵探之謎），並穿插多場中小型工作坊與講座，持續維持議題熱度已超過一年。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>* 量化成果：系列活動累計吸引約 700 人次 參與，滿意度回饋極高，平均高達4.6(滿分5分)。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>質化改變：最讓我們感動的是同仁的真實回饋。有年輕同仁在活動後驚呼：「原來主管傳訊息加句號不是在罵我，只是習慣！」這種「頓悟」瞬間化解了許多不必要的焦慮。也有資深主管回饋，透過活動，更了解年輕世代的價值觀與工作風格，藉由找出彼此都能接受的方式，共創更好的合作火花。透過解謎，同仁們學會了換位思考，理解不同世代的價值觀差異，有效促進了部門內的和諧與心理安全感。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我們的行動成功引起了公司的關注與共鳴：</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>內部擴散：活動成果與影響力獲得公司肯定，成功 刊登於公司內部刊物，讓沒參加的同仁也能接觸到世代共融的觀念。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>跨界合作：活動不僅由我們發起，更獲得 HR 部門的大力協助與支持，顯示這項議題已從單一社團活動，上升為全公司重視的文化議題。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：此申請案為優秀的「職場文化優化」型志工行動。團隊以創新的「解謎遊戲」包裝嚴肅的「世代溝通」議題，成功降低參與門檻並提高同仁接受度。其行動不僅是活動執行，更是一種企業文化的軟性改革，極具參考價值。",
+        "關鍵佐證：活動滿意度高達 4.6 分以及公司內部刊物的報導截圖，證明其活動品質與影響力已獲官方認可。",
+        "加分提醒：團隊自 2024 年開始運作，至 2026 年評選時年資已超過 1 年，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "028",
+    "project": "Nourishing Hope: Community Food Bank Support Initiative",
+    "region": "台灣",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": false,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>My journey as a volunteer began during my daily commute in Noida, where I saw families living on the streets, struggling each day to meet their basic needs. This sight deeply moved me, and I felt compelled to help in any way I could. Without any affiliation to an organization, I started taking personal action, driven by empathy and the desire to make a real difference.</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Whenever I found someone in need, I would prepare extra home-cooked dishes such as rice, bread, cookies, or buy packet food from the market to share with them. Whether it was a busy day or a quiet evening, I consistently made it a priority to offer support whenever I had the time and resources. I handled everything myself—from meal preparation to finding the right spots for distribution—sometimes enlisting my family's help in cooking and sharing food. Together, we worked as cooks, logistics planners, and distributors, always ready to serve.</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>For the past 5 years, I have been distributing food in Noida to underprivileged people, 3-4 times a week, depending on my schedule and resources. On each trip, I usually help 5 people, but this regular effort has resulted in thousands of meals shared over time.</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Results can be quantitative or qualitative; this award encourages small but regular actions.*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>Through this ongoing initiative, I estimate that I have distributed well over 3,000 meals, directly supporting individuals and families in need. Each meal brings relief—a small but meaningful moment of hope in their daily struggles. The most memorable moments come from seeing the gratitude in their eyes and the smiles that light up their faces when they receive the food. These simple acts help restore dignity and humanity, meal by meal. I have preserved photographic evidence of these activities to help verify the scope and sincerity of my actions.</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Did the applicant share this action? Did it inspire others?*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>My commitment inspired my family to join me, making volunteering a shared value at home. Although I have not posted about these efforts on social media, my example has encouraged those closest to me to participate and support. The sense of fulfillment I get from volunteering is deep—I feel a sense of relaxation and satisfaction, even in the midst of a busy workload.</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "Key Evidence: The specific detail of \"cooking extra dishes (rice, bread) at home\" combined with the \"3-4 times a week\" frequency is the strongest proof of dedication.",
+        "Bonus Flag: ✅ Eligible for +5% Bonus (Duration > 1 Year confirmed: 5 Years)."
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "029",
+    "project": "溫柔的手作力量－Women in Tek 連續三年守護女性與弱勢",
+    "region": "台灣",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>每年十二月，Women in Tek (WIT) ERG 於公司總部舉辦年末手作公益活動，邀請全體員工不分性別共同發揮影響力，加入公益手作隊伍支持女性與弱勢族群。我們落實「由內而外」的關懷精神，透過社會企業採購、志工親手製作、成品捐贈和義賣，讓資源在受輔導婦女、社福團體與公司員工間流動，創造三重影響力。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>2023 年與愛女孩基金會合作，縫製布衛生棉，讓遠在非洲的女孩能勇敢追夢、不因月經貧窮輟學，部分同仁更自主帶回家用縫紉機車縫。2024 年響應花蓮振災，與善牧中心合作義賣真皮小肚包，有縫紉興趣的員工自發擔任志工講師，帶領110位同仁縫製成品，協助花東地區的婦女和兒童，也點亮被地震和颱風影響甚鉅的東台灣。2025 年攜手世界和平婦女會製作環保擴香石禮盒並親手撰寫祝福卡片，打造療癒又具永續理念的公益商品，支持二度就業女性。三年皆由 WIT 擔任專案總負責人，企劃、篩選NGO、主導活動、主持串場、內部宣傳及全程志工號召。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>每場活動均於12月舉辦，主活動約2小時，午休時段進行。包含準備規劃、聯繫與物資確認，團隊每年投入約30小時，已連續三年持續舉辦，累計超過350人次參與。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>■ 永續影響力 insight 我們發現——</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>手作行動不是單向捐贈，而是「雙向連結」：員工付出時間，自身獲得陪伴與成就感；受助婦女不再是被動接受者，而是材料包製作者、公益的共同參與者。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>跨部門/跨性別效益明顯提升：男女同事、工程師一起下場動手，公益變成部門間協作、彼此交流的好機會。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>每年持續，累積超過350人次參與，公益力量換算回饋社會的金額超過10萬元，善意年年擴散，持續協助營造志工友善職場文化。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>NGO回贈手作禮盒、感謝狀，讓員工真切感受到「自己的一份心意真的被看到、被需要」，公益也不只在公司內部，而是與社會的深度連結。</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>■ 活動成果 (量化)</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>三年共完成超過100份布衛生棉、100份小肚包、120份擴香石禮盒，公益採購金額累計逾10萬元。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>成品全數回流NGO義賣，協助婦女二度就業、災後重建、跨國關懷</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>超過350人次員工參與，每一針一線、每一份禮盒都是勇敢的日常</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>活動不分男女，參與志工的男性員工越來越多，大家一起用雙手守護女性與弱勢。不同部門員工彼此協助，志工講師帶領新手，現場常有「第一次拿針線」的工程師、主管，一起縫製溫度與愛心。合作NGO更回贈感謝狀與手作晶圓種子皂禮盒，象徵科技人的公益行動能串連永續與女性賦能。</div><div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>世界和平婦女會有將此合作活動精華分享放置於其官網上: 世界和平婦女會攜手聯發科技Women in Tek 志工夥伴傳愛</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：此專案展現了極佳的 DEI (多元共融) 價值，將公益與企業文化結合得非常緊密。其亮點在於「長期堅持」與「打破框架」的參與形式，是極具溫度的志工行動範例。",
+        "關鍵佐證：連續三年的活動紀錄與累積超過 350 人次的參與名單，證實了該行動的穩定性與號召力。",
+        "加分提醒：符合實踐力加分項目 (+5%)，志工行動年資已達 3 年 (2023-2025)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "030",
+    "project": "熱血十二載：8,750cc 的生命守護",
+    "region": "新竹",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>十二年前，我抱持著「助人為快樂之本」、「存善念、做善事」的簡單信念，開始定期前往新竹捐血中心捐血。我的初衷很樸實：希望從自身出發，實際回饋社會。擁有健康的身體是一種福氣，更是一份能為生命付出的責任，這份快樂就來自於看見自己能持續幫助他人。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>身為聯發科技的一員，工作忙碌，但只要時間滿了，我就會主動安排捐血，不論平日或假日再怎麼難以排出時間，都會擠出空檔前往捐血中心。每次捐血都先維持良好作息與飲食，如此才能持續穩定地捐血，全心守護社會中需要幫助的生命。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>這項行動已持續超過 12 年，目前累積捐血 35 次，每次皆為 250cc。這是一場長期的生命馬拉松，讓我把助人習慣化、日常化。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>累積貢獻 8,750cc 的熱血，實質延續了無數人的生命。雖然未能保存每一次的感謝狀，但捐血檢驗報告上有明確記載累積次數，足以證明這份長期堅持。每次捐完血看到檢驗報告正常，都提醒自己繼續維持健康，才能持續把能量分享出去。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我曾在 Facebook 分享捐血的片刻，雖然沒有刻意宣傳多次，但用行動記錄和分享這份快樂，就是最自然的倡議。希望大家都能把善意落實在生活中，付出一點點就能帶來大大的改變。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：這是一份典型的「無名英雄 (Unseen Hero)」申請案。申請者沒有華麗的專案包裝，而是展現了極高的紀律與長期承諾。將志工行為融入生活（Lifestyle of Volunteering），完全符合 GVH 鼓勵的文化價值。",
+        "關鍵佐證：血液檢驗報告上的「累積次數 35 次」是最強而有力的客觀證據。",
+        "加分提醒：符合長期投入 > 1 年之標準，建議標註「符合實踐力加分項目 (+5%)」。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "031",
+    "project": "點亮星光：與星星的孩子手作同行 —— 從陪伴到實踐的公益旅程",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>本次志工行動源於公司的「MHF公益活動」，旨在關懷自閉症兒童（星星的孩子）家庭。最初吸引我的，不僅是孩子們的需求，更是背後那群堅韌的母親。透過介紹，我得知這 4 組家庭的媽媽多為獨力撫養，雖然面臨孩子天生缺陷的挑戰與社會的不理解，但她們依然靠著興趣與手藝，努力為孩子撐起一片天。這份母愛的強大與不向命運低頭的勇氣深深觸動了我，讓我決定參與其中，希望貢獻自己的一份力量，去見證並支持這些偉大的生命。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>破冰與連結 (2025/12/19 手作工坊)：</div><div style='margin-bottom:6px; line-height: 1.6;'>活動當天，我懷著忐忑的心情走進現場，卻意外與一位「聞媽媽」結下了深刻緣分。當我們發現彼此竟然都來自廣西時，她激動地握住我的手驚呼：「天哪，沒想到能在這裡遇到老鄉！」那一刻，她主動提出的一個擁抱，瞬間消融了陌生感，像是一份珍貴的盲盒禮物。</div><div style='margin-bottom:6px; line-height: 1.6;'>在隨後的手作環節，角色發生了有趣的互換——不再只是我「服務」她，而是她耐心地教我使用熱熔槍、搭配顏色，甚至在我做得不完美時給予鼓勵。我們合力完成了兩棵聖誕樹，這不僅是手作，更是心靈的交流。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>推廣與實踐 (2025/12/24 公益義賣)：</div><div style='margin-bottom:6px; line-height: 1.6;'>在合肥聯發科技員工食堂的義賣中，我擔任「推銷員」與「顧客」的雙重角色。我積極向同事介紹這些手作品背後的故事，並協助現場銷售。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>長期陪伴 (2026/03 持續進行中)：</div><div style='margin-bottom:6px; line-height: 1.6;'>活動結束並非終點，我與聞媽媽交換了聯繫方式。在 2026 年 3 月復工後，我將邀請好友一同前往她們週末的市集攤位支持，幫忙看顧攤位、購買作品，並透過聊天談心，延續這份支持與陪伴。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>啟動期：2025年12月19日（手作製作）、2025年12月24日（公益義賣）。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>延續期：2026年3月起，利用週末或假日不定期前往線下市集探訪與支持，將一次性的活動轉化為長期的關懷。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>*   量化成果：12月24日的義賣反應熱烈，僅僅一小時內，我們製作的聖誕樹就售出了大半，展現了極高的支持度。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>擴散影響：我成功邀請了身邊的好友一同參與後續的線下支持行動，將公益的種子從個人擴散至朋友圈。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>實質幫助：透過義賣與購買，直接支持了 4 組自閉症家庭的經濟收入，更重要的是，讓這群媽媽感受到了來自企業員工的尊重與社會的接納。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>最讓我震撼的瞬間，莫過於聞媽媽那個突如其來的擁抱。它讓我深刻體悟到：「人與人之間真正的距離，從來不是物理距離，而是心的距離。」</div><div style='margin-bottom:6px; line-height: 1.6;'>緣分不在於天天見面，而在於當下的連結與同頻。那個擁抱打破了施與受的界線，讓我明白志工服務是雙向的能量流動——在給予的同時，我也被她們的樂觀與熱情深深療癒。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：這是一份溫暖且具啟發性的申請案。雖然活動起步時間較短（始於 2025 年底），但申請者深刻捕捉到了志工服務中「平等互惠」的核心精神。故事敘述動人，且有具體的延續計畫，值得鼓勵。",
+        "關鍵佐證：「12/24 義賣一小時內售出大半」的數據，以及照片中「聞媽媽教導申請者」的畫面，有力佐證了行動的成效與深度連結。",
+        "加分提醒：活動始於 2025 年 12 月，截至目前（2026 年 3 月）約 4 個月，未滿一年，不符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "032",
+    "project": "城市角落的溫柔守護：流浪貓救援與安置計畫",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": false,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>自2024年年底起，因长期在武汉汉阳四新小区、武昌时代花园社区租住，目睹许多租户搬家后将小猫遗弃于小区。每晚加班归家的路上，总有饥寒交迫的小猫贴着我走，渴望温暖与食物。有时见到猫咪因寒冷和饥饿失去生命，那一刻，我深深体会到生命的脆弱与无助。于是我决定，不仅仅喂食，更要帮助他们找到一个永远的家。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我主要靠个人力量发现、救助流浪猫，带他们去动物医院做身体检查、治疗疾病等。期间，曾为一只英短蓝白猫做过绝育、肠胃及眼疾专门治疗，另一只猫进行了眼病治疗。为五只猫咪成功寻找新主人，我使用了专门领养软件、同时在小红书等社交平台发布寻家信息，严格筛选领养人，确保猫咪能在安全温暖的家庭中成长。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>自2024年底至今，持续投入超过一年。每次救援和看诊约需4小时，并自费500元左右，救助行动平均每月进行2-3次，包括发现、医疗、领养、照料等全过程。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>目前已收养3只流浪猫，并成功为5只猫找到合适主人。其中印象最深的是一只英短蓝白猫，曾患疱疹病毒、肠胃不适和眼疾，经治疗后恢复健康并顺利绝育，通过多平台发布，现在已在新主人家获得妥善照顾。所有救助猫咪的检查报告、治疗记录、领养过程沟通截图等均整理为附件，实证救助成果。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>最初亲友（尤其父母）并不支持我的行动，认为救助流浪猫浪费精力和金钱。但随着我持续投入，家人逐渐了解并感受到善意，妈妈甚至主动参与协助照料猫咪。在社交平台的分享也获得正面回应，影响更多人关注和参与流浪动物救援。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：這是一份溫暖且執行度極高的個人申請案。最大的亮點在於申請者不僅止於餵食，更承擔了醫療與送養責任，並成功用行動改變了身邊親友（父母）的價值觀，體現了志工精神的感染力。",
+        "關鍵佐證：醫療檢查單與小紅書領養發布紀錄，證實了行動的專業度與社會擴散性。",
+        "加分提醒：符合實踐力加分項目 (+5%) (資歷 > 1 年)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "033",
+    "project": "Eco & Sustainability: Urban Water Cleanup and Advocacy",
+    "region": "全球",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": false,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Ever since my college days in Goa India, I’ve felt a deep connection to beaches, lakes, and waterways. Inspired by my love for clean coastlines, I began initiating cleanup actions—first as a student cleaning Bogmalo Beach in Goa (2012–13), and later, as a long-term habit of caring for my environment wherever I lived. Cleaning beaches and lakes not only gave me personal satisfaction but motivated me to help others enjoy the same beauty, sparking a lasting commitment to eco-sustainability.</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>From 2022 to 2025, I devoted one Sunday each month to cleaning up lakes near my home in Bangalore, India. I would bring my own gloves and reusable bags, collecting and sorting litter—mainly plastics, bottles, cans, wrappers, and even discarded clothing. After sorting, I disposed of recyclables and trash in designated dustbins. During these cleanups, I also engaged in 1:1 conversations with local residents and visitors, educating them on the hazards of plastic, its impact on aquatic life, and the importance of sustainable behavior.</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>My commitment spanned three years, with **monthly cleanups** (around 36 times in total). On average, I collected **5–10 kg of trash per session**. This resulted in up to **270 kg of waste removed** from the local environment.</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>The results were visible—by the end of the first year, plastics virtually disappeared from the lake’s shoreline. As more people saw me cleaning, awareness grew, and I noticed fewer people littering and a gradual improvement in the ecosystem’s health.</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>My actions influenced my neighbors and passersby; seeing someone take initiative encouraged them not to litter. I also advocated sustainable living, sharing practical tips during 1:1 talks.</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：A strong individual application demonstrating high consistency. The applicant has turned a personal habit into a measurable environmental impact without external organizational support.",
+        "關鍵佐證：Removal of approx. 270kg of waste over 3 years creates a tangible, visible difference in the local ecosystem.",
+        "加分提醒：Volunteer service duration is > 1 year (2022-2025). Eligible for Practicality Bonus (+5%)."
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "034",
+    "project": "內容不符，未通過初審",
+    "region": "-",
+    "category": "-",
+    "photoUrl": "#",
+    "longTerm": false,
+    "content": [
+      {
+        "t": "審查備註",
+        "c": "內容不符合本次評選範疇，未通過初審。"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "未通過初審"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "035",
+    "project": "Supporting Vulnerable Communities and Animals",
+    "region": "台灣",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": false,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Our team came together with a shared desire to find deeper meaning beyond our daily work routine. Individually, some of us were seeking ways to recharge mentally and regain confidence during challenging times. We realized that by combining our efforts, we could make a tangible difference. We chose to volunteer at the Korea Wildlife Protection Association in Ansan, focusing on abandoned dogs that desperately needed care. We wanted to transform our empathy into action, providing warmth to lives that had been neglected.</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Our team of four worked as a cohesive unit to support the shelter:</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Sanitation & Care: We spent hours cleaning and drying the dog cages to ensure a hygienic environment for the animals.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Direct Comfort: We dressed the stray puppies in vests to keep them warm and provided direct physical contact to help soothe their anxiety.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Community Outreach: Beyond the shelter, our team has also extended our hands to other vulnerable groups, including assisting seniors, people with disabilities, and supporting children in after-school programs. However, our core shared activity has been the consistent care for the stray dogs in Ansan.</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Total Joint Visits: 4 times (Team activity)</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Duration: Approx. 4 hours per visit</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Total accumulated hours per member: 16+ hours</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>- Animal Welfare: We directly improved the living conditions of numerous stray dogs. The simple act of cleaning cages and dressing the puppies provided them with immediate comfort and protection, which is documented in our photos.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Team Growth: This experience transformed us. The physical labor shared among colleagues broke down barriers and built a unique bond. We regained our own sense of value and confidence by seeing how our small actions could bring peace to another living being.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Evidence: Official Volunteer Certificates from the Korea Wildlife Protection Association are attached.</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>Volunteering has been a healing journey for our team. We have shared our experiences with other colleagues, encouraging them to join us as a way to overcome personal stress. While the company encourages volunteering, we noticed that participation at the team level could be higher. We hope our story inspires management and other teams to view volunteering not just as a task, but as a powerful tool for team building and mental wellness.</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：這是一份優秀的團隊申請書。最大的亮點在於他們將志工服務定義為「團隊療癒之旅」，不僅解決社會問題 (流浪動物)，也解決了職場問題 (壓力與隔閡)，非常符合 GVH 鼓勵的全面影響力。",
+        "關鍵佐證：文字中提及附有「全員志工證書」及「團隊合照」，這些視覺證據將強烈支撐其團隊精神的真實性。(註：行政端正確認照片是否已補件)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "036",
+    "project": "Guardians of the Earth: Championing a Plastic-Free India",
+    "region": "全球",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>My journey began with a deep sense of sorrow seeing India's sacred rivers, like the Ganga, Yamuna, Godavari, choked with plastic pollution. The water was no longer potable, and the flow was declining. I realized this wasn't just a distant problem—it was happening everywhere. Inspired by The Satsang Foundation's mission to clean the Godavari from its source and make the upcoming Kumbh Mela plastic-free, I decided to stop being a bystander. I joined their initiative 'MyBhoomi' in Bangalore in October 2023, driven by the urgent need to protect our \"Bhoomi\" (Earth) and ensure a cleaner future for the next generation.</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>As a Lead Volunteer and Speaker, I moved beyond just participating to actively organizing and driving change. My key actions included:</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Leading Plogging Drives: Organizing clean-up drives in Bangalore parks to physically remove plastic waste.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Systemic Recycling: Managing E-waste collection drives to ensure hazardous materials are processed scientifically.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Educational Workshops: Serving as a speaker in schools to educate children about the dangers of single-use plastic.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Sustainable Alternatives: Distributing cloth bags to local vendors to replace plastic carry bags.</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Start Date: October 2023 (Ongoing for over 1 year).</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Frequency: Monthly activities, continued with greater enthusiasm in 2026.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Time Commitment: Over 38 hours of direct fieldwork, plus significant additional hours spent on planning, coordination, and logistics.</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>[Activity Timeline]</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>2023 (Oct-Dec): Started with Plog runs.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>2024: Plog runs + workshops in schools.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>2025: Plog runs + workshops in schools + E-Waste Collection + Clothes bags Distribution.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>2026: Plog runs + workshops in schools + E-Waste Collection + Clothes bags Distribution + Scale to 50+ schools (5000+ students) this year.</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>Through consistent effort, we have achieved tangible environmental results:</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Waste Removed: Collected 162kg of dry waste and 87kg of e-waste, ensuring it was sent to certified recyclers rather than landfills.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Alternatives Provided: Distributed 140 cloth bags to reduce plastic dependency at the source.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Education: Trained 160 students in 2025 alone.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Behavioral Change: In one school workshop, 80 students pledged to become \"MyBhoomi Rakshak\" (Protectors of Earth). We established a system where these students now bring dry plastic waste from their homes to school once a month for scientific recycling—turning a one-time class into a lifelong habit.</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>This movement has rippled out to my personal and professional circles.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Colleagues & Family: I successfully invited my MediaTek colleagues—Ankit, Anusha, Amrita, and Navneet—to join these drives. My son, Vivaan, also regularly participates in plog runs and cloth bag distribution, learning the value of service early on. Apart from family and colleagues, 20-25 volunteers from places and 20+ college students also participated to create awareness.</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>External Recognition: My efforts have been recognized and featured on The Satsang Foundation's official social media channels (LinkedIn, Facebook, Instagram) and mentioned in their Annual Reports, amplifying the message to a wider audience.</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：申請者不僅身體力行參與清潔 (Clean-up)，更擔任講師進入校園 (Education)，展現了完整的志工行動光譜。動機強烈且行動具持續性。",
+        "關鍵佐證：提供了詳細的 \"Volunteer Effort Tracker\" 截圖，具體列出日期與時數，增加資料可信度。",
+        "加分提醒：志工資歷起始於 Oct 2023，已超過一年，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "037",
+    "project": "The Guardian of Olesin: Cultivating Green Habits and Community Care",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>My journey began in my hometown of Olesin with two distinct but connected observations. In 2021, while walking through our local forest, I was struck by the amount of litter covering the ground. I realized I could no longer just walk past it; I wanted to set an example for the youth that nature is our shared responsibility.</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>Two years later, in 2023, I noticed another gap—this time in human connection. Neighbors hardly knew each other, missing the potential for mutual support. This inspired the \"Family Festival MiodziOlesin,\" aiming to not only integrate the community but to harness our collective energy to help those facing severe health crises. My motivation is simple: to build a cleaner environment and a warmer heart for Olesin.</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>I serve as the lead organizer and coordinator for two major annual initiatives:</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Spring Cleaning of Olesin: I act as the community coordinator. My role involves mapping cleaning routes, scouting neglected areas, and negotiating with the municipality for waste disposal support. I actively recruit residents, manage logistics (gloves/bags), and lead the safety briefing and volunteer coordination on the day of the event.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Family Festival MiodziOlesin: As the co-organizer, I manage the event end-to-end. This includes securing sponsors, designing the venue infrastructure, and managing the stage/entertainment. Crucially, I lead the charity component—identifying local beneficiaries (visiting them personally to understand their needs), conducting the charity auctions, and managing the fundraising drives during the festival.</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>My commitment is consistent and year-round:</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Spring Cleaning (Since 2021): Annual event. I invest approximately 20 hours per year in scouting, logistics negotiation, promotion, and execution.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Family Festival (Since 2023): Annual event requiring intensive preparation. I dedicate approximately 70 hours per year, including 2 months of planning (sponsor acquisition, logistics), beneficiary meetings, and full-day event management and charity event coordination .</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Total Investment: Over 90 hours annually dedicated to community leadership.</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>My actions have driven tangible changes in both the environment and people's lives:</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Environmental Shift: In the first year, we collected massive amounts of waste. Now, we collect about 30-50 bags (120-200 kg) annually—a 3x decrease compared to the start. This proves a behavioral shift: locals have stopped littering, and the remaining trash is mostly from travelers.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Social Aid: We have raised 15,000 PLN to date. This funding directly supported a child with CLN2 (funding foreign therapy) and a father of three rehabilitating from severe accident injuries.</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>Community Unity: The festival now draws 300-400 residents annually, fostering a spirit of empathy and integration that didn't exist before.</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>I actively involve my family, neighbors, and local youth in these events to maximize the ripple effect. The impact on the younger generation is most visible—local schools have begun rewarding students for participation, and children now speak proudly of protecting their \"small homeland.\" I use these events to demonstrate that we are not passive residents, but active guardians of our town.</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：這是一份展現高度社區領導力的申請案。申請者成功將「環境保護」與「社會關懷」結合，不僅解決了垃圾問題，更創造了社區互助的平台，具備極強的實踐力與影響力。",
+        "關鍵佐證：最亮眼的數據在於「垃圾收集量減少 3 倍」，這有力地證明了志工行動不只是清理，而是成功教育並改變了居民的生活習慣。",
+        "加分提醒：Spring Cleaning 活動自 2021 年開始，年資超過 1 年，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "038",
+    "project": "科普與程式的火花：偏鄉教育深耕計畫",
+    "region": "新竹",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>身為科技業的工程師，我們深知科學與邏輯思維對未來競爭力的重要性。然而，我們觀察到偏鄉學校在「科學實驗實作」與「程式教育資源」上，仍存在顯著的城鄉差距。這激發了我們的初衷：能否運用我們的專業背景（物理、化學知識與程式邏輯），為孩子們搭建一座通往科學世界的橋樑？我們希望透過「做中學」的趣味課程，不僅填補資源缺口，更希望能點燃孩子們對科技的好奇心，發揮工程師回饋社會的最大價值。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我們組成了一支跨領域的志工特戰隊，針對不同年齡層需求設計兩大主軸課程，並透過專業分工確保教學品質：</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>科普實驗組：由謝文豪擔任課程與教案設計，帶領團隊透過生活化的實驗（如：用泡泡實驗講解「表面張力」、用紙飛機與流體力學介紹「附壁作用」），讓艱澀的物理化學原理變得觸手可及。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>程式教育組：由蔡承哲、潘彥辰負責教案設計，使用 Micro:bit 圖形化介面，引導孩子設計「猜拳對戰系統」等互動遊戲，訓練邏輯思維。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>團隊協作：我們採取「設計與教學分工」模式，除了核心教案設計外，廖家麟、黃若瑀等多位夥伴輪流出隊擔任講師與助教，確保每位孩子都能獲得充分的指導與陪伴。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>這是一場馬拉松式的長期陪伴，而非單次活動。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>科普組：自 2024 年起，每學期固定前往新竹市青草湖國小出隊。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>程式組：自 2023 年起，長期深耕橫山國小（每年一梯次，每梯次為期一年），並預計今年擴大至青草湖國小。</div><div style='margin-bottom:6px; line-height: 1.6;'>除了每學期 2-4 次的現場教學外，團隊成員在背後投入了大量時間進行教案優化、器材測試（如調配最佳比例的泡泡水）與交通往返，每次出隊背後都是數倍的隱形心力投入。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>1. 受益人次：截至目前，科普組已服務約 60 人次，程式組已培育約 48 位小小工程師（3 梯次 x 16 人），總計影響超過 100 位偏鄉學童。</div><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>質化改變：青草湖國小教務主任回饋，孩子們從原本不敢發言，變得勇於嘗試錯誤、大膽提問。學校老師更表示，志工們帶來的業界實務觀點，是校內老師無法提供的寶貴資產，成功彌補了學用落差。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我們的影響力不僅在校園，更在公司內部擴散。我們透過志工大會（Volunteer Conference）公開招募，成功吸引志同道合的夥伴加入；更有趣的是，許多夥伴是因為覺得活動有意義，主動「同事拉同事」一同參與，形成了善的循環。此外，我們也將活動心得與照片發布於公司志工社 FB 粉絲專頁，讓更多同仁看見這份感動，進而關注偏鄉教育議題。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：這是一份教科書級別的「專業志工」申請案。團隊充分發揮 MediaTek 工程師的專業優勢（物理化學+程式邏輯），解決偏鄉教育資源不足的痛點。計畫具有高度的組織性（分工明確）與延續性，影響力從學生自信心延伸至公司內部的志工文化號召，極具獲獎潛力。",
+        "關鍵佐證：青草湖國小教務主任的回饋（孩子從不敢發言到自信上台）是證明行動價值的最強力證據。",
+        "加分提醒：程式教育組自 2023 年起執行，符合實踐力加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "039",
+    "project": "晨間閱讀推手：用故事為孩子開啟世界之窗",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>契機源自於我的孩子剛好成為小學一年級的新生。我深信閱讀能讓孩子認識更遼闊的世界，因此我希望不只講故事給自己的女兒聽，更能將這份對閱讀的熱情帶進校園，溫暖整個班級的孩子。自 2025 年 9 月起，我每週前往新北市的國小擔任晨間故事志工（故事媽媽），期許自己能成為孩子們探索世界的引路人。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>作為孩子們口中的「天米阿姨」，我每週進行 40 分鐘的說故事時間。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**精心選書與備課**：我會針對一年級孩子的特性，從他們感興趣的「動物系列」切入，再延伸至「情緒認識」與「廣闊世界觀」的繪本。我也會親自製作「說故事手稿（小書）」，確保故事節奏流暢。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**互動與連結**：我不只是單向講述，更重視雙向互動。我努力記住全班 25 位孩子的名字，透過點名與眼神交流，讓每位孩子都覺得自己「被看見」。針對害羞或情緒起伏較大的孩子，我也會透過女兒了解狀況，在故事中給予他們更多的關注與引導。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**傳承與分享**：為了讓這份影響力延續，我不吝於將我的書單與經驗分享給其他故事媽媽，本學期更開始帶領一位新進志工一起進班，將這份服務的精神傳承下去。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>自 2025 年 9 月至 2026 年 1 月（上學期），我維持每週一次的高頻率進班服務。除了每週 40 分鐘的課堂時間，我每週額外投入約 1 小時進行選書、備課與製作手稿。上學期累計服務時數（含備課）已超過 30 小時，且計畫持續於下學期繼續服務，陪伴孩子們成長。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>1. **量化成果**：本學期共陪伴 25 位學生，講述了 14 本繪本。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**質化改變**：孩子們從陌生到信任，現在只要在校園見到我，都會開心地大喊「天米阿姨」。最讓我感動的是，有位同學曾對我女兒說：「好羨慕妳是她的女兒，這樣每天都可以聽她講故事。」這句話是對我最大的肯定。此外，我也觀察到孩子們在聽故事時眼神閃閃發光、全心投入，這份專注力與笑容是我持續服務的最大動力。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>這份志工行動也深深影響了我的家庭。女兒看到我製作的手稿，也吵著要一份「小書」，並自稱「萊萊姐姐」，模仿我講故事給家裡的玩偶聽。她不僅會積極推薦她覺得好看的繪本，每週三更期待與我大手牽小手一起進教室。這份身教讓服務的種子在女兒心中發芽，也透過我與其他志工的交流，將這份熱情擴散出去。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：這是一份溫暖且具備高度個人投入的申請案。申請者不僅僅是執行任務，更展現了對受眾（兒童）的深刻理解與客製化（手作小書）。其行動成功在家庭與校園間創造了正向循環。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "040",
+    "project": "無名的道路守護者：從凱道遊行到竹科交通平權的改革之路",
+    "region": "新竹",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>「不是所有的英雄都披著披風，有時只是為了想平安回家。」</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我是一名熱愛騎車的工程師，長期以來，台灣的道路設計對機車族群充滿了不友善與危險。從被貼上「飆車族」的負面標籤，到面對竹科園區內混亂的交通規劃，</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我深知抱怨無法改變現狀。我選擇了一條少人知曉的路——隱姓埋名，投入交通改革規劃以及倡議。</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我的動機很單純：這座城市是我們生活的地方，我有責任在行有餘力時，往前多站一步，讓道路規劃回歸專業與平權，讓每一位二輪騎士（包括我的同事們）都能有一條安全回家的路。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>自 2021 年起，我以公民身分長期與「台灣交通安全協會」及「台灣機車路權促進會」合作，推動中央與地方的交通改革：</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**政策倡議與談判**：2022 年 7 月 9 日「交通解嚴大遊行」，我擔任 5 位走入交通部的核心代表之一，率領 3,000 人走上街頭，並直接進入交通部與部長遞交陳情書，促成蘇花改開放機車行駛之研究。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**推動竹科交通改善**：針對園區危險路段，我透過新竹市議員林彥甫牽線，先後拜訪黃國昌、邱顯智等立法委員，成功促使科技部成立專案小組。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**專業規劃參與**：我並非僅是抗議者，更是解決方案的提供者。我參與了「新竹科學園區交通安全改善及車道優化規劃」的公民參與工作坊，與專家學者、工程技師共同檢視路口幾何設計，提出具體的工程改善建議。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>這是一場長達 5 年以上的持續行動（2021-2026）。</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我不定期但持續地利用私人時間參與籌備會議、現場會勘、立委拜訪與工作坊討論。</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>無論是平日下班後的會議，還是週末的街頭宣講，只要時間允許，我都默默出席。這不是一次性的熱血，而是對改善交通環境的長期承諾。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>我的行動直接促成了法規與硬體設施的具體改變，影響範圍涵蓋全台至竹科園區：</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**中央政策突破**：促成蘇花改試辦並開放白牌機車行駛，打破長年的路權限制。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**竹科道路工程具體改善**：</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**3 大道路設計變革**：成功推動「車向分流」、「車道對接」與「偏心左轉」，解決了機車強制兩段式左轉的危險與效率問題。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**行人安全升級**：促成熱點路口設置「行穿線退縮」與「Z 型庇護島」，大幅降低 A 柱死角風險。</div><br><br><div style='margin-left:12px; margin-bottom:6px;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>**守護同事的安全**：2024 至 2026 年間，聯發科技總部周邊的**力行路、介壽路、園區一路**完成改善。我們刨除了力行二路口不合理的待轉區，重新規劃中央分隔島。這些改變每天都在守護著數萬名竹科從業人員的通勤安全，即便他們不知道是誰推動的。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>為了避免職場標籤與不必要的對立，我選擇在公司內保持沈默，從未向同事透露我的志工身分，社群媒體也僅限私人好友。</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>但我相信「影響力」不一定來自大聲疾呼，道路的改變本身就是最強的共鳴。當同事們發現路變好走了、左轉變安全了，這份「無聲的共鳴」便已達成。我希望證明，即使不具名、不張揚，一個人的堅持仍能撼動僵化的體制。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：這是一份結合「工程師專業」與「公民社會責任」的優秀申請案。申請者不僅發現問題，更透過理性溝通與專業建議解決問題，其實際成果直接造福竹科社群與公司同仁，完全符合「Unseen Hero」的精神。",
+        "關鍵佐證：Photo 1（交通部談判代表）與 Photo 4（力行路/新安路改善前後對比圖）提供了強而有力的實踐與影響力證明。",
+        "加分提醒：符合實踐力加分項目 (+5%)，志工年資（2021-2026）超過 1 年。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "041",
+    "project": "跨越螢幕的溫度：TFT偏鄉筆友與我的成長旅程",
+    "region": "台灣",
+    "category": "個人",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>去年 11 月底，我參與聯發科與 TFT（Teach For Taiwan）合作的「偏鄉筆友計畫」，與台南市左鎮區光榮實驗小學的一名學生開始通信。當初我猶豫於工作繁忙是否能堅持，但想到自己的孩子即將念書，也希望自己微薄的影響力能陪伴這些比我孩子稍大的小朋友跨越困難，最終決定勇敢走出舒適圈，成為孩子生命中溫暖的筆友。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>我以平輩語氣書寫，每月用心手寫一封信，總計 4 封。每次都細心回應孩子的生活、遊戲、煩惱與學習上的問題，盡量避免說教，更希望透過分享自己的興趣，吸引孩子也聊聊喜歡的事物。活動尾聲，我在線上見面會勇敢上台，向 20 位小朋友介紹聯發科技、分享職場日常與生活趣事。最後，跟 3 名志工及 3 位小朋友進行小組互動，彼此鼓勵，像交心的朋友一般。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>2025 年 11 月底開始，每月一封信，總共 4 封，見面會於 2026 年 3 月 17 日舉行。每次寫信都至少投入一小時；上台分享則花費 5-6 小時準備與彩排。2026 年，我也主動參加公司植樹志工活動，並邀請同事共襄盛舉。</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>本計畫主要與一位孩子通信，上台分享則面向 20 位小朋友，並與 3 位志工、3 名孩子做小組互動。活動取得義工時數證明（Total Service Hours: 5）。孩子在這過程中學會以不同方式敞開心房並勇於表達自我，而我則從原本焦慮的「參加者」，逐漸轉變為主動分享的「給與者」。這段經歷帶給我巨大成長，也讓我驕傲於自己跨出圈圈的勇氣，渴望將志工精神擴散至同事與家人，並持續投身志工行動。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><br><br><div style='margin-bottom:6px; line-height: 1.6;'>筆友計畫雖未揪團參加，但在準備信件與上台分享時，有與家人、同事討論。植樹活動則主動邀請 3 位同事同行，大家共同學習、體驗公益行動，也更加凝聚同仁間的情誼。雖未公開分享到社群平台，仍希望把這份初心保留在心底，並透過公司志工分享活動讓更多人感受善念循環，鼓勵公司更多資源投入台灣需要幫助的人及環境。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：這是一份溫暖且真誠的個人志工申請。申請者透過「手寫信」這種具溫度的載體，建立與偏鄉孩童的深度連結，並在過程中展現了明顯的個人心境成長（從焦慮到主動給予）。雖非大規模專案，但其細膩的互動與對「推己及人」的實踐（邀請同事參與其他公益）符合志工英雄的精神。",
+        "關鍵佐證：申請者提及的「手寫信照片」與「孩子回饋的卡片」是證明雙向互動與影響力深度的最強力證據。",
+        "加分提醒：志工期間為 2025/11 至 2026/03，未滿一年，不符合長期投入加分項目 (+5%)。"
+      ],
+      "concerns": []
+    }
+  },
+  {
+    "id": "042",
+    "project": "花蓮光復鄉災後協助物資與環境整理",
+    "region": "台灣",
+    "category": "團隊",
+    "photoUrl": "#",
+    "longTerm": true,
+    "content": [
+      {
+        "t": "背景與動機",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>2025年10月，花蓮光復鄉因堰塞湖泥流災害，物資和人力都非常短缺。我們團隊成員一直關心光復鄉，有夥伴邀約後大家決定一同參與，想盡我們所能協助當地居民度過難關。</div>"
+      },
+      {
+        "t": "行動與角色",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>團隊成員依各自專長分工：物資整理與發放、簡單維修、環境清理等。心理師在現場陪伴居民，護理師協助物資整理，工程師規劃動線。主要協助地點為太巴塱指揮點及光復市區書屋和書店。</div>"
+      },
+      {
+        "t": "投入時間與頻率",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'>這次是針對突發災害的應急支援，部分成員前一週也有去協助。大家平時都有志工經驗，但能同時出動實屬難得，彼此都很珍惜這次的合作。</div><div style='margin-bottom:6px; line-height: 1.6;'>(補充：團隊成員請一天假，凌晨出發，深夜才回家。)</div>",
+        "h": true
+      },
+      {
+        "t": "成果與影響",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>協助發放多車物資，清理大量淤泥，也幫助兩間書屋恢復運作（書屋是當地小學生課後輔導的重要機構，這次災害受損嚴重）。最讓大家感動的是，居民在我們離開時親自向我們道謝，讓我們覺得力所能及的小事也很有價值。</div>"
+      },
+      {
+        "t": "共鳴與啟發",
+        "c": "<div style='margin-bottom:6px; line-height: 1.6;'><span style='color:var(--orange); font-weight:900; margin-right:4px;'>•</span>申請者是否有主動分享此行動? 是否有成功號召或啟發他人參與？*</div><br><br><div style='margin-bottom:6px; line-height: 1.6;'>我們把行動記錄在社群上，有朋友看到後願意加入未來志工活動，也有同事表達想參加。大家平時不常這麼集結，這次反而互相鼓勵，體會到團結行動的力量。也因為本身都有家庭，大家請一天假，凌晨出發，深夜才回家，雖然疲憊，但都很開心能為災民盡一份心力。</div>"
+      }
+    ],
+    "ai": {
+      "strengths": [
+        "初評 AI 評分建議",
+        "整體評價：此申請案為典型的「突發災害應急支援」，亮點在於團隊成員組成的多樣性（心理師、護理師、工程師），能針對災區混亂狀況提供「身心兼顧」的支援（動線規劃+心理陪伴），這比單純的勞力付出更具深度。",
+        "關鍵佐證：協助當地重要機構（書屋）恢復運作，直接保障了當地小學生的課後輔導資源，具有明確的社會價值。",
+        "加分提醒：此為單次性高強度支援，未標註長期持續性，故不適用年資加分項目。"
+      ],
+      "concerns": []
+    }
   }
 ];
 
@@ -808,6 +2458,16 @@ function toast(msg,type='success'){
   el.className='show toast-'+type;
   if(_tt)clearTimeout(_tt);
   _tt=setTimeout(()=>el.classList.remove('show'),3200);
+}
+
+/*** AUTH HELPERS ***/
+async function hashStr(str){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function checkPw(input,judgeId){
+  const h=await hashStr(input);
+  return h===JUDGES[judgeId].pw;
 }
 
 /*** MODAL ***/
@@ -875,10 +2535,11 @@ function showOwnerLoginModal(e){
   requestAnimationFrame(()=>m.classList.add('active'));
   lucide.createIcons();
 }
-function verifyOwner(){
+async function verifyOwner(){
   const pw=document.getElementById('owner-pw-input').value.trim();
   const err=document.getElementById('owner-err');
-  if(pw===JUDGES['owner'].password){
+  const ok=await checkPw(pw,'owner');
+  if(ok){
     closeModal({force:true},'owner-modal');
     startApp('owner','owner');
   } else {
@@ -888,7 +2549,7 @@ function verifyOwner(){
     setTimeout(()=>{inp.style.borderColor='transparent'},1500);
   }
 }
-function verifyAuth(){
+async function verifyAuth(){
   if(!_loginRole){toast('請先選擇評審身份','warn');return}
   const judgeId=document.getElementById('judge-select').value;
   const pw=document.getElementById('pw-input').value.trim();
@@ -897,7 +2558,9 @@ function verifyAuth(){
   if(!judgeId){errEl.textContent='請選擇您的代號';errEl.style.display='block';return}
   if(!pw){errEl.textContent='請輸入您的專屬密碼';errEl.style.display='block';return}
   const judgeInfo=JUDGES[judgeId];
-  if(!judgeInfo||pw!==judgeInfo.password){
+  if(!judgeInfo){errEl.textContent='代號錯誤';errEl.style.display='block';return}
+  const pwOk=await checkPw(pw,judgeId);
+  if(!pwOk){
     errEl.textContent='代號或密碼錯誤，請再試一次';errEl.style.display='block';
     const inp=document.getElementById('pw-input');
     inp.style.borderColor='#FF3B30';
@@ -926,10 +2589,11 @@ function startApp(role,judgeId){
     document.getElementById('admin-btn-wrap').style.display='block';
     document.getElementById('smart-nav-role').textContent='管理者';
   } else {
-    if(GAS_URL && role==='internal' && !localStorage.getItem('gvh_nw_'+judgeId)){
+    let showGuideLater=true;
+    if(GAS_URL && role==='internal'){
       const m=document.getElementById('network-modal');
       m.style.display='flex';requestAnimationFrame(()=>m.classList.add('active'));
-      localStorage.setItem('gvh_nw_'+judgeId,'true');
+      showGuideLater=false;
     }
     if(GAS_URL){
       document.getElementById('cloud-status').style.display='flex';
@@ -944,8 +2608,22 @@ function startApp(role,judgeId){
       }).catch(e=>syncUIState('error'));
     }
     showDashboard();
+    if(showGuideLater) setTimeout(()=>showGuide(judgeId), 600);
   }
   updateDays();lucide.createIcons();
+}
+function showGuide(judgeId){
+  const m=document.getElementById('guide-modal');
+  if(!m)return;
+  m.style.display='flex';requestAnimationFrame(()=>m.classList.add('active'));
+  localStorage.setItem('gvh_guided_'+judgeId,'true');
+  lucide.createIcons();
+}
+function closeGuide(){
+  const m=document.getElementById('guide-modal');
+  if(!m)return;
+  m.classList.remove('active');
+  setTimeout(()=>{m.style.display='none'},250);
 }
 
 /*** DAYS COUNTDOWN ***/
@@ -1049,7 +2727,6 @@ function renderApp(){
         </div>
         <h2 style="font-size:20px;font-weight:900;letter-spacing:-.3px;line-height:1.3;">${app.project}</h2>
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;">
-          <span class="badge badge-gray">📍 ${app.region}</span>
           <span class="badge badge-gray">🏷 ${app.category}</span>
           <span class="badge badge-gray">📋 ${S.curIdx+1}/${applicants.length}</span>
         </div>
@@ -1073,12 +2750,8 @@ function renderApp(){
     document.getElementById('ai-panel').style.display='block';
     document.getElementById('ai-body').innerHTML=`
       <div style="background:rgba(255,255,255,0.07);border-radius:16px;padding:20px;border:1px solid rgba(255,255,255,0.1);">
-        <h5 style="font-size:12px;font-weight:800;color:#FFCC02;margin-bottom:14px;display:flex;align-items:center;gap:6px;"><i data-lucide="thumbs-up" style="width:13px;height:13px;"></i> 優勢摘要</h5>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">${app.ai.strengths.map(s=>`<li style="font-size:11px;color:rgba(255,255,255,0.85);display:flex;gap:8px;line-height:1.5;"><span style="color:#FFCC02;flex-shrink:0;">•</span>${s}</li>`).join('')}</ul>
-      </div>
-      <div style="background:rgba(255,255,255,0.07);border-radius:16px;padding:20px;border:1px solid rgba(255,255,255,0.1);">
-        <h5 style="font-size:12px;font-weight:800;color:#FF6B6B;margin-bottom:14px;display:flex;align-items:center;gap:6px;"><i data-lucide="alert-circle" style="width:13px;height:13px;"></i> 建議提問／弱點</h5>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">${app.ai.concerns.map(c=>`<li style="font-size:11px;color:rgba(255,255,255,0.85);display:flex;gap:8px;line-height:1.5;"><span style="color:#FF6B6B;flex-shrink:0;">•</span>${c}</li>`).join('')}</ul>
+        <h5 style="font-size:12px;font-weight:800;color:var(--orange);margin-bottom:14px;display:flex;align-items:center;gap:6px;"><i data-lucide="sparkles" style="width:13px;height:13px;"></i> 初步審查結語</h5>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">${app.ai.strengths.map(s=>`<li style="font-size:11px;color:rgba(255,255,255,0.85);display:flex;gap:8px;line-height:1.5;"><span style="color:var(--orange);flex-shrink:0;font-weight:900;">•</span>${s}</li>`).join('')}</ul>
       </div>`;
   } else {document.getElementById('ai-panel').style.display='none'}
   if(saved){
@@ -1169,8 +2842,8 @@ function saveScore(){
   if(GAS_URL){
     syncUIState('syncing');
     syncToCloud(S.judgeId, judgeScores[S.judgeId][app.id])
-      .then(res=>{if(res.success)syncUIState('success');else syncUIState('error')})
-      .catch(e=>syncUIState('error'));
+      .then(res=>{if(res.success)syncUIState('success');else{syncUIState('error');showSyncErrorModal();}})
+      .catch(e=>{syncUIState('error');showSyncErrorModal()});
   }
   toast(`#${app.id} 評分${isUp?'已更新':'已儲存'} → ${total} 分`,'success');
   const btn=document.getElementById('submit-btn');
@@ -1316,7 +2989,7 @@ function renderLeaderboard(){
   document.getElementById('leader-body').innerHTML=rows.map(({app,agg},idx)=>`
     <tr>
       <td style="font-size:20px;padding-left:24px;">${MEDALS[idx]||`<span style="font-weight:800;color:#8E8E93;">#${idx+1}</span>`}</td>
-      <td><div style="font-weight:800;font-size:13px;">${app.id} — ${app.project.length>36?app.project.slice(0,36)+'…':app.project}</div><div style="font-size:10px;color:#8E8E93;margin-top:2px;">📍 ${app.region} · ${app.category}</div></td>
+      <td><div style="font-weight:800;font-size:13px;">${app.id} — ${app.project.length>36?app.project.slice(0,36)+'…':app.project}</div><div style="font-size:10px;color:#8E8E93;margin-top:2px;">🏷 ${app.category}</div></td>
       <td style="text-align:center;"><span style="font-weight:800;font-size:14px;color:${agg&&agg.avgA>=8?'var(--orange)':'#8E8E93'}">${agg?agg.avgA.toFixed(1):'—'}</span></td>
       <td style="text-align:center;"><span style="font-weight:800;font-size:14px;color:${agg&&agg.avgI>=8?'var(--blue)':'#8E8E93'}">${agg?agg.avgI.toFixed(1):'—'}</span></td>
       <td style="text-align:center;"><span style="font-weight:800;font-size:14px;color:${agg&&agg.avgR>=8?'var(--purple)':'#8E8E93'}">${agg?agg.avgR.toFixed(1):'—'}</span></td>
@@ -1355,8 +3028,8 @@ function renderCommentsByJudge(judgeId){
   c.innerHTML=`<h4 style="font-size:13px;font-weight:800;margin-bottom:16px;">${ji.welcomeName||ji.name} 的評分與意見</h4>`+sorted.map(({app})=>{const ev=scores[app.id];if(!ev)return'';return`<div style="background:var(--surface2);border-radius:16px;padding:20px;border:1px solid var(--border);margin-bottom:12px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;"><span style="font-weight:900;color:var(--orange);">#${ev.appId}</span><span style="font-size:11px;color:#8E8E93;flex:1;">${app.project}</span><span class="badge badge-orange">${ev.total}分</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">${ev.h?`<div style="background:#fff;border-radius:12px;padding:14px;border:1px solid var(--border);"><p style="font-size:10px;font-weight:700;color:#8E8E93;text-transform:uppercase;margin-bottom:6px;">✦ 亮點</p><p style="font-size:12px;line-height:1.6;">${ev.h}</p></div>`:''}${ev.e?`<div style="background:#fff;border-radius:12px;padding:14px;border:1px solid var(--border);"><p style="font-size:10px;font-weight:700;color:#8E8E93;text-transform:uppercase;margin-bottom:6px;">💬 鼓勵</p><p style="font-size:12px;line-height:1.6;">${ev.e}</p></div>`:''}</div><p style="font-size:9px;color:#C7C7CC;margin-top:8px;">${ev.ts}</p></div>`}).join('');
 }
 function exportCSV(){
-  const rows=applicants.map(app=>{const agg=getAgg(app.id);return[app.id,`"${app.project}"`,app.region,agg?agg.avgA.toFixed(1):'',agg?agg.avgI.toFixed(1):'',agg?agg.avgR.toFixed(1):'',agg&&agg.hasBonus?'+5':'',agg?agg.total:'',agg?agg.n:'']});
-  const csv=[['申請編號','專案名稱','地區','行動力均值','影響力均值','共鳴力均值','長期加分','加權總分','評審人數'],...rows].map(r=>r.join(',')).join('\n');
+  const rows=applicants.map(app=>{const agg=getAgg(app.id);return[app.id,`"${app.project}"`,agg?agg.avgA.toFixed(1):'',agg?agg.avgI.toFixed(1):'',agg?agg.avgR.toFixed(1):'',agg&&agg.hasBonus?'+5':'',agg?agg.total:'',agg?agg.n:'']});
+  const csv=[['申請編號','專案名稱','行動力均值','影響力均值','共鳴力均值','長期加分','加權總分','評審人數'],...rows].map(r=>r.join(',')).join('\n');
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`GVH2026_排名_${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(a.href);
   toast('CSV 已匯出','success');
@@ -1423,6 +3096,22 @@ async function syncToCloud(jid, scoreObj){
   });
   const text = await res.text();
   return JSON.parse(text);
+}
+function showSyncErrorModal(){
+  showModal({
+    icon:'wifi-off',
+    iconBg:'#FFF0F0',
+    title:'雲端同步失敗',
+    body:'<p style="font-size:14px;color:var(--text2);line-height:1.6;text-align:left;">目前無法連線至雲端，您的評分僅保存在這台電腦的瀏覽器中。<br><br><span style="color:var(--orange);font-weight:800;">應變措施：</span><br>請點擊下方按鈕匯出包含最新成績的 CSV 備份檔案，系統將會協助您開啟電子郵件，請直接將該份 CSV 檔寄送給管理員 Jane。</p>',
+    confirmText:'匯出 CSV 並寄出備份',
+    cancelText:'稍後再處理',
+    onConfirm:()=>{
+      exportMyScores(()=>{
+        window.location.href="mailto:jane-yc.huang@mediatek.com?subject=GVH 評分備份資料 - "+(S.judgeId||'')+"&body=Jane 您好，%0D%0A%0D%0A系統發生雲端同步失敗，隨信附上我匯出的最新評分 CSV 備份檔，請查收！%0D%0A%0D%0A謝謝。";
+      });
+      closeModal({force:true});
+    }
+  });
 }
 
 /*** INIT ***/
