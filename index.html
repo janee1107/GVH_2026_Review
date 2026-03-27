@@ -3532,7 +3532,67 @@ function remapJudgeScoreKeys(){
   persistScores();
   console.log('[GVH Remap] After remap, judgeScores keys:',Object.keys(judgeScores));
 }
+  
+// ============================================================
+// GVH 2026 — Drive 資料夾連結 Patch
+// 使用方法：將此段程式碼貼在 HTML 的 </script> 標籤【前】
+//           (即 /*** INIT ***/ 區塊的上方即可)
+// 011 和 034 不符資格，保留原本的 "#" 不變
+// ============================================================
 
+const _driveBase = "https://drive.google.com/drive/folders/";
+const _folderMap = {
+  "001": "1LbOpxxMv1_5xq6guHMmUNgszgKGNPGdC",
+  "002": "1XRFfGOtPIGZpT2ozsxT1nmq8m-NcDY7n",
+  "003": "1_AuK0XRuqTNnmTIDN1aguMCBzpKZrweQ",
+  "004": "1rcWJGjrD2ItVhu4fGXv0deoo1YMnKtKh",
+  "005": "1AxWDB-HQ-AexewJqoXwIwu1_5FLvuH8_",
+  "006": "1BJ4J5xUK_SxqNajmwMxIvXIxSPdL72TY",
+  "007": "1Mm5hFE16vdyDp0o1LeUo20q9n8uviX2B",
+  "008": "1e8wK9V8YbAga3BlbXnHv1SEHCcN7uWZu",
+  "009": "1QhiGVdkepNagxTC1fqsVspUlywjoPMNv",
+  "010": "1EvOLyvDTQHVuDSQ4yHz4hhI2kcJd2iLb",
+  // "011" → 不存在，略
+  "012": "1GtQ0LRc39Xt7Y45xjWhSP0wsNRN4PF-L",
+  "013": "1NszTdUlA2DkWW1zBcqz3yB6JA0jiwXLK",
+  "014": "1Ub9Ti3BczeIZZjXYRhO-arXgV_6D0qJL",
+  "015": "1Rn_irYap0XgGNVhcU6cxwlL-uCg41Rwk",
+  "016": "1GQOGh9rcmiL-rdYaiyyvsPQ5VALJO7BK",
+  "017": "1gbE2g5yxV1X8qCebga7L2Cj9x8EhFbXg",
+  "018": "19k7WDo6whhbLLHMGjNZjPzUK7usMgzHd",
+  "019": "1bDOlUlSS7Ubc5xYe-vTduYdZK25AW-Xl",
+  "020": "18STstotZrTbwdJLpvR8POFRN8RkRfqDZ",
+  "021": "19e-7_fZM2fDZBpXHx0MdGh1nV7I8QFUk",
+  "022": "1kbzMwmng6K47Vuar30Sc7IvRcE0PaJKZ",
+  "023": "14ds_aNF9daFpi5toLYvFe6UYxHWlapXz",
+  "024": "1Xq6TrkFemoYc2aIDyPUFBbL8OnjkgVv0",
+  "025": "1M8S1L728YyVoJSqE-FIWVAuX-w_khlxy",
+  "026": "1dO1KXUHFfnHx7C3kMmBwlSi2h4aTcmOV",
+  "027": "1Mrukn4fzL3Z8XyR9i3moWXDmlNXIt61P",
+  "028": "1F_1gIOpNTsS6gUoa3HtuOUNfbRdZ4oYU",
+  "029": "1TlzA7_Shqrp20gEXwJOAqRGPbPz79cul",
+  "030": "1UMuRHY6qHWIfMusFzq6MAvsBtR-rO2ZU",
+  "031": "1F4mBZNYDZqTbzcWmIBusW-VSZmTHA63-",
+  "032": "1GMS0svR4PXOqDG1XjhgaIjy64P8dO3Cy",
+  "033": "1vXyZhz292UYhVQTmpemog8lOc5N54wy0",
+  // "034" → 不存在，略
+  "035": "1tqf2BY4Syt4b3YzRNcQwrnre5jxFuZ7A",
+  "036": "1UTuMTjcyo1g1tnJ7f_LyOCvnXKva_Jzr",
+  "037": "1W5Xi_Vyf2n0zSzbnz0q2D6WNVPnc5c9J",
+  "038": "1hFgImjLkaczBwMUhXnS7GnfounXSdKzq",
+  "039": "1U2LSX52voCn0pH9eidKq2i3fKnetuiXC",
+  "040": "1a8eF3bMktuoMQ06KjFBhgY98UH5uw0In",
+  "041": "1XzlHkD_KGeM_iZYAy7QhLiY8Ms3vlH7u",
+  "042": "1lSzwMj2J2sWvRwm7B_SKBOTL36GA6V_X",
+};
+
+// 自動將 applicants 陣列裡的 photoUrl 全部換成真實連結
+applicants.forEach(function(app) {
+  if (_folderMap[app.id]) {
+    app.photoUrl = _driveBase + _folderMap[app.id];
+  }
+});
+  
 /*** INIT ***/
 document.addEventListener('DOMContentLoaded',()=>{
   lucide.createIcons();updateDays();applyLayout();
