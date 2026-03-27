@@ -788,7 +788,7 @@
 
 <script>
 /*** CONFIG ***/
-const GAS_URL='https://script.google.com/macros/s/AKfycbyWOeG6yq-Ugcsq0sFg7_Fs3HaI2MV47wF6D_I8yoIX4kAXCSowNAhS_ZzXL7PtH1WkPw/exec'; // 【請在此貼上您的 Google Apps Script 網頁應用程式 URL】
+const GAS_URL='https://script.google.com/macros/s/AKfycbzth6yO1WkeEVqxoCnmhK6D1SDKjifbYRv7JxxfqStN9OOSlM4pEyK4fDD66VqZZM3_tw/exec'; // 【請在此貼上您的 Google Apps Script 網頁應用程式 URL】
 // 【如何更新評審姓名】
 // 1. 找到對應的代號（如 '001' 對應 Sherry）
 // 2. 更改 welcomeName 欄位的內容，例如 welcomeName:'Sherry' 改為 welcomeName:'新姓名'
@@ -3267,11 +3267,25 @@ function showSyncErrorModal(){
 function syncAllJudgesFromCloud(){
   toast('正在從雲端同步所有評審資料…','info');
   // Use getAll endpoint to fetch everything in one request
-  fetch(GAS_URL+'?action=getAll')
-    .then(res=>{if(!res.ok)throw new Error('Net err '+res.status);return res.json()})
-    .then(json=>{
+  const _testUrl=GAS_URL+'?action=getAll';
+  console.log('[GVH Cloud] Fetching:',_testUrl);
+  fetch(_testUrl)
+    .then(res=>{
+      console.log('[GVH Cloud] Response status:',res.status,res.statusText);
+      if(!res.ok)throw new Error('Net err '+res.status);
+      return res.text();
+    })
+    .then(rawText=>{
+      console.log('[GVH Cloud] Raw response (first 500 chars):',rawText.substring(0,500));
+      let json;
+      try{json=JSON.parse(rawText)}catch(e){throw new Error('JSON parse failed: '+e.message+'\nRaw: '+rawText.substring(0,200))}
+      if(!json.success){
+        console.error('[GVH Cloud] GAS returned error:',json);
+        throw new Error('GAS error: '+(json.error||json.message||'unknown'));
+      }
       const allData=json.data||{};
       console.log('[GVH Cloud] getAll returned keys:',Object.keys(allData));
+      console.log('[GVH Cloud] Full data preview:',JSON.stringify(allData).substring(0,300));
       
       // Build name->id lookup for remapping GAS keys
       const validIds=new Set(Object.keys(JUDGES));
