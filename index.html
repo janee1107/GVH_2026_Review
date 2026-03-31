@@ -1692,6 +1692,11 @@
                                     style="width:100%;justify-content:center;padding:12px;border-radius:14px;font-size:12px;gap:8px;font-weight:700;display:none;">
                                     <i data-lucide="download" style="width:14px;height:14px;"></i> 匯出全部評分總表 (CSV)
                                 </button>
+                                <button id="force-push-btn" onclick="pushAllScoresToCloud()" class="btn btn-ghost"
+                                    style="width:100%;justify-content:center;padding:10px;border-radius:14px;font-size:11px;gap:6px;font-weight:700;display:none;color:var(--blue);border:1.5px dashed var(--blue-light);"
+                                    title="若換裝置後發現評分進度不同步，請點此強制重新上傳本機所有評分至雲端">
+                                    <i data-lucide="refresh-cw" style="width:13px;height:13px;"></i> 強制全量同步至雲端
+                                </button>
                             </div>
                         </div>
                     </div><!-- /score-panel -->
@@ -1965,7 +1970,7 @@
                                     style="color:#34C759;font-weight:900;">✓</span><span>可隨時切換手機 / 電腦，進度自動接續</span>
                             </div>
                             <div style="display:flex;align-items:flex-start;gap:8px;"><span
-                                    style="color:#34C759;font-weight:900;">✓</span><span>可直接瀏覽申請者的照片資料夾</span></div>
+                                    style="color:#34C759;font-weight:900;">✓</span><span>可直接開啟申請者的 Google Drive 照片</span></div>
                         </div>
                         <div
                             style="margin-top:14px;padding:10px 14px;background:rgba(255,149,0,0.08);border-radius:10px;font-size:11px;color:var(--amber);font-weight:700;line-height:1.6;">
@@ -4113,10 +4118,10 @@
           <span class="badge badge-gray">📋 ${S.curIdx + 1}/${applicants.length}</span>
         </div>
       </div>
-      <a href="${app.photoUrl}" target="_blank" rel="noopener" onclick="if(this.href.endsWith('#')){event.preventDefault();toast('此申請案無照片資料夾','info');return false;}" style="display:inline-flex;align-items:center;gap:7px;padding:12px 18px;background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;font-size:12px;font-weight:700;color:var(--text);text-decoration:none;transition:all 0.2s;flex-shrink:0;"
+      <a href="${app.photoUrl}" target="_blank" rel="noopener" onclick="if(this.href.endsWith('#')){event.preventDefault();toast('此申請案無 Google Drive 照片連結','info');return false;}" style="display:inline-flex;align-items:center;gap:7px;padding:12px 18px;background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;font-size:12px;font-weight:700;color:var(--text);text-decoration:none;transition:all 0.2s;flex-shrink:0;"
          onmouseover="this.style.background='var(--orange)';this.style.color='#fff';this.style.borderColor='var(--orange)'"
          onmouseout="this.style.background='var(--surface2)';this.style.color='var(--text)';this.style.borderColor='var(--border)'">
-        <i data-lucide="image" style="width:14px;height:14px;"></i> ${S.networkMode === 'internal' ? 'Google Drive 照片' : '查看照片資料夾'}
+        <i data-lucide="image" style="width:14px;height:14px;"></i> ${S.networkMode === 'internal' ? 'Google Drive 照片' : 'Google Drive 照片'}
       </a>
       ${S.networkMode === 'internal' ? '<a href="' + ONEDRIVE_URL + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;padding:12px 18px;background:#EEF4FF;border:1.5px solid #B8D4FF;border-radius:14px;font-size:12px;font-weight:700;color:var(--blue);text-decoration:none;transition:all 0.2s;flex-shrink:0;"><i data-lucide=&quot;building-2&quot; style=&quot;width:14px;height:14px;&quot;></i> 內網 OneDrive 照片</a>' : ''}
     </div>`;
@@ -4182,8 +4187,10 @@
             const _hintEl = document.getElementById('export-single-hint');
             if (_hintEl) _hintEl.style.display = (S.role === 'internal') ? 'block' : 'none';
             const _expAllInline = document.getElementById('export-all-inline');
+            const _forcePushBtn = document.getElementById('force-push-btn');
             const _hasAnyScore = Object.keys(judgeScores[S.judgeId] || {}).length > 0;
             if (_expAllInline) _expAllInline.style.display = _hasAnyScore ? 'inline-flex' : 'none';
+            if (_forcePushBtn && !S.hasSyncError) _forcePushBtn.style.display = 'none'; // shown only via setSyncFailed(true)
             updateScore(); window.scrollTo({ top: 0, behavior: 'smooth' }); lucide.createIcons();
         }
 
@@ -4262,14 +4269,32 @@
             const isUp = !!judgeScores[S.judgeId][app.id];
             judgeScores[S.judgeId][app.id] = { appId: app.id, a, i, r, bonus: false, total, h: fbH, e: fbE, ts: new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }), judgeId: S.judgeId };
             persistScores();
+            toast(`✅ #${app.id} 評分${isUp ? '已更新' : '已儲存'} → ${total} 分`, 'success');
             if (GAS_URL) {
                 syncUIState('syncing');
+                setTimeout(() => toast('☁ 正在自動同步至雲端…', 'info'), 400);
                 syncToCloud(S.judgeId, judgeScores[S.judgeId][app.id])
-                    .then(res => { if (res.success) syncUIState('success'); else { syncUIState('error'); showSyncErrorModal(); } })
-                    .catch(e => { syncUIState('error'); showSyncErrorModal() });
+                    .then(res => {
+                        if (res && res.success) {
+                            syncUIState('success');
+                            toast('✅ 已同步至雲端，Owner 儀表板即時更新', 'success');
+                            setSyncFailed(false);
+                        } else {
+                            syncUIState('error');
+                            setSyncFailed(true);
+                            toast('⚠ 雲端同步失敗（評分已備存本機）請點選下方「重新同步」按鈕', 'warn');
+                        }
+                    })
+                    .catch(e => {
+                        syncUIState('error');
+                        setSyncFailed(true);
+                        const msg = (e && e.message === 'TIMEOUT')
+                            ? '⚠ 同步逾時（偵測到防火牆攔截）評分已備存本機，請點下方按鈕重新同步'
+                            : '⚠ 網路異常，同步未完成（評分已備存本機）請點下方按鈕重新同步';
+                        toast(msg, 'warn');
+                    });
             }
-            toast(`#${app.id} 評分${isUp ? '已更新' : '已儲存'} → ${total} 分`, 'success');
-            if (S.networkMode === 'internal') setTimeout(() => toast('提醒：請記得匯出 CSV 寄給 Jane', 'warn'), 3500);
+            if (S.networkMode === 'internal') setTimeout(() => toast('📤 提醒：使用聯發科技 Wifi 請記得匯出 CSV 寄給 Jane', 'warn'), 3500);
             const btn = document.getElementById('submit-btn');
             btn.innerHTML = '<i data-lucide="check" style="width:14px;"></i> 已儲存'; btn.style.opacity = '0.65';
             lucide.createIcons();
@@ -4534,21 +4559,97 @@
             lucide.createIcons();
         }
         async function fetchFromCloud(jid) {
-            const res = await fetch(GAS_URL + '?action=get&judgeId=' + encodeURIComponent(jid));
-            if (!res.ok) throw new Error('Net err ' + res.status);
-            const json = await res.json();
-            const raw = json.data || {};
-            console.log('[GVH Cloud] Fetched for "' + jid + '":', Object.keys(raw).length, 'entries');
-            return raw;
+            const controller = new AbortController();
+            const tid = setTimeout(() => controller.abort(), 10000);
+            try {
+                const res = await fetch(GAS_URL + '?action=get&judgeId=' + encodeURIComponent(jid), { signal: controller.signal });
+                clearTimeout(tid);
+                if (!res.ok) throw new Error('Net err ' + res.status);
+                const json = await res.json();
+                const raw = json.data || {};
+                console.log('[GVH Cloud] Fetched for "' + jid + '":', Object.keys(raw).length, 'entries');
+                return raw;
+            } catch (e) {
+                clearTimeout(tid);
+                throw e.name === 'AbortError' ? new Error('TIMEOUT') : e;
+            }
         }
-        async function syncToCloud(jid, scoreObj) {
-            const res = await fetch(GAS_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({ action: 'save', judgeId: jid, data: scoreObj })
-            });
-            const text = await res.text();
-            return JSON.parse(text);
+        async function syncToCloud(jid, scoreObj, retries = 2) {
+            for (let attempt = 0; attempt <= retries; attempt++) {
+                const controller = new AbortController();
+                // 8 sec timeout — catches silent firewall blocks (e.g. MediaTek intranet)
+                const tid = setTimeout(() => controller.abort(), 8000);
+                try {
+                    const res = await fetch(GAS_URL, {
+                        method: 'POST',
+                        signal: controller.signal,
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ action: 'save', judgeId: jid, data: scoreObj })
+                    });
+                    clearTimeout(tid);
+                    const text = await res.text();
+                    const json = JSON.parse(text);
+                    if (json.success) return json;
+                    if (attempt < retries) { await new Promise(r => setTimeout(r, 1500 * (attempt + 1))); continue; }
+                    return json;
+                } catch (e) {
+                    clearTimeout(tid);
+                    const isTimeout = e.name === 'AbortError';
+                    console.warn('[GVH Sync] attempt', attempt + 1, isTimeout ? 'TIMEOUT (firewall?)' : 'ERROR', e.message || e);
+                    if (attempt < retries) { await new Promise(r => setTimeout(r, 1500 * (attempt + 1))); continue; }
+                    throw isTimeout ? new Error('TIMEOUT') : e;
+                }
+            }
+        }
+
+        /*** SYNC FAILURE STATE ***/
+        function setSyncFailed(failed) {
+            S.hasSyncError = failed;
+            const btn = document.getElementById('force-push-btn');
+            if (!btn) return;
+            if (failed) {
+                btn.style.display = 'inline-flex';
+                btn.style.background = '#FFF0EF';
+                btn.style.color = '#FF3B30';
+                btn.style.border = '1.5px solid #FF3B30';
+                btn.innerHTML = '<i data-lucide="refresh-cw" style="width:13px;height:13px;"></i>&nbsp;⚠ 部分評分未同步 — 點此重新同步';
+                lucide.createIcons();
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        /*** FORCE PUSH ALL LOCAL SCORES → CLOUD ***/
+        async function pushAllScoresToCloud() {
+            if (!S.judgeId || !GAS_URL) return;
+            const myScores = judgeScores[S.judgeId] || {};
+            const appIds = Object.keys(myScores);
+            if (!appIds.length) { toast('本機尚無評分紀錄可上傳', 'warn'); return; }
+            syncUIState('syncing');
+            toast('🔄 正在強制全量上傳 ' + appIds.length + ' 筆評分至雲端…', 'info');
+            let successCount = 0, failCount = 0;
+            for (const appId of appIds) {
+                try {
+                    const scoreObj = Object.assign({}, myScores[appId]);
+                    if (!scoreObj.appId) scoreObj.appId = appId;
+                    if (!scoreObj.judgeId) scoreObj.judgeId = S.judgeId;
+                    const res = await syncToCloud(S.judgeId, scoreObj);
+                    if (res && res.success) successCount++;
+                    else { failCount++; console.warn('[GVH ForcePush] Failed:', appId, res); }
+                } catch (e) {
+                    failCount++;
+                    console.error('[GVH ForcePush] Error:', appId, e);
+                }
+            }
+            if (failCount === 0) {
+                syncUIState('success');
+                setSyncFailed(false);
+                toast('✅ 全量同步完成！共 ' + successCount + ' 筆已上傳，不同裝置的 Owner 儀表板即時更新', 'success');
+            } else {
+                syncUIState('error');
+                setSyncFailed(true);
+                toast('⚠ 部分失敗：成功 ' + successCount + ' 筆，失敗 ' + failCount + ' 筆，建議確認網路後再按一次', 'warn');
+            }
         }
         function showSyncErrorModal() {
             showModal({
@@ -4606,7 +4707,8 @@
                         }
                         if (!JUDGES[canonicalId] || canonicalId === 'owner') return;
 
-                        if (!judgeScores[canonicalId]) judgeScores[canonicalId] = {};
+                        // REPLACE (not merge) so Owner view exactly reflects GAS state
+                        judgeScores[canonicalId] = {};
                         const entries = allData[gasKey];
                         Object.keys(entries).forEach(appId => {
                             const entry = entries[appId];
@@ -4638,7 +4740,8 @@
             Promise.all(allJIds.map(jid =>
                 fetchFromCloud(jid).then(data => {
                     if (data && Object.keys(data).length > 0) {
-                        if (!judgeScores[jid]) judgeScores[jid] = {};
+                        // REPLACE to ensure accurate cloud state
+                        judgeScores[jid] = {};
                         Object.keys(data).forEach(appId => {
                             const entry = data[appId];
                             if (entry && typeof entry === 'object') {
