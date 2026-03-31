@@ -1735,7 +1735,7 @@
                 <i data-lucide="layout-dashboard" style="color:#fff;width:18px;height:18px;"></i>
             </div>
             <div style="flex:1;">
-                <h2 style="font-size:18px;font-weight:900;letter-spacing:-.3px;">決選總覽儀表板</h2>
+                <h2 style="font-size:18px;font-weight:900;letter-spacing:-.3px;">Dashboard</h2>
                 <p style="font-size:10px;color:#8E8E93;">GVH 2026 · 即時加權排名</p>
             </div>
             <button onclick="syncAllJudgesFromCloud()" class="btn btn-ghost hide-mobile" style="color:var(--blue);"
@@ -1973,9 +1973,10 @@
                                     style="color:#34C759;font-weight:900;">✓</span><span>可直接開啟申請者的 Google Drive 照片</span></div>
                         </div>
                         <div
-                            style="margin-top:14px;padding:10px 14px;background:rgba(255,149,0,0.08);border-radius:10px;font-size:11px;color:var(--amber);font-weight:700;line-height:1.6;">
-                            ⚠ 請全程使用個人網路，勿切換至聯發科技 wifi<br>⚠ 若您從內網切換至個人網路，您的評分進度無法同步為「正常」現象！
-                        </div>
+                        style="margin-top:14px;padding:10px 14px;background:rgba(255,149,0,0.08);border-radius:10px;font-size:11px;color:var(--amber);font-weight:700;line-height:1.6;">
+                        ⚠ 請全程使用個人網路，勿切換至聯發科技 wifi<br>⚠ 若您從內網切換至個人網路，您的評分進度無法同步為「正常」現象！<br>⚠ 如果評分中途發現 Google Drive 連結打不開，代表您連到了內網，建議切換為個人網路以節省手動寄送評分表時間
+                       </div>
+
                     </div>
                     <!-- Internal wifi detail -->
                     <div id="net-detail-internal"
@@ -2008,7 +2009,7 @@
                         </div>
                         <div
                             style="margin-top:14px;padding:10px 14px;background:rgba(232,71,28,0.06);border-radius:10px;font-size:11px;color:var(--orange);font-weight:700;line-height:1.6;">
-                            💡 如果評分中途發現照片連結打不開，代表您連到了內網，建議切換為個人網路以節省手動寄送時間
+                            💡 如果評分中途發現Google Drive連結打不開，代表您連到了內網，建議切換為個人網路以節省手動寄送評分表時間
                         </div>
                     </div>
                 </div>
@@ -4317,7 +4318,7 @@
                             cb.textContent = '📧 寄信給 Jane';
                             cb.onclick = () => {
                                 const sub = `GVH 2026 評分總表 - ${ji.welcomeName}`;
-                                const body = `Hi Jane,\n\n附件是我的 GVH 2026 評分總表，請查收。\n\nBest,\n${ji.welcomeName}`;
+                                const body = `Hi Jane,\n\n附件是我的 GVH 2026 評分總表，請確認。\n\nBest,\n${ji.welcomeName}`;
                                 window.location.href = `mailto:jane-yc.huang@mediatek.com?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;
                             };
                             document.getElementById('modal-cancel').textContent = '完成';
@@ -4352,7 +4353,7 @@
             if (cb) { cb(); return }
             // Show modal with mailto
             const sub = 'GVH 2026 評分總表 - ' + jn + ' (' + jCode + ')';
-            const body = 'Hi Jane,\n\n附件是我的 GVH 2026 評分總表，共 ' + scored + ' 份。\n檔名為：' + fname + '\n請查收，謝謝！\n\nBest,\n' + jn;
+            const body = 'Hi Jane,\n\n附件是我的 GVH 2026 評分總表，共 ' + scored + ' 份。\n檔名為：' + fname + '\n請確認，謝謝！\n\nBest,\n' + jn;
             const mailto = 'mailto:jane-yc.huang@mediatek.com?subject=' + encodeURIComponent(sub) + '&body=' + encodeURIComponent(body);
             showModal({
                 icon: '✅', iconBg: '#F0FFF4',
@@ -4661,7 +4662,7 @@
                 cancelText: '稍後再處理',
                 onConfirm: () => {
                     exportMyScores(() => {
-                        window.location.href = "mailto:jane-yc.huang@mediatek.com?subject=GVH 2026 評分總表 - " + (S.judgeId || '') + "&body=Jane 您好，%0D%0A%0D%0A系統發生雲端同步失敗，隨信附上我匯出的最新評分 CSV 備份檔，請查收！%0D%0A%0D%0A謝謝。";
+                        window.location.href = "mailto:jane-yc.huang@mediatek.com?subject=GVH 2026 評分總表 - " + (S.judgeId || '') + "&body=Jane 您好，%0D%0A%0D%0A系統發生雲端同步失敗，隨信附上我匯出的最新評分 CSV 備份檔，請確認！%0D%0A%0D%0A謝謝。";
                     });
                     closeModal({ force: true });
                 }
@@ -4847,7 +4848,7 @@
             dl.click(); URL.revokeObjectURL(dl.href);
             // Show modal with mailto button
             const sub = 'GVH 2026 評分紀錄 - #' + app.id + ' (' + jCode + ')';
-            const body = 'Hi Jane,\n\n附件是 #' + app.id + ' 的評分紀錄，檔名為：' + fname + '\n請查收，謝謝！\n\nBest,\n' + (ji.welcomeName || jCode);
+            const body = 'Hi Jane,\n\n附件是 #' + app.id + ' 的評分紀錄，檔名為：' + fname + '\n請確認，謝謝！\n\nBest,\n' + (ji.welcomeName || jCode);
             const mailto = 'mailto:jane-yc.huang@mediatek.com?subject=' + encodeURIComponent(sub) + '&body=' + encodeURIComponent(body);
             showModal({
                 icon: '✅', iconBg: '#F0FFF4',
