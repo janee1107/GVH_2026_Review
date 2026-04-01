@@ -3913,23 +3913,25 @@
                     document.getElementById('cloud-status').style.display = 'flex';
                     syncUIState('syncing');
                     fetchFromCloud(judgeId).then(data => {
-                        console.log('[GVH Cloud] Judge ' + judgeId + ' fetched:', Object.keys(data).length, 'entries');
-                        if (data && Object.keys(data).length > 0) {
-                            if (!judgeScores[judgeId]) judgeScores[judgeId] = {};
-                            Object.keys(data).forEach(appId => {
-                                const entry = data[appId];
-                                if (entry && typeof entry === 'object') {
-                                    if (!entry.appId) entry.appId = appId;
-                                    if (entry.a !== undefined || entry.total !== undefined) {
-                                        judgeScores[judgeId][appId] = entry;
-                                    }
-                                }
-                            });
-                            persistScores();
-                        }
-                        syncUIState('success');
-                        if (document.getElementById('dashboard-view').style.display === 'block') showDashboard();
-                    }).catch(e => syncUIState('error'));
+    console.log('[GVH Cloud] Judge ' + judgeId + ' fetched:', Object.keys(data).length, 'entries');
+    // 無條件覆寫本機，確保雲端清空時本機也跟著清空
+    judgeScores[judgeId] = {};
+    if (data && typeof data === 'object') {
+        Object.keys(data).forEach(appId => {
+            const entry = data[appId];
+            if (entry && typeof entry === 'object') {
+                if (!entry.appId) entry.appId = appId;
+                if (entry.a !== undefined || entry.total !== undefined) {
+                    judgeScores[judgeId][appId] = entry;
+                }
+            }
+        });
+    }
+    persistScores();
+    syncUIState('success');
+    if (document.getElementById('dashboard-view').style.display === 'block') showDashboard();
+}).catch(e => syncUIState('error'));
+
                 }
                 showDashboard();
             }
